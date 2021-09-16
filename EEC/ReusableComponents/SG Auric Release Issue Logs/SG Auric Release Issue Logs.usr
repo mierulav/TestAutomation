@@ -1,0 +1,103 @@
+[General]
+Type=Tulip
+RunType=ActiveScript
+DefaultCfg=default.cfg
+DefaultRunLogic=default.usp
+ParamRightBrace=>
+ParamLeftBrace=<
+NewFunctionHeader=1
+MinorVersion=0
+MajorVersion=6	
+DevelopTool=AQT
+
+[Actions]
+Action0=Action0\Script.mts
+006 Validate expense category fields=Action1\Script.mts
+004 Validate expense category with tax=Action2\Script.mts
+022 Validate claim entitlements=Action3\Script.mts
+010 Validate recoverable field value autopopulated=Action4\Script.mts
+Create Complete Claim (No Tax) [Quick Add]=Action3\Script.mts
+014 Validate expense category autopopulated value=Action6\Script.mts
+012 Validate available countries on Country field=Action7\Script.mts
+009 Validate user not able to submit expense more than whats in policy=Action8\Script.mts
+Submit Expense Report (Returns ExpenseTitle) [Expense Report]=Action2\Script.mts
+013 Validate user can submit multiple full-amount-entitlement of expense reports=Action9\Script.mts
+023 Validate Remarks section for any expenses report status=Action10\Script.mts
+024 Validate Finance HR able to search expense report=Action11\Script.mts
+015 Validate user able to search expense report=Action12\Script.mts
+008 Validate cost center existing value can be removed=Action5\Script.mts
+
+[VuserProfiles]
+Profiles=Default Profile
+
+[CfgFiles]
+Default Profile=default.cfg
+
+[RunLogicFiles]
+Default Profile=default.usp
+
+[Rendezvous]
+
+[Transactions]
+
+[ActiveScript]
+Lang=none
+
+[TulipInfo]
+ProductName=Micro Focus Unified Functional Testing
+Version=14.53
+
+[TulipAddins]
+ActiveX=
+AI=
+Database=
+File Content=
+Insight=
+Windows Applications=
+TEA=
+Web=
+XML=
+
+[ExtraFiles]
+Test.tsp=
+Default.xls=
+Parameters.mtr=
+Action0\Script.mts=
+Action0\Resource.mtr=
+Action0\ObjectRepository.bdb=
+Action1\Script.mts=
+Action1\Resource.mtr=
+Action1\ObjectRepository.bdb=
+Action2\Script.mts=
+Action2\Resource.mtr=
+Action2\ObjectRepository.bdb=
+Action3\Script.mts=
+Action3\Resource.mtr=
+Action3\ObjectRepository.bdb=
+Action4\Script.mts=
+Action4\Resource.mtr=
+Action4\ObjectRepository.bdb=
+Action6\Script.mts=
+Action6\Resource.mtr=
+Action6\ObjectRepository.bdb=
+Action7\Script.mts=
+Action7\Resource.mtr=
+Action7\ObjectRepository.bdb=
+Action8\Script.mts=
+Action8\Resource.mtr=
+Action8\ObjectRepository.bdb=
+Action9\Script.mts=
+Action9\Resource.mtr=
+Action9\ObjectRepository.bdb=
+Action10\Script.mts=
+Action10\Resource.mtr=
+Action10\ObjectRepository.bdb=
+Action11\Script.mts=
+Action11\Resource.mtr=
+Action11\ObjectRepository.bdb=
+Action12\Script.mts=
+Action12\Resource.mtr=
+Action12\ObjectRepository.bdb=
+Action5\Script.mts=
+Action5\Resource.mtr=
+Action5\ObjectRepository.bdb=

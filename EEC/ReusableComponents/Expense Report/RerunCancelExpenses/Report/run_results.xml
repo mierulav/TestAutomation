@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<Results version="1.0">
+<ReportNode type="testrun">
+<ReportNode type="Step">
+<Data>
+    <Name>Add-in(s) not activated</Name>
+    <Description>The following add-in(s) were associated with your test, but are not currently loaded: 
+SapGui, SAPUI5, SAPWDJ, SAPWebExt.</Description>
+    <StartTime>2020-07-14 23:16:23</StartTime>
+    <Result>Warning</Result>
+    <Extension>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Snapshot reference="Resources\Snapshots\e06d4a8c-6daf-4fe5-ae16-ab989c2c59f4.jpeg" />
+  </Data>
+</ReportNode>
+<ReportNode type="Iteration">
+<ReportNode type="Action">
+<ReportNode type="Step">
+<ReportNode type="Step">
+<Data>
+    <Name>Stop Run</Name>
+    <Description>Run stopped by user.</Description>
+    <StartTime>2020-07-14 23:16:27</StartTime>
+    <Result>Information</Result>
+    <Extension>
+      <IconKey>ab1cf0879a0848c4b3e13e3fdb84375c</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Snapshot reference="Resources\Snapshots\146b832d-f745-428c-993a-bd6263d04ca8.jpeg" />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>EEC</Name>
+    <Description>Cannot&amp;nbsp;identify&amp;nbsp;the&amp;nbsp;object&amp;nbsp;"EEC"&amp;nbsp;(of&amp;nbsp;class&amp;nbsp;Browser).&lt;br/&gt;Verify&amp;nbsp;that&amp;nbsp;this&amp;nbsp;object's&amp;nbsp;properties&amp;nbsp;match&amp;nbsp;an&amp;nbsp;object&amp;nbsp;currently&amp;nbsp;displayed&amp;nbsp;in&amp;nbsp;your&amp;nbsp;application.&lt;br/&gt;&lt;br/&gt;Object's physical description:&lt;br&gt;Mercury Class = Browser&lt;br&gt;CreationTime = 0&lt;br&gt;|Title = EEC | Quick Add&lt;br&gt;openurl = https://login.microsoftonline.com/fe9c4641-3b53-43d0-af72-8f3e64d3aa05/oauth2/authorize?client_id=00000003-0000-0ff1-ce00-000000000000&amp;response_mode=form_post&amp;protectedtoken=true&amp;response_type=code%20id_token&amp;resource=00000003-0000-0ff1-ce00-000000000000&amp;scope=openid&amp;nonce=D143274027D99AB0E973696322472A312A9C6EE5D5133FBD-6FB365E5FA14E32F8460FE4877C21F1DE5C10E00705A3F988A49E993EA16CA4D&amp;redirect_uri=https:%2F%2Fdksh.sharepoint.com%2F_forms%2Fdefault.aspx&amp;wsucxt=1&amp;cobrandid=11bd8083-87e0-41b5-bb78-0bc43c8a8e8a&amp;client-request-id=37c02f9f-c021-a000-c95f-7c20bcc2bd52&lt;br&gt;opentitle = Redirecting&lt;br&gt;Opened By Testing Tool = 0&lt;br&gt;number of tabs = 1&lt;br&gt;Name = EEC | Quick Add&lt;br&gt;</Description>
+    <StartTime>2020-07-14 23:16:27</StartTime>
+    <Duration>0</Duration>
+    <Result>Warning</Result>
+    <Extension>
+      <TestObject>
+        <Repository>C:\Users\amirul.saddam\Documents\automation\EEC\OR\EECWebApp.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>Browser</Type>
+            <Name><![CDATA[EEC]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[Cannot&nbsp;identify&nbsp;the&nbsp;object&nbsp;"EEC"&nbsp;(of&nbsp;class&nbsp;Browser).<br/>Verify&nbsp;that&nbsp;this&nbsp;object's&nbsp;properties&nbsp;match&nbsp;an&nbsp;object&nbsp;currently&nbsp;displayed&nbsp;in&nbsp;your&nbsp;application.]]></OperationData>
+      </TestObject>
+      <IconKey>ec0ce4f61ecf40a49ef8bab573377c63</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+      <NodeType>Run Error</NodeType>
+    </Extension>
+    <Snapshot reference="Resources\Snapshots\dac04e9a-ceb2-47aa-a53a-9503b4012a1e.jpeg" />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Submit Expense Report</Name>
+    <Description />
+    <StartTime>2020-07-14 23:16:24</StartTime>
+    <Duration>3</Duration>
+    <Result>Warning</Result>
+    <InputParameters>
+      <Parameter name="strEmails" value="sg.eec.test@dksh.com;amirul.saddam@dksh.com" type="System.String" />
+    </InputParameters>
+    <OutputParameters>
+      <Parameter name="bResult" value="" type="" />
+    </OutputParameters>
+    <Extension>
+      <IconKey>586fd85abae840448695a0c93f517ffe</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Action0</Name>
+    <Description />
+    <StartTime>2020-07-14 23:16:24</StartTime>
+    <Duration>3</Duration>
+    <Result>Warning</Result>
+    <Extension>
+      <IconKey>6669ac22baa541a798cfc1b769cca91e</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Index>1</Index>
+    <TestedApplications />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Stop Run</Name>
+    <Description>Run stopped by user.</Description>
+    <StartTime>2020-07-14 23:16:27</StartTime>
+    <Result>Information</Result>
+    <Extension>
+      <IconKey>ac5d11f0821144feb501c1b611a3747e</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Snapshot reference="Resources\Snapshots\b4813a35-70e4-4c2e-a65c-d21395b6b32b.jpeg" />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Expense Report</Name>
+    <ToolName>Micro Focus Unified Functional Testing</ToolName>
+    <ToolVersion>14.53</ToolVersion>
+    <ToolVersionStringLiteral>14.53</ToolVersionStringLiteral>
+    <Description />
+    <StartTime>2020-07-14 23:16:22</StartTime>
+    <Duration>5</Duration>
+    <Result>Warning</Result>
+    <InputParameters />
+    <Extension>
+      <IconKey>18e00d78ed5d42ec8a52c585bd71d379</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Environment>
+      <Timezone>+08:00:00</Timezone>
+      <Locale>English (Malaysia)</Locale>
+      <User>MYCSSC\amirul.saddam</User>
+      <CpuInfo>Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz</CpuInfo>
+      <NumberOfCores>8</NumberOfCores>
+      <TotalMemory>8030</TotalMemory>
+      <HostName>CSSC.dksh.net\NB-0942</HostName>
+      <OSInfo>Windows 10</OSInfo>
+    </Environment>
+    <TestedApplications />
+    <Links>
+      <Link type="DataTable" reference="Default.xls" displayname="Default Data Table" />
+    </Links>
+  </Data>
+</ReportNode>
+<GeneralInfo>
+    <ResultName>RerunCancelExpenses</ResultName>
+    <RunStartTime>2020-07-14 23:16:22</RunStartTime>
+    <Timezone>+08:00:00</Timezone>
+    <OrchestrationToolName>Micro Focus Unified Functional Testing</OrchestrationToolName>
+    <OrchestrationToolVersion>14.53</OrchestrationToolVersion>
+    <OrchestrationToolVersionStringLiteral>14.53</OrchestrationToolVersionStringLiteral>
+  </GeneralInfo>
+</Results>

@@ -1,0 +1,46 @@
+<Environment>
+	<Variable>
+		<Name>ProjectName</Name>
+		<Value><![CDATA[EEC WEB]]></Value>
+	</Variable>	
+	<Variable>
+		<Name>Browser</Name>
+		<Value><![CDATA[Chrome]]></Value>
+	</Variable>
+	<Variable>
+		<Name>ProjectDir</Name>
+		<Value><![CDATA[C:\Users\amirul.saddam\Documents\automation\EEC]]></Value>
+	</Variable>
+	<Variable>
+		<Name>FunctionLibraryDir</Name>
+		<Value><![CDATA[\FunctionLibrary]]></Value>
+	</Variable>
+	<Variable>
+		<Name>TestDataDir</Name>
+		<Value><![CDATA[\TestData]]></Value>
+	</Variable>
+	<Variable>
+		<Name>TestSuiteDir</Name>
+		<Value><![CDATA[\TestSuite]]></Value>
+	</Variable>
+	<Variable>
+		<Name>Country</Name>
+		<Value><![CDATA[ES]]></Value>
+	</Variable>
+	<Variable>
+		<Name>CompanyCode</Name>
+		<Value><![CDATA[ES80]]></Value>
+	</Variable>
+	<Variable>
+		<Name>URL</Name>
+		<Value><![CDATA[https://eecstg.dksh.com/]]></Value>
+	</Variable>
+	<Variable>
+		<Name>Username</Name>
+		<Value><![CDATA[es.eec.test@dksh.com]]></Value>
+	</Variable>
+	<Variable>
+		<Name>Password</Name>
+		<Value><![CDATA[Password1]]></Value>
+	</Variable>	
+</Environment>

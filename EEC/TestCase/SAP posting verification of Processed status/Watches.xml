@@ -1,0 +1,5 @@
+﻿<Properties>
+  <WatchEntry0 value="strOTaxAmount" />
+  <WatchEntry1 value="strOTaxAmount" />
+  <WatchEntry2 value="Datatable.Value(&quot;EECTaxAmount&quot;, &quot;Local&quot;)" />
+</Properties>

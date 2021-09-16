@@ -1,0 +1,10 @@
+﻿<Properties>
+  <WatchEntry0 value="arrInput(i)" />
+  <WatchEntry1 value="arrVal(j)" />
+  <WatchEntry2 value="i" />
+  <WatchEntry3 value="j" />
+  <WatchEntry4 value="arrResult" />
+  <WatchEntry5 value="linkUserMenu.GetROProperty(&quot;Innertext&quot;)" />
+  <WatchEntry6 value="linkUserMenu.GetROProperty(&quot;Innertext&quot;)" />
+  <WatchEntry7 value="linkUserMenu.GetROProperty(&quot;Innertext&quot;)" />
+</Properties>

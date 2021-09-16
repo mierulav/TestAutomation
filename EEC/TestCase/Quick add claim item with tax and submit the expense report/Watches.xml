@@ -1,0 +1,7 @@
+﻿<Properties>
+  <WatchEntry0 value="CSng(GetTaxPercentage)" />
+  <WatchEntry1 value="CSng(sTaxCode)" />
+  <WatchEntry2 value="intTaxPercentage = intTaxCode" />
+  <WatchEntry3 value="intTaxPercentage" />
+  <WatchEntry4 value="intTaxCode" />
+</Properties>

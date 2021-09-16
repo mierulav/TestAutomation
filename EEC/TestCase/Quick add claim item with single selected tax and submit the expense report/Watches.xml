@@ -1,0 +1,8 @@
+﻿<Properties>
+  <WatchEntry0 value="ClaimItem.GetReceiptAmount" />
+  <WatchEntry1 value="intCount" />
+  <WatchEntry2 value="welTaxAmount.GetROProperty(&quot;innextext&quot;)" />
+  <WatchEntry3 value="welTaxAmount.GetROProperty(&quot;innertext&quot;)" />
+  <WatchEntry4 value="strAmount" />
+  <WatchEntry5 value="obj(i).GetROProperty(&quot;value&quot;)" />
+</Properties>

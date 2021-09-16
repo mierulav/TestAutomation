@@ -1,0 +1,7 @@
+﻿<Properties>
+  <WatchEntry0 value="TestCompany" />
+  <WatchEntry1 value="DataTable.GetSheet(&quot;Local&quot;).Name" />
+  <WatchEntry2 value="DataTable.GetSheet(&quot;Local&quot;).GetParameter(1)" />
+  <WatchEntry3 value="objC.Count" />
+  <WatchEntry4 value="strVal" />
+</Properties>
