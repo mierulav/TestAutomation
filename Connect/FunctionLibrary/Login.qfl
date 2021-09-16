@@ -1,0 +1,118 @@
+﻿'***********************************************************
+' Module		: Login 
+' Created by	: amirul.saddam@dksh.com
+' Last modified	: 27-4-2021
+' Modified by	: amirul.saddam@dksh.com
+
+'***********************************************************
+
+OPTION EXPLICIT
+
+'==================================================================
+'Standard Login Objects
+'==================================================================
+
+Public LoginPage : Set LoginPage = Browser("DKSH Connect").Page("Login")
+
+Public LoginWelcomeHeader : Set LoginWelcomeHeader = LoginPage.WebElement("Login-WelcomeHeader")
+Public LoginBanner : Set LoginBanner = LoginPage.Image("DKSH-LoginBanner")
+Public LoginFooter : Set LoginFooter = LoginPage.WebElement("Login-FooterPanel")
+Public LoginDKSHLogo : Set LoginDKSHLogo = LoginPage.Image("DKSH-Logo")
+Public ApplyNow : Set ApplyNow = LoginPage.Link("Login-ApplyNow")
+PubliC ForgotPassword : Set ForgotPassword = LoginPage.Link("Login-ForgotPassword")
+Public LogInBtn : Set LogInBtn = LoginPage.WebButton("Login-LogIn")
+Public Password : Set Password = LoginPage.WebEdit("Login-Password")
+Public Username : Set Username = LoginPage.WebEdit("Login-Username")
+Public RememberMe : Set RememberMe = LoginPage.WebElement("Login-RememberMe")
+Public AlertInvalidLogin : Set AlertInvalidLogin = LoginPage.WebElement("Login-AlertInvalidAccount")
+Public DKSHAgreementAcceptButton : Set DKSHAgreementAcceptButton = LoginPage.WebButton("DKSHAgreement-Accept")
+Public DKSHAgreementAcceptCheckbox : Set DKSHAgreementAcceptCheckbox = LoginPage.WebCheckBox("DKSHAgreement-Understood")
+Public DKSHAgreementAlert : Set DKSHAgreementAlert = LoginPage.WebElement("DKSHAgreement-Terms&ConditionAlert")
+Public TrackAndTrace : Set TrackAndTrace = LoginPage.WebElement("TrackAndTrace")
+
+'==================================================================
+'Operation for acceptng DKSH Commitment to Privacy 
+'==================================================================
+
+Public Sub AcceptDKSHCommitmentPrivacy()
+ 
+ 	DKSHAgreementAcceptCheckbox.Set "ON"
+ 	DKSHAgreementAcceptButton.Click
+  	 	
+End Sub
+
+'==================================================================
+'Function to a normal login with username and password
+'==================================================================
+
+ Public Function Login(strUsername, strPassword)
+ 	  	 
+ 	Username.Set strUsername
+ 	Password.Set strPassword
+ 	LogInBtn.Click
+ 	
+ 	If AlertInvalidLogin.Exist(5) Then
+ 		Login = False
+ 	Else
+ 		Login = True
+ 	End If
+ 	
+ End Function
+ 
+'==================================================================
+'Function to validate login screen layout
+'Return : Boolean
+'==================================================================
+  
+Public Function LoginObjects()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	ObjectSync LoginPage
+	
+	DicObj.Add "Username", Username.Exist(1)
+	DicObj.Add "Password", Password.Exist(1)
+	DicObj.Add "LogInBtn", LogInBtn.Exist(1)
+	DicObj.Add "ApplyNow", ApplyNow.Exist(1)
+	DicObj.Add "ForgotPassword", ForgotPassword.Exist(1)
+	DicObj.Add "RememberMe", RememberMe.Exist(1)
+	DicObj.Add "LoginBanner", LoginBanner.Exist(1)
+	DicObj.Add "LoginFooter", LoginFooter.Exist(1)
+	DicObj.Add "LoginWelcomeHeader", LoginWelcomeHeader.Exist(1)
+	DicObj.Add "DKSHLogo", LoginDKSHLogo.Exist(1)
+	
+	If ProjectName <> "VNHEC" Then
+		DicObj.Add "TrackAndTrace", TrackAndTrace.Exist(1)
+	End If
+	
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			LoginObjects = False
+			Exit For
+		End If
+		LoginObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Operation for acceptng DKSH Commitment to Privacy 
+'==================================================================
+
+Public Sub GoToTrackAndTrace()
+ 
+ 	ObjectSync TrackAndTrace
+ 	TrackAndTrace.Click
+  	 	
+End Sub
+
+

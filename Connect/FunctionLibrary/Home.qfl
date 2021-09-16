@@ -1,0 +1,765 @@
+﻿'***********************************************************
+' Module		: Connect Homepage 
+' Created by	: amirul.saddam@dksh.com
+' Last modified	: 27-4-2021
+' Modified by	: amirul.saddam@dksh.com
+
+'***********************************************************
+OPTION EXPLICIT
+
+Public Homepage : Set Homepage = Browser("DKSH Connect").Page("Homepage")
+Public DKSHLogo : Set DKSHLogo = HomePage.Image("Header-DKSHLogo")
+Public AllProducts : Set AllProducts = HomePage.Link("Menu-All Products")
+Public Reward : Set Reward = HomePage.Link("Menu-Reward")
+Public Pay : Set Pay = HomePage.Link("Menu-Pay")
+Public Promotion : Set Promotion = HomePage.Link("Menu-Promotion")
+Public BonusProgram : Set BonusProgram = HomePage.Link("Menu-BonusProgram")
+Public Statement : Set Statement = HomePage.Link("Menu-Statement")
+Public TrackOrder : Set TrackOrder = HomePage.Link("Menu-TrackOrder")
+Public ResourceCenter : Set ResourceCenter = Homepage.Link("Menu-ResourceCenter")
+Public SearchBar : Set SearchBar = HomePage.WebEdit("Header-Searchbar")
+Public SearchButton : Set SearchButton = HomePage.WebElement("Header-SearchButton")
+Public FooterContactDetails : Set FooterContactDetails = HomePage.WebElement("Footer-ContactDetails")
+Public FooterPrivacyPolicy : Set FooterPrivacyPolicy = HomePage.WebElement("Footer-PrivacyPolicy")
+Public FooterTermsCondition : Set FooterTermsCondition = HomePage.WebElement("Footer-TermsComdition")
+Public FooterTermsUse : Set FooterTermsUse = HomePage.WebElement("Footer-TermsUse")
+Public CarouselHeadline : Set CarouselHeadline = HomePage.WebElement("Content-CarouselHeadline")
+Public CarouselItem : Set CarouselItem = HomePage.WebElement("Content-CarouselItem")
+Public ShipToDD : Set ShipToDD = HomePage.WebElement("Header-ddShioTo")
+Public ShipToNameDD : Set ShipToNameDD = HomePage.WebElement("Header-ddShipToName")
+Public Minicart : Set Minicart = HomePage.WebElement("Header-MiniCart")
+Public ShipToSelectBtn : Set ShipToSelectBtn = HomePage.WebElement("selectbuttonshiptoname")
+Public ShipToList : Set ShipToList = HomePage.WebList("shiptoname")
+Public IndustryDD : Set IndustryDD = HomePage.WebList("Header-ddIndustry")
+Public LanguageDD : Set LanguageDD = HomePage.WebList("Header-ddLang")
+Public UserMenuAccountManager : Set UserMenuAccountManager = Homepage.Link("User-AccountManager")
+Public UserMenuContactUs : Set UserMenuContactUs = Homepage.Link("User-ContactUs")
+Public UserMenuDeliveryAddress : Set UserMenuDeliveryAddress = Homepage.Link("User-DeliveryAddress")
+Public UserMenuFavoritesList : Set UserMenuFavoritesList = Homepage.Link("User-FavoritesList")
+Public UserMenuPassword : Set UserMenuPassword = Homepage.Link("User-Password")
+Public UserMenuPersonalDetails : Set UserMenuPersonalDetails = Homepage.Link("User-PersonalDetails")
+Public UserMenuSignOut : Set UserMenuSignOut = Homepage.Link("User-SignOut")
+Public UserMenuSavedOrder : Set UserMenuSavedOrder = Homepage.Link("User-SavedOrder")
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' Simple operations
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'==================================================================
+'Function to Search
+'==================================================================
+
+ Public Sub SearchProduct(strVal)
+ 	
+ 	SearchBar.WaitProperty "Visible", True
+ 	SearchBar.Set strVal
+ 	SearchButton.Click
+ 	Wait(3)
+ 	
+ End Sub
+ 
+'==================================================================
+'Function to Navigate to Home page
+'==================================================================
+
+  Public Sub OpenHomePage()
+ 
+ 	ObjectSync Homepage
+ 	DKSHLogo.Click
+ 	
+ End Sub
+ 
+'==================================================================
+'Function to Navigate to All Product page
+'==================================================================
+
+  Public Sub OpenAllProductPage()
+ 
+ 	Homepage.Sync
+ 	AllProducts.Click
+ 	
+	Browser("DKSH Connect").Page("Product").WebElement("PageLoader").WaitProperty "Visible", False
+ 	
+ End Sub
+ 
+'==================================================================
+'Function to Navigate to Track page
+'==================================================================
+ 
+ Public Sub OpenTrackOrderPage()
+ 	
+	Homepage.Sync
+	TrackOrder.Click	
+
+ End Sub
+ 
+'==================================================================
+'Function to Select ShipTo
+'==================================================================
+
+  Public Sub SelectShipToDefault()
+ 	
+	ShipToSelectBtn.WaitProperty "Visible", True
+	ShipToSelectBtn.Click
+	
+ End Sub
+ 
+ '==================================================================
+'Function to Select ShipTo
+'==================================================================
+
+  Public Function SelectShipToAddress(strVal)
+ 	
+'	SelectShipToAddress = Nothing
+	Dim i
+	ShipToList.WaitProperty "Visible", True
+	Dim arrVal : arrVal = Split(ShipToList.GetROProperty("all items"), ";")
+	For i = 0 To Ubound(arrVal)
+		If Instr(arrVal(i), strVal) > 0 Then
+			ShipToList.Select arrVal(i)
+			SelectShipToAddress = True
+			Exit For
+		End If		
+		If i = Ubound(arrVal) and Instr(arrVal(i), strVal) < 0 Then
+			SelectShipToAddress = False
+			Exit For
+		End If
+	Next
+	
+	ShipToSelectBtn.WaitProperty "Visible", True
+	ShipToSelectBtn.Click
+	
+	arrVal = empty
+	strVal = empty
+	
+ End Function
+ 
+ Public Sub LogoutAndCloseBrowser()
+ 
+ 	ShipToNameDD.WaitProperty "Visible", True
+ 	ShipToNameDD.Click
+ 	UserMenuSignOut.Click
+ 	Browser("creationtime:=0").ClearCache
+ 	Browser("creationtime:=0").Close
+ 	
+  End Sub
+  
+   Public Sub Logout()
+ 
+ 	ShipToNameDD.WaitProperty "Visible", True
+ 	ShipToNameDD.Click
+ 	UserMenuSignOut.Click
+ 	
+  End Sub
+ '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ' Header Checking
+ ' 1. Localization
+ ' 2. Search
+ ' 3. User menu
+ ' 4. ShipTo selection
+ ' 5. Mini cart
+ '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ '=================================================================
+' Function to check Carousel objects
+'=================================================================
+
+ Public Function CheckCarouselObjects()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	Homepage.Sync
+	
+	DicObj.Add "CarouselHeadline", CarouselHeadline.Exist(1)
+	DicObj.Add "CarouselItem", CarouselItem.Exist(1)
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckCarouselObjects = False
+			Exit For
+		End If
+		CheckCarouselObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+ 
+'=================================================================
+' Function to check header objects
+'=================================================================
+
+ Public Function CheckHeaderObjects()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	Homepage.Sync
+	
+	DicObj.Add "Minicart", Minicart.Exist(1)
+	DicObj.Add "SearchButton", SearchButton.Exist(1)
+	DicObj.Add "SearchBar", SearchBar.Exist(1)
+	DicObj.Add "DKSHLogo", DKSHLogo.Exist(1)
+	DicObj.Add "ShipToDD", ShipToDD.Exist(1)
+	DicObj.Add "ShipToNameDD", ShipToNameDD.Exist(1)
+	DicObj.Add "LanguageDD", LanguageDD.Exist(1)
+		
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckHeaderObjects = False
+			Exit For
+		End If
+		CheckHeaderObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'=================================================================
+' Function to check Navigation menu objects
+'=================================================================
+
+ Public Function CheckNavigationMenuObjects()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	Homepage.Sync
+	
+	DicObj.Add "AllProducts", AllProducts.Exist(1)
+	DicObj.Add "TrackOrder", TrackOrder.Exist(1)
+	DicObj.Add "Resource Center", ResourceCenter.Exist(1)
+	
+	Select Case ProjectName
+	
+		Case "AUTEC", "SGCG", "THHEC"
+			DicObj.Add "Pay", Pay.Exist(1)
+		
+		Case "MYHEC"
+			DicObj.Add "Reward", NOT Reward.Exist(1)
+			DicObj.Add "Statement", Statement.Exist(1)
+		
+		Case "VNHEC"
+			DicObj.Add "Reward", Reward.Exist(1)
+			DicObj.Add "Promotion", Promotion.Exist(1)
+			DicObj.Add "Bonus Program", BonusProgram.Exist(1)
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckNavigationMenuObjects = False
+			Exit For
+		End If
+		CheckNavigationMenuObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'=================================================================
+' Function to check Footer objects
+'=================================================================
+
+ Public Function CheckFooterObjects()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	Homepage.Sync
+	
+	DicObj.Add "FooterContactDetails", FooterContactDetails.Exist(1)
+	DicObj.Add "FooterPrivacyPolicy", FooterPrivacyPolicy.Exist(1)
+	DicObj.Add "FooterTermsUse", FooterTermsUse.Exist(1)
+	
+	Select Case ProjectName
+		Case "AUTEC", "MYHEC"
+			DicObj.Add "FooterTermsCondition", FooterTermsCondition.Exist(1)
+		
+		Case Else
+		
+	End Select
+
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckFooterObjects = False
+			Exit For
+		End If
+		CheckFooterObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'=================================================================
+' Function to check User menu list
+'=================================================================
+
+Public Function CheckUserMenuList(strRole)
+
+	ShipToNameDD.Click
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	Homepage.Sync
+	
+	DicObj.Add "Saved Order", UserMenuSavedOrder.Exist(1)
+	DicObj.Add "Favorites List", UserMenuFavoritesList.Exist(1)
+	DicObj.Add "Personal Details", UserMenuPersonalDetails.Exist(1)
+	DicObj.Add "Password", UserMenuPassword.Exist(1)
+	DicObj.Add "Delivery Address", UserMenuDeliveryAddress.Exist(1)
+	DicObj.Add "Contact Us", UserMenuContactUs.Exist(1)
+	DicObj.Add "Sign Out", UserMenuSignOut.Exist(1)
+	DicObj.Add "Account Manager", UserMenuAccountManager.Exist(1)
+	
+	Select Case LCase(strRole)
+		
+		Case "normal"
+			DicObj.Remove "Account Manager"
+			DicObj.Add "Account Manager", Not UserMenuAccountManager.Exist(1)
+			
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckUserMenuList = False
+			Exit For
+		End If
+		CheckUserMenuList = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'=================================================================
+' Function to check language available 
+'=================================================================
+
+Public Function CheckLocalization()
+	
+	Homepage.Sync
+	LanguageDD.WaitProperty "Visible", True, 5
+	
+	Select Case ProjectName
+		Case "AUTEC", "MYHEC", "SGCG"
+			If LanguageDD.GetROProperty("all items") = "ENG" Then
+				CheckLocalization = True
+			Else
+				CheckLocalization = False
+			End If
+			
+		Case "KHHEC"
+			If InStr(LanguageDD.GetROProperty("all items"), "ENG") > 0 And InStr(LanguageDD.GetROProperty("all items"), "KHM") > 0 Then
+				CheckLocalization = True
+			Else
+				CheckLocalization = False
+			End If
+			
+		Case "MMHEC"
+			If InStr(LanguageDD.GetROProperty("all items"), "ENG") > 0 And InStr(LanguageDD.GetROProperty("all items"), "BUR") > 0 Then
+				CheckLocalization = True
+			Else
+				CheckLocalization = False
+			End If
+		
+		Case "VNHEC"
+			If InStr(LanguageDD.GetROProperty("all items"), "ENG") > 0 And InStr(LanguageDD.GetROProperty("all items"), "VIE") > 0 Then
+				CheckLocalization = True
+			Else
+				CheckLocalization = False
+			End If
+			
+		Case "THHEC"
+			If InStr(LanguageDD.GetROProperty("all items"), "ENG") > 0 And InStr(LanguageDD.GetROProperty("all items"), "ไทย") > 0 Then
+				CheckLocalization = True
+			Else
+				CheckLocalization = False
+			End If
+	End Select
+	
+End Function
+
+'=================================================================
+' Function to check suggested product populated in the search bar 
+'=================================================================
+
+Public Function CheckSuggestedProduct(strValCode)
+	
+	Homepage.Sync
+ 	SearchBar.Set strValCode
+ 	SearchBar.Click
+ 	Wait(3)
+ 	wShell.SendKeys("{DOWN}")
+ 	Wait(1)
+ 	wShell.SendKeys("{DOWN}")
+ 	
+ 	If SearchSuggested.Exist(3) Then
+ 		wShell.SendKeys("{ENTER}")
+ 		If InStr(Browser("DKSH Connect").Page("Product").WebElement("PDP-ProductCode").GetROProperty("innertext"), strValCode) = 0 Then
+ 			CheckSuggestedProduct = False
+ 			Exit Function
+ 		End If
+ 	Else
+ 		CheckSuggestedProduct = False
+ 		Exit Function
+	End If
+
+	CheckSuggestedProduct = True
+	
+End Function
+
+'=================================================================
+' Function to check product search by keyword 
+'=================================================================
+
+Public Function CheckSearchedProductBasedOnKeyword(strValKeyword)
+	
+	Dim objDesc, objChild, i
+	
+	Homepage.Sync
+ 	SearchBar.Set strValKeyword
+ 	SearchButton.Click
+ 	
+ 	If Browser("DKSH Connect").Page("Product").WebElement("Product-SearchResultHeader").Exist Then
+ 		Set objDesc = Description.Create
+ 		objDesc("micclass").Value = "WebElement"
+ 		objDesc("html tag").Value = "DIV"
+		objDesc("class").Value =  "partnumber"
+		Set objChild = Browser("DKSH Connect").Page("Product").ChildObjects(objDesc)
+	
+		For i = 0 To objChild.Count-1
+			If InStr(objChild(i).GetROProperty("innertext"), strValKeyword) = 0  Then
+				CheckSearchedProductBasedOnKeyword = False
+				Exit Function
+			End If
+		Next		
+ 	Else
+ 		CheckSearchedProductBasedOnKeyword = False
+ 		Exit Function
+ 	End If
+ 	
+	CheckSearchedProductBasedOnKeyword = True
+	
+End Function
+
+'=================================================================
+' Function to check deafult ShipTo Name and Address
+'=================================================================
+
+Public Function CheckShipToDefaultCustomer()
+	
+	ShipToCustomerID.Click
+	
+	SelectShipTo.WaitProperty "Visible", True
+	Dim strDefaultValue : strDefaultValue = SelectShipTo.GetROProperty("Value")
+	SelectButton.Click
+	SelectShipTo.WaitProperty "Visible", False
+	If Instr(strDefaultValue, ShipToCustomerName.GetROProperty("innertext")) > 0 Then
+		CheckShipToDefaultCustomer = True
+	Else
+		CheckShipToDefaultCustomer = False
+	End If 
+	
+End Function
+
+
+ '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ' Content Checking
+ ' 1. LOGO link
+ ' 2. Logout
+ ' 3. Login with 2ndary User
+ ' 4. Banner link
+ ' 5. Frequently Purchased Product 
+ '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'=================================================================
+' Function to check DKSH logo is linkable from other modules than main
+'=================================================================
+
+Public Function CheckConnectSiteLogo()
+	
+	Dim strLandingPageURL : strLandingPageURL = "https://stg-connect-udp.dksh.com/vnhec/en/"
+	Dim objDic : Set objDic = CreateObject("Scripting.Dictionary")
+	
+	'1. Navigate to All product
+	OpenAllProductPage
+	Browser("DKSH Connect").Page("Product").Sync
+	If DKSHLogo.Exist And DKSHLogo.GetROProperty("url") = strLandingPageURL Then
+		objDic.Add "All Product DKSH Logo", True
+	Else
+		objDic.Add "All Product DKSH Logo", False
+	End If
+	
+	DKSHLogo.Click
+	Homepage.Sync
+	
+	'2. Navigate to Track & Order 
+	OpenTrackOrderPage()
+	Browser("DKSH Connect").Page("Track").Sync
+	If DKSHLogo.Exist And DKSHLogo.GetROProperty("url") = strLandingPageURL Then
+		objDic.Add "Track And Order DKSH Logo", True
+	Else
+		objDic.Add "Track And Order DKSH Logo", False
+	End If
+	
+	DKSHLogo.Click
+	Homepage.Sync
+
+	Dim i, k, x
+	i = objDic.Items
+	k = objDic.Keys
+	
+	For x = 0 To objDic.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckConnectSiteLogo = False
+			Exit For
+		End If
+		CheckConnectSiteLogo = True
+	Next
+	
+	Set objDic = nothing
+	
+End Function
+
+'=================================================================
+' Function to check logout feature
+'=================================================================
+
+Public Function CheckLogout()
+	
+	Logout
+	
+	If Browser("DKSH Connect").Page("Login").WebEdit("Login-Username").Exist(3) Then
+		CheckLogout = True
+	Else
+		CheckLogout = False
+	End If
+	
+End Function
+
+'=================================================================
+' Function to check Login and View for 2ndary user
+'=================================================================
+
+Public Function CheckSecondaryLoginAndView(strUsername, strPassword, strRole)
+	
+	Logout
+	Browser("DKSH Connect").Page("Login").Sync
+	Dim Login : Set Login = Login_Page()
+	Dim objDic : Set objDic = CreateObject("Scripting.Dictionary")
+	Dim i, j, k, x, bRes
+	
+	bRes = Login.Login(strUsername, strPassword)
+	objDic.Add "Secondary User Login", bRes
+	
+	bRes = HomeObjects
+	objDic.Add "Secondary User Home Screen", bRes
+	
+	bRes = CheckUserMenuList(strRole)
+	objDic.Add "Secondary User Menu List", bRes
+	 
+	i = objDic.Items
+	k = objDic.Keys
+	
+	For x = 0 To objDic.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckSecondaryLoginAndView = False
+			Exit For
+		End If
+		CheckSecondaryLoginAndView = True
+	Next
+	
+	Set objDic = nothing
+	
+	
+End Function
+
+'=================================================================
+' Function to check Frequently Purchased product
+'=================================================================
+
+Public Function CheckFrequentlyPurchasedProduct()
+	
+	'1. Check plus counter
+	Dim x : x = 1 'initial quantity value
+	Dim intQty
+	Dim objDic : Set objDic = CreateObject("Scripting.Dictionary")
+	
+	objDic.Add "Check + QTY", True
+	Do While x <= 5
+		FPPQuantityPlus.Click
+		x = x + 1 	
+		FPPQuantityCounter.Click
+		intQty = CInt(FPPQuantityCounter.GetROProperty("Value"))
+		If intQty <> x Then
+			objDic.Remove "Check + QTY"
+			objDic.Add "Check + QTY", False
+			Exit Do
+		End If
+	Loop
+	
+	'2. Check minus counter
+	FPPQuantityCounter.Click
+	FPPQuantityCounter.Set 5
+	x = 5
+	objDic.Add "Check - QTY", True
+	Do While x > 1
+		FPPQuantityMinus.Click
+		x = x - 1 	
+		If CSng(FPPQuantityCounter.GetROProperty("Value")) <> x Then
+			objDic.Remove "Check - QTY"
+			objDic.Add "Check - QTY", False
+			Exit Do
+		End If
+	Loop
+	
+	'3. Add To Cart
+	Dim strProductName : strProductName = FPPProductName.GetROProperty("innertext")
+	Dim strProductCode : strProductCode = FPPProductCode.GetROProperty("innertext")
+	FPPAddToCart.Click
+	CheckoutButton.WaitProperty "visible", "true"
+	CheckoutButton.Click
+	
+	'Validate add to cart successful
+	Browser("DKSH Connect").Page("Shopping Cart").Sync
+	
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "WebElement"
+	objDesc("class").Value = "item__name"
+	Dim arrObj : Set arrObj = Browser("DKSH Connect").Page("Shopping Cart").ChildObjects(objDesc)
+	
+	objDic.Add "Check Product Added To Cart", False	
+	For i = 0 To arrObj.Count-1
+		If arrObj(i).GetROProperty("innertext") = strProductName Then
+				objDic.Remove "Check Product Added To Cart"
+				objDic.Add "Check Product Added To Cart", True
+				Exit For
+		End If
+	Next
+
+	Dim i, k
+	i = objDic.Items
+	k = objDic.Keys
+	x = 0
+	
+	For x = 0 To objDic.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckFrequentlyPurchasedProduct = False
+			Exit For
+		End If
+		CheckFrequentlyPurchasedProduct = True
+	Next
+	
+	Set objDic = nothing
+	
+End Function
+
+'=================================================================
+' Function to check Footer Privacy Policy | Terms And Condition
+'=================================================================
+
+Public Function CheckFooterObjectsAndLinks(strValBU)
+	
+	Dim objDic : Set objDic = CreateObject("Scripting.Dictionary")
+	Dim i, k, x
+	
+	objDic.Add "Footer - Company Name", FooterCompanyName.Exist
+	objDic.Add "Footer - Contact Us", FooterContactUs.Exist
+	
+	Select Case strValBU
+		Case "AUTEC"
+			objDic.Add "Condition of Sales", ConditionOfSalesLink.Exist
+			ConditionOfSalesLink.Click
+			objDic.Add "Condition of Sales Imprints", ConditionOfSalesHeader.Exist
+			objDic.Add "Privacy Policy Protection", PrivacyProtectionLink.Exist
+			PrivacyProtectionLink.Click
+			objDic.Add "Privacy Protection Policy Imprints", PrivacyProtectionHeader.Exist
+			objDic.Add "Website Terms of Use", WebsiteTermsLink.Exist
+			WebsiteTermsLink.Click
+			objDic.Add "Website Terms of Use Imprints", WebsiteTermsHeader.Exist
+			objDic.Add "Footer - Company Motto", FooterCompanyMotto.Exist
+		
+		Case "MYHEC"
+			objDic.Add "Privacy Policy", PrivacyPolicyLink.Exist
+			PrivacyPolicyLink.Click
+			objDic.Add "Privacy Policy Imprints", PrivacyPolicyBoxHeader.Exist
+			objDic.Add "Terms And Condition", TermsConditionLink.Exist
+			TermsConditionLink.Click
+			objDic.Add "Terms And Condition Imprints", TermsConditionBoxHeader.Exist
+			objDic.Add "Footer - Company Motto", FooterCompanyMotto.Exist
+			
+		Case "VNHEC"
+			objDic.Add "Privacy Policy", PrivacyPolicyLink.Exist
+			PrivacyPolicyLink.Click
+			objDic.Add "Privacy Policy Imprints", PrivacyPolicyBoxHeader.Exist
+			objDic.Add "Terms And Condition", TermsConditionLink.Exist
+			TermsConditionLink.Click
+			objDic.Add "Terms And Condition Imprints", TermsConditionBoxHeader.Exist
+			objDic.Add "Footer - Company Details", VNHECFooterCompanyDetails.Exist
+			objDic.Add "Footer - MOH Logo", VNHECFooterMOHImage.Exist
+			
+		Case "KHHEC", "MMHEC"
+			objDic.Add "Privacy Policy Protection", PrivacyProtectionLink.Exist
+			PrivacyProtectionLink.Click
+			objDic.Add "Privacy Protection Policy Imprints", PrivacyProtectionHeader.Exist
+			objDic.Add "Website Terms of Use", WebsiteTermsLink.Exist
+			WebsiteTermsLink.Click
+			objDic.Add "Website Terms of Use Imprints", WebsiteTermsHeader.Exist
+			objDic.Add "Footer - Company Motto", FooterCompanyMotto.Exist
+	End Select
+	
+	objDic.Add "Close Box Button", ConditionsClose.Exist
+	ConditionsClose.Click
+
+	i = objDic.Items
+	k = objDic.Keys
+	x = 0
+	
+	For x = 0 To objDic.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckFooterObjectsAndLinks = False
+			Exit For
+		End If
+		CheckFooterObjectsAndLinks = True
+	Next
+	
+	Set objDic = nothing
+
+End Function
+
+

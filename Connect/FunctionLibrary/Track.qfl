@@ -1,0 +1,1269 @@
+﻿'***********************************************************
+' Module		: Connect Order & Tracking 
+' Created by	: amirul.saddam@dksh.com
+' Last modified	: 27-4-2021
+' Modified by	: amirul.saddam@dksh.com
+
+'***********************************************************
+OPTION EXPLICIT
+
+	Public TrackPage : Set TrackPage = Browser("DKSH Connect").Page("Track")
+	Public TrackDetailsPage : Set TrackDetailsPage = Browser("DKSH Connect").Page("Order Details")
+
+	'Order Submitted List screen
+	Public TOSearchButton : Set TOSearchButton = TrackPage.Link("Order-SearcButton")
+	Public TOSearchBar : Set TOSearchBar = TrackPage.WebEdit("Order-SearchBar")
+	Public TOSearchBy : Set TOSearchBy = TrackPage.WebList("Order-SearchBy")
+	Public TOBreadcrumbs : Set TOBreadcrumbs = TrackPage.WebElement("Order-Breadcrumbs")
+	Public TOHeader : Set TOHeader = TrackPage.WebElement("Order-TrackOrderHeader")
+	Public TOFilterButton : Set TOFilterButton = TrackPage.WebElement("Order-FilterButton")
+	Public TOFilterPanel : Set TOFilterPanel = TrackPage.WebElement("Order-FilterPanel")
+	Public TOFilterShowResult : Set TOFilterShowResult = TrackPage.Link("Order-ShowResults")
+	Public TOFilterEndDate : Set TOFilterEndDate = TrackPage.WebEdit("Order-DateRangeEnd")
+	Public TOFilterStartDate : Set TOFilterStartDate = TrackPage.WebEdit("Order-DateRangeStart")
+	Public TOFilterOrderStatus : Set TOFilterOrderStatus = TrackPage.WebList("Order-OrderStatus")
+	Public TOFilterOrderSource : Set TOFilterOrderSource =	TrackPage.WebList("Order-OrderSource")
+	Public TOAlertNoOrderFound : Set TOAlertNoOrderFound = TrackPage.WebElement("Order-NoOrderFoundAlert")
+
+	'Order card
+	Public TOShowOrder : Set TOShowOrder = TrackPage.WebButton("OrderMini-ShowMore")
+	Public TOOrderSource : Set TOOrderSource = TrackPage.WebElement("OrderMini-OrderSource")
+	Public TOOrderStatus : Set TOOrderStatus = TrackPage.WebElement("OrderMini-OrderStatus")
+	Public TOPONumber : Set TOPONumber = TrackPage.WebElement("OrderMini-PONumber")
+	Public TOTotalPrice : Set TOTotalPrice = TrackPage.WebElement("OrderMini-TotalPrice")
+	Public TOOrderNumber : Set TOOrderNumber = TrackPage.WebElement("OrderMini-OrderNumber")
+	Public TOCancelButton : Set TOCancelButton = TrackPage.WebButton("OrderMini-CancelButton")
+
+	'Order details screen (Tracking status)
+	Public TDCustomerConfirmationDate : Set TDCustomerConfirmationDate = TrackDetailsPage.WebElement("OrderDetails-CustomerConfirmationDate")
+	Public TDCustomerConfirmationDD : Set TDCustomerConfirmationDD = TrackDetailsPage.WebElement("OrderDetails-CustomerConfirmationDD")
+	Public TDCustomerConfirmationPanel : Set TDCustomerConfirmationPanel = TrackDetailsPage.WebElement("OrderDetails-CustomerConfirmationPanel")
+	Public TDCustomerConfirmationStatus : Set TDCustomerConfirmationStatus = TrackDetailsPage.WebElement("OrderDetails-OrderStatusCustomerConfirmation")
+	Public TDDeliveryDD : Set TDDeliveryDD = TrackDetailsPage.WebElement("OrderDetails-DeliveryDD")
+	Public TDDeliveryPanel : Set TDDeliveryPanel = TrackDetailsPage.WebElement("OrderDetails-DeliveryPanel")
+	Public TDDeliveryStatus : Set TDDeliveryStatus = TrackDetailsPage.WebElement("OrderDetails-OrderStatusDelivery")
+	Public TDOrderedPanel : Set TDOrderedPanel = TrackDetailsPage.WebElement("OrderDetails-OrderedPanel")
+	Public TDOrderedStatus : Set TDOrderedStatus = TrackDetailsPage.WebElement("OrderDetails-OrderStatusOrdered")
+	Public TDProcessingStatus : Set TDProcessingStatus = TrackDetailsPage.WebElement("OrderDetails-OrderStatusProcessing")
+	Public TDProcessingDD : Set TDProcessingDD = TrackDetailsPage.WebElement("OrderDetails-ProcessingDD")
+	Public TDProcessingPanel : Set TDProcessingPanel = TrackDetailsPage.WebElement("OrderDetails-ProcessingPanel")
+	Public TDOrderNumber : Set TDOrderNumber = TrackDetailsPage.WebElement("OrderDetails-OrderNumber")
+	Public TDOrderStatus : Set TDOrderStatus = TrackDetailsPage.WebElement("OrderDetails-OrderStatus")
+	
+	'Order details screen (order details)
+	Public TDProductCode : Set TDProductCode = TrackDetailsPage.WebElement("OrderDetails-ProductCode")
+	Public TDProductName : Set TDProductName = TrackDetailsPage.WebElement("OrderDetails-ProductName")
+	Public TDDeliveryNumber : Set TDDeliveryNumber = TrackDetailsPage.WebElement("OrderDetails-DeliveryNumber")
+	Public TDInvoiceNumber : Set TDInvoiceNumber = TrackDetailsPage.WebElement("OrderDetails-InvoiceNumber")
+	Public TDShipmentNumber : Set TDShipmentNumber = TrackDetailsPage.WebElement("OrderDetails-ShipmentNumber")
+	Public TDShipToName : Set TDShipToName = TrackDetailsPage.WebElement("OrderDetails-ShipToName")
+	Public TDDeliveryInstruction : Set TDDeliveryInstruction = TrackDetailsPage.WebElement("OrderDetails-DeliveryInstruction")
+	Public TDReorder : Set TDReorder = TrackDetailsPage.WebButton("OrderDetails-Reorder")
+	Public TDProductPartNo : Set TDProductPartNo = TrackDetailsPage.WebElement("OrderDetails-ProductPartNo-AUTEC")
+	Public TDPONumber : Set TDPONumber = TrackDetailsPage.WebElement("OrderDetails-PONumber")
+	
+	'KH  (Calculation summary)
+	Public TDFOCItemsKH : Set TDFOCItemsKH = TrackDetailsPage.WebElement("CS-FOC-KH")
+	Public TDTotalDiscountsKH : Set TDTotalDiscountsKH = TrackDetailsPage.WebElement("CS-TotalDiscounts-KH")
+	Public TDVATCollectedKH : Set TDVATCollectedKH = TrackDetailsPage.WebElement("CS-VATCollected-KH")
+	Public TDTotalExcludeVATKH : Set TDTotalExcludeVATKH = TrackDetailsPage.WebElement("CS-TotalExcludeVAT")
+	
+	'AU, MY  (Calculation summary)
+	Public TDFreightCharges : Set TDFreightCharges = TrackDetailsPage.WebElement("CS-FreightCharges")
+	
+	'SG (Calculation summary)
+	Public TDDeliveryCharges : Set TDDeliveryCharges = TrackDetailsPage.WebElement("CS-DeliveryCharges")
+	
+	'AU, SG (Calculation summary)
+	Public TDTotalBeforeGST : Set TDTotalBeforeGST = TrackDetailsPage.WebElement("CS-TotalBeforeGST")
+	Public TDGSTCollected : Set TDGSTCollected = TrackDetailsPage.WebElement("CS-GSTCollected")
+	
+	'MY (Calculation summary)
+	Public TDTotalBeforeVAT : Set TDTotalBeforeVAT = TrackDetailsPage.WebElement("CS-TotalBeforeVAT")
+	Public TDVATCollected : Set TDVATCollected = TrackDetailsPage.WebElement("CS-VATCollected")
+	
+	'MM (Calculation summary)
+	Public TDTotalIncludeTax : Set TDTotalIncludeTax = TrackDetailsPage.WebElement("CS-TotalIncludeTax-MM")
+		
+	'VN (Calculation summary)
+	Public TDTaxCollected : Set TDTaxCollected = TrackDetailsPage.WebElement("CS-TaxCollected")
+	Public TDTotalBeforeTax : Set TDTotalBeforeTax = TrackDetailsPage.WebElement("CS-TotalBeforeTax")
+		
+	'Calculation summary General
+	Public TDFOCItems : Set TDFOCItems = TrackDetailsPage.WebElement("CS-FOC")
+	Public TDSubtotals : Set TDSubtotals = TrackDetailsPage.WebElement("CS-SubTotals")
+	Public TDTotalDiscounts : Set TDTotalDiscounts = TrackDetailsPage.WebElement("CS-TotalDiscounts")
+	Public TDTotals : Set TDTotals = TrackDetailsPage.WebElement("CS-Totals")
+
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' Simple operations
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' Track and Order page operations
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'==================================================================
+'Function to filter order source in track page
+'==================================================================
+
+ Public Sub FilterByOrderSource(strVal)
+ 	
+	TOFilterOrderSource.WaitProperty "Visible", True
+	TOFilterOrderSource.Select strVal
+	TOFilterShowResult.Click
+ 		
+ End Sub
+
+'==================================================================
+'Function to filter order status in track page
+'==================================================================
+
+ Public Sub FilterByOrderStatus(strVal)
+ 	
+  	'Filter Order Source	
+  	TOFilterOrderStatus.WaitProperty "Visible", True
+	TOFilterOrderStatus.Select strVal
+	TOFilterShowResult.Click
+ 		
+ End Sub
+ 
+ '==================================================================
+'Function to click on the order found
+'==================================================================
+
+  Public Sub ShowOrderDetails()
+ 	
+ 	TOShowOrder.WaitProperty "Visible", True
+ 	TOShowOrder.Click	
+ 
+ End Sub
+ 
+'==================================================================
+'Function to click on cancel order
+'==================================================================
+
+  Public Sub CancelOrder()
+ 	
+ 	TOCancelButton.WaitProperty "Visible", True
+ 	TOCancelButton.Click	
+ 
+ End Sub
+
+'==================================================================
+'Function to search order number in track page
+'==================================================================
+
+ Public Function SearchOrder(strVal)
+ 	
+  	If TOSearchBy.Exist Then
+  		TOSearchBy.Select "#0"
+  	End If
+  	TOSearchBar.Set strVal
+ 	TOSearchButton.Click
+ 	TrackPage.Sync
+ 	
+ 	TOOrderNumber.WaitProperty "Visible", True
+ 	
+ 	If GetNumber(TOOrderNumber.GetROProperty("innertext")) = strVal Then
+ 		SearchOrder = True
+ 	Else
+ 		SearchOrder = False
+ 	End If
+ 		
+ End Function
+  
+'==================================================================
+'Function to Get Sales Order Number of the first list i Track & Order page
+'==================================================================
+
+  Public Function GetOrderNumberOfFirstInList()
+  
+  	TOOrderNumber.WaitProperty "Visible", True
+ 	GetOrderNumberOfFirstInList = Trim(TOOrderNumber.GetROProperty("innertext"))
+ 
+ End Function
+ 
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' Track and Order Details page operations
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
+'==================================================================
+'Function to Get Track's current screen Order Status
+'==================================================================
+ 
+ Public Function GetOrderStatus()
+
+ 	TDOrderStatus.WaitProperty "Visible", True
+ 	GetOrderStatus = Trim(TDOrderStatus.GetROProperty("innertext"))
+ 	
+ End Function
+ 
+ 
+'==================================================================
+'Function to Get Track's current screen Delivery Order Number
+'==================================================================
+ 
+ Public Function GetDeliveryOrderNumber()
+ 	
+  	TDDeliveryNumber.WaitProperty "Visible", True
+  	GetDeliveryOrderNumber = TDDeliveryNumber.GetROProperty("innertext")
+ 	
+ End Function
+ 
+ 
+'==================================================================
+'Function to Get Track's current screen Invoice Order Number
+'==================================================================
+ 
+ Public Function GetInvoiceOrderNumber()
+
+ 	TDInvoiceNumber.WaitProperty "Visible", True
+ 	GetInvoiceOrderNumber = TDInvoiceNumber.GetROProperty("innertext")
+ 	
+ End Function
+ 
+ 
+'==================================================================
+'Function to Get Track's current screen Invoice Order Number
+'==================================================================
+ 
+ Public Function GetShipmentOrderNumber()
+
+ 	TDShipmentNumber.WaitProperty "Visible", True
+ 	GetShipmentOrderNumber = TDShipmentNumber.GetROProperty("innertext")
+ 	
+ End Function
+ 
+ 
+'==================================================================
+'Function to Get Track's current screen Customer Receipt date
+'==================================================================
+ 
+ Public Function GetCustomerReceiptDate()
+ 
+ 	TDCustomerConfirmationDate.WaitProperty "Visible", True 
+ 	GetCustomerReceiptDate = TDCustomerConfirmationDate.GetROProperty("Outertext")
+ 
+ End Function
+ 
+'==================================================================
+'Function to Format Date 
+'==================================================================
+
+ Public Function GetCCReceiptFormatDate(t)
+	
+	'FormatDate = MMM DD, YYY HH:MM PM
+	'List of short months
+	Dim months : months = Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+	'Get day
+	Dim d : d = Day(t)
+	If len(d) = 1 Then
+		d = "0" & d
+	End If
+	
+	'Get month
+	Dim i	
+	Dim m : m = Month(t)
+	For i = 0 To ubound(months) - 1
+		If i + 1 = m Then
+			m = months(i)
+			Exit for
+		End If
+	Next
+	
+	'Get year
+	Dim y : y = Year(t)
+	
+	'Get hour
+	Dim h : h = Hour(t)
+	Dim tt
+	If h >= 12 Then
+		If h > 12 Then
+			h = h - 12
+		End If
+		tt = "PM"
+	Else
+		tt = "AM"
+	End IF
+	
+	If h = 00 Then
+		h = 12
+	End If
+	
+	'Get min
+	Dim min
+	If Minute(t) < 10 and len(min) < 2 Then
+		min = "0" & Minute(t)
+	Else
+		min = Minute(t)
+	End If
+	
+	Dim sFomattedDate : sFomattedDate = m & " " & d & "," & " " & y & " " & h & ":" &  min & " " & tt
+	GetCCReceiptFormatDate = sFomattedDate
+	
+End Function
+
+'==================================================================
+'Function to get Ordered Panel order status
+'==================================================================
+
+Public Function GetOrderStatusOrdered()
+	
+	If Instr(Lcase(TDOrderedStatus.GetROProperty("Innertext")), "order received") > 0 Then
+		GetOrderStatusOrdered = "order received"
+	Else
+		GetOrderStatusOrdered = TDOrderedStatus.GetROProperty("Innertext")
+	End If
+	
+End Function
+
+'==================================================================
+'Function to get Processing Panel order status
+'==================================================================
+
+Public Function GetOrderStatusProcessing()
+	
+	If Instr(Lcase(TDProcessingStatus.GetROProperty("Innertext")), "order in process") > 0 Then
+		GetOrderStatusProcessing = "order in process"
+	Else
+		GetOrderStatusProcessing = TDProcessingStatus.GetROProperty("Innertext")
+	End If
+	
+End Function
+
+'==================================================================
+'Function to get Processing Panel order status
+'==================================================================
+
+Public Function GetOrderStatusProcessingPartial()
+	
+	TDProcessingStatus.WaitProperty "Visible", True
+	GetOrderStatusProcessingPartial = TDProcessingStatus.GetROProperty("Innertext")
+	
+End Function
+
+'==================================================================
+'Function to get Delivery Panel order status
+'==================================================================
+
+Public Function GetOrderStatusDelivery()
+	
+	If Instr(Lcase(TDDeliveryStatus.GetROProperty("Innertext")), "deliver in transit") > 0 Then
+		GetOrderStatusDelivery = "deliver in transit"
+	Else
+		GetOrderStatusDelivery = TDDeliveryStatus.GetROProperty("Innertext")
+	End If
+	
+End Function
+
+'==================================================================
+'Function to get Customer confirmation Panel order status
+'==================================================================
+
+Public Function GetOrderStatusCustomerConfirmation()
+	
+	If Instr(Lcase(TDCustomerConfirmationStatus.GetROProperty("Innertext")), "customer confirmed receipt") > 0 Then
+		GetOrderStatusCustomerConfirmation = "customer confirmed receipt"
+	Else
+		GetOrderStatusCustomerConfirmation = TDCustomerConfirmationStatus.GetROProperty("Innertext")
+	End If
+	
+End Function
+
+'==================================================================
+'Function to get Click on Order Status dropdown
+'==================================================================
+
+Public Sub ShowOrderInProcessDetails()
+
+	TDProcessingDD.WaitProperty "Visible", True
+	TDProcessingDD.Click
+	
+End Sub
+
+'==================================================================
+'Function to get Click on Order Status dropdown
+'==================================================================
+
+Public Sub ShowDeliverInTransitDetails()
+
+	TDDeliveryDD.WaitProperty "Visible", True
+	TDDeliveryDD.Click
+	
+End Sub
+
+'==================================================================
+'Function to get Click on Order Status dropdown
+'==================================================================
+
+Public Sub ShowCustomerReceiptDetails()
+
+	TDCustomerConfirmationDD.WaitProperty "Visible", True
+	TDCustomerConfirmationDD.Click
+
+End Sub
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' Track and Order Calculation Summary operations
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'==================================================================
+'Function to get Sub Total
+'==================================================================
+
+ Public Function Track_GetSubtotal()
+ 	
+  	Select Case ProjectName
+ 		
+ 		Case "KHHEC"
+		  	Track_GetSubtotal = 0
+		 		  	
+ 		Case Else
+ 			TDSubtotals.WaitProperty "visible", true 
+  			Track_GetSubtotal = Csng(Trim(GetNumber(TDSubtotals.GetROProperty("Innertext"))))
+  			 	
+	End Select
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get Checkout's Total
+'==================================================================
+
+ Public Function Track_GetTotal()
+ 
+ 	TDTotals.WaitProperty "visible", true 
+ 	Track_GetTotal = CSng(Trim(GetNumber(TDTotals.GetROProperty("Innertext")))) 	
+ 	
+ End Function
+
+'==================================================================
+'Function to get Checkout's Product discount
+'==================================================================
+
+ Public Function Track_GetTotalDiscount()
+ 
+ 	Select Case ProjectName
+ 		
+ 		Case "KHHEC"
+ 			TDTotalDiscountsKH.WaitProperty "visible", true 
+ 			Track_GetTotalDiscount = Csng(Trim(GetNumber(TDTotalDiscountsKH.GetROProperty("Innertext"))))
+  			
+ 		Case Else
+ 			TDTotalDiscounts.WaitProperty "visible", true 
+ 			Track_GetTotalDiscount = Csng(Trim(GetNumber(TDTotalDiscounts.GetROProperty("Innertext"))))
+ 			
+ 	End Select
+ 	
+ End Function
+ 
+ '==================================================================
+'Function to get Checkout Product freight charge
+'==================================================================
+
+ Public Function Track_GetFreightCharge()
+ 
+ 	Select Case ProjectName
+ 	
+ 		Case "MMHEC", "KHHEC", "VNHEC", "THHEC"
+ 			Track_GetFreightCharge = 0
+ 			
+ 		Case "AUTEC", "MYHEC"
+ 			TDFreightCharges.WaitProperty "visible", true 
+ 			Track_GetFreightCharge = Csng(Trim(GetNumber(TDFreightCharges.GetROProperty("Innertext"))))
+ 		
+ 		Case "SGHEC", "SGCG"
+ 		 	TDDeliveryCharges.WaitProperty "visible", true 
+ 			Track_GetFreightCharge = Csng(Trim(GetNumber(TDDeliveryCharges.GetROProperty("Innertext"))))
+ 			
+ 	End Select 	
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get checkout Total before VAT
+'==================================================================
+
+ Public Function Track_GetTotalBeforeVAT()
+ 
+  	Select Case ProjectName
+ 		
+		Case  "VNHEC"
+			Track_GetTotalBeforeVAT = Csng(Trim(GetNumber(TDTotalBeforeTax.GetROProperty("Innertext"))))
+			
+		Case "THHEC"
+			Track_GetTotalBeforeVAT = 0
+		
+		Case "MMHEC"
+			TDTotalIncludeTax.WaitProperty "visible", true 
+ 			Track_GetTotalBeforeVAT = Csng(Trim(GetNumber(TDTotalIncludeTax.GetROProperty("Innertext"))))
+ 			
+ 		Case "AUTEC", "SGHEC", "SGCG"
+ 			TDTotalBeforeGST.WaitProperty "visible", true 
+ 			Track_GetTotalBeforeVAT = Csng(Trim(GetNumber(TDTotalBeforeGST.GetROProperty("Innertext"))))
+ 		
+ 		Case "MYHEC"
+ 			TDTotalBeforeVAT.WaitProperty "visible", true 
+ 			Track_GetTotalBeforeVAT = Csng(Trim(GetNumber(TDTotalBeforeVAT.GetROProperty("Innertext"))))
+ 			
+ 		Case "KHHEC"
+ 			TDTotalExcludeVATKH.WaitProperty "visible", true 
+ 			Track_GetTotalBeforeVAT = Csng(Trim(GetNumber(TDTotalExcludeVATKH.GetROProperty("Innertext"))))
+ 			
+ 	End Select
+ 	
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get checkouts VAT Collected
+'==================================================================
+
+ Public Function Track_GetVATCollected()
+ 
+	Select Case ProjectName
+		
+		Case "KHHEC"
+			TDVATCollectedKH.WaitProperty "visible", true 
+ 			Track_GetVATCollected = Csng(GetNumber(Replace(Trim(TDVATCollectedKH.GetROProperty("innertext")), "VAT (10%)", "VAT")))
+ 			
+ 		Case "THHEC"
+ 			Track_GetVATCollected = 0
+ 		 		
+	 	Case "AUTEC", "SGHEC", "SGCG"
+			TDGSTCollected.WaitProperty "visible", true 
+	 		Track_GetVATCollected = CSng(Trim(GetNumber(TDGSTCollected.GetROProperty("Innertext")))) 
+	 	
+	 	Case "MYHEC"
+			TDVATCollected.WaitProperty "visible", true 
+	 		Track_GetVATCollected = CSng(Trim(GetNumber(TDVATCollected.GetROProperty("Innertext")))) 
+ 			
+		Case "VNHEC", "MMHEC"
+			TDTaxCollected.WaitProperty "visible", true 
+	 		Track_GetVATCollected = CSng(Trim(GetNumber(TDTaxCollected.GetROProperty("Innertext")))) 
+		
+	End Select 
+ 	 	
+ End Function
+ 
+ '==================================================================
+'Function to the chesck Calculated VAT
+'==================================================================
+
+Public Function Track_CalculatedVATCollected()
+
+	Dim fVATCollected, fCalc
+	fVATCollected = Track_GetVATCollected
+	
+	Select Case ProjectName
+		Case "KHHEC"
+			fCalc = Round(Track_GetTotalBeforeVAT * (10/100), 2)
+			
+		Case "SGHEC", "SGCG"
+			fCalc = Round((Track_GetSubtotal - Track_GetTotalDiscount) * (7/100), 2)
+			
+		Case "AUTEC", "VNHEC"
+			fCalc = Round((Track_GetSubtotal - Track_GetTotalDiscount) * (10/100), 2)
+			
+		Case "MYHEC", "MMHEC"
+			fCalc = Round((Track_GetSubtotal - Track_GetTotalDiscount - Track_GetVATCollected) * (0/100), 2)
+			
+		Case "THHEC"
+			fCalc = 0
+			
+	End Select
+	
+	If fVATCollected = fCalc Then
+		Track_CalculatedVATCollected = True	
+	Else
+		Track_CalculatedVATCollected = False
+	End If 
+	
+End Function
+ 
+'==================================================================
+'Function to the check total before vat calculation 
+'==================================================================
+
+Public Function Track_CalculatedTotalBeforeVAT()
+
+	Dim fTotalBeforeVAT, fCalc
+	fTotalBeforeVAT = Track_GetTotalBeforeVAT
+	
+	Select Case ProjectName
+			
+		Case "THHEC"
+			fCalc = 0
+			
+		Case "KHHEC"
+			fCalc = fTotalBeforeVAT
+			
+		Case "AUTEC"
+			fCalc = Round(Track_GetSubtotal - Track_GetTotalDiscount, 2)
+			
+		Case "SGCG", "SGHEC"
+			fCalc = Round(Track_GetSubtotal - Track_GetTotalDiscount, 2)
+			
+		Case "VNHEC"
+			fCalc = Round(Track_GetSubtotal - Track_GetTotalDiscount, 2)
+			
+		Case Else
+			fCalc = Round(Track_GetSubtotal - Track_GetTotalDiscount - Track_GetVATCollected, 2)
+			
+	End Select
+	
+	If fTotalBeforeVAT = fCalc Then
+		Track_CalculatedTotalBeforeVAT = True	
+	Else
+		Track_CalculatedTotalBeforeVAT = False
+	End If 
+	
+End Function
+
+'==================================================================
+'Function to check order total
+'==================================================================
+
+Public Function Track_CalculatedTotal()
+
+	Dim fTotal : fTotal = Track_GetTotal
+	Dim fSum 
+	
+	Select Case ProjectName
+		
+		Case "MMHEC"
+			fSum = Round(Track_GetTotalBeforeVAT, 2)
+			
+		Case "SGHEC", "SGCG"
+			fSum = Round(Track_GetTotalBeforeVAT + Track_GetVATCollected + Track_GetFreightCharge, 2)
+		
+		Case "VNHEC"
+			fSum = Round(Track_GetTotalBeforeVAT + Track_GetVATCollected + Track_GetFreightCharge, 2)
+			
+		Case Else
+			fSum = Round(Track_GetTotalBeforeVAT + Track_GetVATCollected + Track_GetFreightCharge, 2)
+			
+	End Select
+	
+	If fSum = fTotal Then
+		Track_CalculatedTotal = True	
+	Else
+		Track_CalculatedTotal = False
+	End If
+
+	
+End Function
+
+'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'Module validation 
+'++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'==================================================================
+'Function to validate Order screen layout
+'==================================================================
+
+Public Function CheckOrderObjects()
+
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	TrackPage.Sync
+	
+	DicObj.Add "SearchButton", TOSearchButton.Exist
+	DicObj.Add "SearchBar", TOSearchBar.Exist(1)
+	DicObj.Add "SearchBy", TOSearchBy.Exist(1)
+	DicObj.Add "TrackOrderBreadcrumbs", TOBreadcrumbs.Exist(1)
+	DicObj.Add "TrackOrderHeader", TOHeader.Exist(1)
+	DicObj.Add "FilterButton", TOFilterButton.Exist(1)
+	DicObj.Add "FilterPanel", TOFilterPanel.Exist(1)
+	DicObj.Add "FilterShowResult", TOFilterShowResult.Exist(1)
+	DicObj.Add "FilterEndDate", TOFilterEndDate.Exist(1)
+	DicObj.Add "FilterStartDate", TOFilterStartDate.Exist(1)
+	DicObj.Add "FilterOrderStatus", TOFilterOrderStatus.Exist(1)
+	DicObj.Add "FilterOrderSource", TOFilterOrderSource.Exist(1)
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckOrderObjects = False
+			Exit For
+		End If
+		CheckOrderObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Function to validate Order Mini details layout
+'==================================================================
+
+Public Function CheckOrderCardObjects()
+
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	TrackPage.Sync
+	
+	DicObj.Add "ShowOrder", TOShowOrder.Exist
+	DicObj.Add "OrderSource", TOOrderSource.Exist(1)
+	DicObj.Add "OrderStatus", TOOrderStatus.Exist(1)
+	DicObj.Add "TotalPrice", TOTotalPrice.Exist(1)
+	DicObj.Add "OrderNumber", TOOrderNumber.Exist(1)
+	
+	Select Case ProjectName
+	
+		Case "VNHEC" 'Req from user
+			DicObj.Add "PONumber", Not TOPONumber.Exist(1)
+				
+		Case Else
+			DicObj.Add "PONumber", TOPONumber.Exist(1)
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckOrderCardObjects = False
+			Exit For
+		End If
+		CheckOrderCardObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Function to validate Order details screen layout
+'==================================================================
+
+Public Function CheckOrderDetailsObjects()
+
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	TrackDetailsPage.Sync
+	
+	DicObj.Add "CustomerConfirmationPanel", TDCustomerConfirmationPanel.Exist(1)
+	DicObj.Add "DeliveryPanel", TDDeliveryPanel.Exist(1)
+	DicObj.Add "OrderedPanel", TDOrderedPanel.Exist(1)
+	DicObj.Add "ProcessingPanel", TDProcessingPanel.Exist(1)
+	DicObj.Add "ProductName", TDProductName.Exist(1)
+	DicObj.Add "ProductCode", TDProductCode.Exist
+	DicObj.Add "ODOrderNumber", TDOrderNumber.Exist(1)
+	DicObj.Add "ODOrderStatus", TDOrderStatus.Exist(1)
+	DicObj.Add "DeliveryInstruction", TDDeliveryInstruction.Exist(1)
+	DicObj.Add "PONumber", TDPONumber.Exist(1)
+	DicObj.Add "Reorder", TDReorder.Exist(1)
+	
+	Select Case ProjectName
+	
+		Case "AUTEC"
+			DicObj.Add "ProductPartNo", TDProductPartNo.Exist
+			
+		Case Else
+			
+			
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckOrderDetailsObjects = False
+			Exit For
+		End If
+		CheckOrderDetailsObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Function to validate Order details screen layout
+'==================================================================
+
+Public Function CheckOrderCalculationSummaryObjects()
+
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	TrackDetailsPage.Sync
+	
+	Select Case ProjectName
+	
+		Case "MMHEC"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "TaxCollected", TDTaxCollected.Exist(1)
+			DicObj.Add "TotalBeforeTax", TDTotalIncludeTax.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscounts.Exist(1)
+			DicObj.Add "FOCItems", TDFOCItems.Exist(1)
+			DicObj.Add "Subtotals", TDSubtotals.Exist(1)
+		
+		Case "VNHEC"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "TaxCollected", TDTaxCollected.Exist(1)
+			DicObj.Add "TotalBeforeTax", TDTotalBeforeTax.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscounts.Exist(1)
+			DicObj.Add "FOCItems", TDFOCItems.Exist(1)
+			DicObj.Add "Subtotals", TDSubtotals.Exist(1)
+			
+		Case "KHHEC"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "VAT (10%)", TDVATCollectedKH.Exist(1)
+			DicObj.Add "TotalExcludeTax", TDTotalExcludeVATKH.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscountsKH.Exist(1)
+			DicObj.Add "FOCItems", TDFOCItemsKH.Exist(1)
+			
+		Case "THHEC"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscounts.Exist(1)
+			DicObj.Add "Subtotals", TDSubtotals.Exist(1)
+			
+		Case "AUTEC"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "GSTCollected", TDGSTCollected.Exist(1)
+			DicObj.Add "TotalBeforeGST", TDTotalBeforeGST.Exist(1)
+			DicObj.Add "FreightCharges", TDFreightCharges.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscounts.Exist(1)
+			DicObj.Add "FOCItems", TDFOCItems.Exist(1)
+			DicObj.Add "Subtotals", TDSubtotals.Exist(1)
+		
+		Case "MYHEC"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "VATCollected", TDVATCollected.Exist(1)
+			DicObj.Add "TotalBeforeVAT", TDTotalBeforeVAT.Exist(1)
+			DicObj.Add "FreightCharges", TDFreightCharges.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscounts.Exist(1)
+			DicObj.Add "FOCItems", TDFOCItems.Exist(1)
+			DicObj.Add "Subtotals", TDSubtotals.Exist(1)
+			
+		Case "SGHEC", "SGCG"
+			DicObj.Add "Totals", TDTotals.Exist(1)
+			DicObj.Add "GSTCollected", TDGSTCollected.Exist(1)
+			DicObj.Add "TotalBeforeGST", TDTotalBeforeGST.Exist(1)
+			DicObj.Add "DeliveryCharges", TDDeliveryCharges.Exist(1)
+			DicObj.Add "TotalDiscounts", TDTotalDiscounts.Exist(1)
+			DicObj.Add "FOCItems", TDFOCItems.Exist(1)
+			DicObj.Add "Subtotals", TDSubtotals.Exist(1)
+			
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckOrderCalculationSummaryObjects = False
+			Exit For
+		End If
+		CheckOrderCalculationSummaryObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Function to check Order Status
+'==================================================================
+
+Public Function CheckOrderStatus(strOrderStatus)
+
+	If Instr(strOrderStatus, GetOrderStatus) > 0 Then
+		CheckOrderStatus = True
+	Else
+		CheckOrderStatus = False
+	End If
+	
+End Function
+
+'==================================================================
+'Function to check Order Status tracking number
+'==================================================================
+
+Public Function CheckOrderTracking(strOrderStatus, strNumberTrackingValue)
+
+	Dim bResult, strVal
+	strval = strNumberTrackingValue
+	bResult = False
+	
+	'Select action based on Order Status
+	Select Case LCase(strOrderStatus)
+	
+		Case "order received"
+			If Instr(GetOrderStatusOrdered, "order received") > 0	Then
+				bResult = True
+			End If	
+		
+		Case "order in process - delivery"
+		
+			If Instr(GetOrderStatusProcessing, "order in process") > 0 Then
+				ShowOrderInProcessDetails
+				If Instr(GetDeliveryOrderNumber, strVal) > 0 Then
+					bResult = True
+				End If	
+			End If			
+	
+		Case "order in process - invoice"
+		
+			If Instr(GetOrderStatusProcessing, "order in process") > 0 Then
+				ShowOrderInProcessDetails
+				If Instr(GetInvoiceOrderNumber, strVal) > 0 Then
+					bResult = True
+				End If
+			End If
+					
+		Case "deliver in transit"
+	
+			If Instr(GetOrderStatusDelivery, "deliver in transit") > 0 Then
+				ShowDeliverInTransitDetails
+				If Instr(GetShipmentOrderNumber, strVal) > 0 Then
+					bResult = True
+				End If	
+			End If
+		
+		Case "customer confirmed receipt"
+		
+			ShowCustomerReceiptDetails
+			If Instr(GetCustomerReceiptDate, GetCCReceiptFormatDate(strVal)) > 0 Then
+				bResult = True
+			End If
+			
+		Case "partial order in process"
+			
+			If Instr(Lcase(GetOrderStatusProcessingPartial), "partial order in process") > 0 Then
+				bResult = True
+			End If
+			
+		Case "order on hold"
+			
+			If Instr(Lcase(GetOrderStatusProcessingPartial), "order on hold") > 0 Then
+				bResult = True
+			End If
+	
+	End Select	
+	
+	CheckOrderTracking = bResult
+	
+End Function
+
+'==================================================================
+'Function to check Track & Order source filter
+'==================================================================
+
+Public Function CheckFilterOrderSource(strOrderSource)
+	
+	'Filter Order Source	
+	FilterByOrderSource strOrderSource
+	
+	TrackPage.Sync	
+	
+	Dim objDesc : Set objDesc = Description.Create
+	
+	objDesc("html tag").Value = "DIV"
+	objDesc("class").Value = "col-md-4 tle orderStatus-listing"
+	
+	Dim objChild : Set objChild = Browser("DKSH Connect").Page("Track").ChildObjects(objDesc)
+	
+	For i = 0 To objDesc.Count-1
+		If Lcase(objChild(i).GetROProperty("innertext")) <> Lcase(strOrderSource) Then
+			CheckFilterOrderSource = False
+			Exit Function
+		End If
+	Next
+	
+	CheckFilterOrderSource = True
+	
+End Function
+
+'==================================================================
+'Function to check Track & Order status filter
+'==================================================================
+
+Public Function CheckFilterOrderStatus(strOrderStatus)
+	
+	'Filter Order Status	
+	FilterByOrderStatus strOrderStatus
+	
+	TrackPage.Sync	
+		
+	If TOAlertNoOrderFound.Exist(3) Then
+		CheckFilterOrderStatus = True
+		Exit Function
+	End If
+	
+	Dim objDesc : Set objDesc = Description.Create
+	
+	objDesc("html tag").Value = "DIV"
+	
+	Select Case Lcase(strOrderStatus)
+		Case "order received"
+			objDesc("class").Value = "col-md-8 tle statusDisplay orderingStep-1"
+		
+		Case "order in process", "partial order in process", "order on hold", "cancellation"
+			objDesc("class").Value = "col-md-8 tle statusDisplay orderingStep-2"
+			
+		Case "deliver in transit"
+			objDesc("class").Value = "col-md-8 tle statusDisplay orderingStep-3"
+		
+		Case "customer confirmed receipt"
+			objDesc("class").Value = "col-md-8 tle statusDisplay orderingStep-4"
+	End Select
+	
+	
+	Dim objChild : Set objChild = Browser("DKSH Connect").Page("Track").ChildObjects(objDesc)
+	
+	For i = 0 To objDesc.Count-1
+		If Lcase(objChild(i).GetROProperty("innertext")) <> Lcase(strOrderStatus) Then
+			CheckFilterOrderStatus = False
+			Exit Function
+		End If
+	Next
+	
+	CheckFilterOrderStatus = True
+	
+End Function
+
+'==================================================================
+'Function to check Reorder from hitorical submission either online/offline
+'==================================================================
+
+Public Function CheckReorderBasedOnOrderSource(strOrderSource)
+	
+	'Filter Order Source 
+	FilterByOrderSource strOrderSource
+	
+	'Select from the first from result
+	ShowOrderDetails
+	
+	'Get list of items of the submitted items
+	Dim i, j, x
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").Value = "WebElement"
+	objDesc("html tag").Value = "SPAN"
+	objDesc("class").value = "item__name"	
+	
+	Dim objChild : Set objChild = Browser("DKSH Connect").Page("Order Details").ChildObjects(objDesc)
+	
+	ReDim arrProductName(objChild.Count-1)
+	For i = 0 To objChild.Count-1
+		arrProductName(i) = objChild(i).GetROProperty("innertext")
+	Next
+	
+	'Click on Reorder
+	TrackDetailsPage.Sync
+	If TDReorder.Exist Then
+		TDReorder.Click	
+	Else
+		CheckReorderBasedOnOrderSource = False
+		Exit Function
+	End If
+	
+	'Validate reorder successful
+	Browser("DKSH Connect").Page("Shopping Cart").Sync
+	
+	Set objDesc = nothing
+	i = empty
+	j = empty
+	
+	Set objDesc = Description.Create
+	objDesc("micclass").value = "WebElement"
+	objDesc("class").Value = "item__name"
+	Dim arrObj : Set arrObj = Browser("DKSH Connect").Page("Shopping Cart").ChildObjects(objDesc)
+		
+	For x = 0 To Ubound(arrProductName)
+		For i = 0 To arrObj.Count-1
+			If arrObj(i).GetROProperty("Innertext") <> arrProductName(x) And i = arrObj.Count-1 Then
+					CheckReorderBasedOnOrderSource = False
+				Exit Function
+			End If
+		Next
+	Next
+	
+	CheckReorderBasedOnOrderSource  = True
+
+	
+End Function
+
+'==================================================================
+'Function to check selected Product navigated to its PDP screen
+'==================================================================
+
+Public Function CheckProductDetailsPage()
+	
+	'Select 1st from the list
+	ShowOrderDetails
+	
+	TrackDetailsPage.Sync
+	
+	'Get the selected product details -  Product Name
+	TDProductName.WaitProperty "Visible", True
+	Dim strProductName : strProductName = Trim(TDProductName.GetROProperty("innertext"))
+	
+	'Get the selected product details - Product Code
+	Dim strProductCode : strProductCode = Trim(GetNumber(TDProductCode.GetROProperty("innertext")))
+	
+	'Click on the Product
+	TDProductName.Click
+	
+	'Validate PDP screen
+	ProductPage.Sync
+	
+	If ValidatePDPSelectedProduct(strProductCode, strProductName) Then
+		CheckProductDetailsPage = True
+	Else
+		CheckProductDetailsPage = False
+	End If
+	
+	
+End Function
+
+'==================================================================
+'Function to check cancellation can be done for status prior to Order In Process
+'==================================================================
+
+Public Function CheckCancelationFeature()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	'1. Check order status availablity to cancel
+	
+	'Filter list by Order Received
+	FilterByOrderStatus "Order Received"
+	TrackPage.Sync
+	If TOAlertNoOrderFound.Exist(3) = False Then
+		DicObj.Add "Status - Order Received", CancelButton.Exist
+	Else
+		DicObj.Add "Status - Order Received", "No Order Status Found"
+	End If
+	
+	
+	'Filter list by Order In Process
+	FilterByOrderStatus "Order In Process"
+	TrackPage.Sync
+	If TOAlertNoOrderFound.Exist(3) = False Then
+		DicObj.Add "Status - Order In Process", Not CancelButton.Exist
+	Else
+		DicObj.Add "Status - Order In Process", "No Order Status Found"
+	End If
+	
+	
+	'Filter list by Deliver In Transit
+	FilterByOrderStatus "Deliver In Transit"
+	TrackPage.Sync
+	If TOAlertNoOrderFound.Exist(3) = False Then
+		DicObj.Add "Status - Deliver In Transit", Not CancelButton.Exist
+	Else
+		DicObj.Add "Status - Deliver In Transit", "No Order Status Found"
+	End If
+	
+	'Filter list by Customer Confirmed Receipt
+	FilterByOrderStatus "Customer Confirmed Receipt"
+	TrackPage.Sync
+	If TOAlertNoOrderFound.Exist(3) = False Then
+		DicObj.Add "Status - Customer Confirmed Receipt", Not CancelButton.Exist
+	Else
+		DicObj.Add "Status - Customer Confirmed Receipt", "No Order Status Found"
+	End If
+	
+	'Filter list by Order On Hold
+	FilterByOrderStatus "Order On Hold"
+	TrackPage.Sync
+	If TOAlertNoOrderFound.Exist(3) = False Then
+		DicObj.Add "Status - Order On Hold", CancelButton.Exist
+	Else
+		DicObj.Add "Status - Order On Hold", "No Order Status Found"
+	End If
+	
+	'2. Check if cancelation can be done
+	'Filter by Order Received
+	FilterByOrderStatus "Order Received"
+	If TOAlertNoOrderFound.Exist(3) Then
+		FilterByOrderStatus "Order On Hold"
+			If TOAlertNoOrderFound.Exist(3) Then
+				DicObj.Add "Cancellation", False
+			End If
+	End If
+	
+	TrackPage.Sync
+	
+	'Get SO for validation later
+	Dim strSalesOrderNumber : strSalesOrderNumber = GetOrderNumberOfFirstInList
+	TOCancelButton.WaitProperty "Visible", True
+	TOCancelButton.Click	
+	TrackPage.Sync
+	
+	'Search SO
+	If SearchOrder(strSalesOrderNumber) Then
+		If TOOrderStatus.GetROProperty("innertext") = "Cancellation" Then
+			DicObj.Add "Cancellation", True
+		Else
+			DicObj.Add "Cancellation", False
+		End If
+	Else
+		DicObj.Add "Cancellation", False
+	End If
+		
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckCancelationFeature = False
+			Exit For
+		End If
+		CheckCancelationFeature = True
+	Next
+	
+End Function
+
+'==================================================================
+'Function to check order total
+'==================================================================
+
+Public Function Track_CheckCalculationSummary()
+
+	Dim objDic : Set objDic = CreateOBject("Scripting.Dictionary")
+	Dim i, k, x
+	
+	objDic.Add "TotalBeforeVAT", Track_CalculatedTotalBeforeVAT
+	objDic.Add "VATCollected", Track_CalculatedVATCollected
+	objDic.Add "Total", Track_CalculatedTotal
+	
+	i = objDic.Items
+	k = objDic.Keys
+	
+	For x = 0 To objDic.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> True Then
+			Track_CheckCalculationSummary = False
+			Exit For
+		End If
+		Track_CheckCalculationSummary = True
+	Next
+	
+	Set objDic = nothing
+	
+End Function

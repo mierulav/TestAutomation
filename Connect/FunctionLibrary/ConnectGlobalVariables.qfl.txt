@@ -1,0 +1,18 @@
+﻿OPTION EXPLICIT
+
+'Global Environment data
+Public ProjectName : ProjectName = Environment.Value("Project")
+Public DefaultBrowser : DefaultBrowser = Environment.Value("Browser") + ".exe"
+Public SystemURL : SystemURL = Environment.Value("URL_STG")
+Public ProjectDir : ProjectDir = Environment.Value("ProjectDir")
+Public TestDataDir : TestDataDir = ProjectDir + "\TestData"
+Public TestResultDir : TestResultDir = ProjectDir + "\TestResult"
+Public TestDataProduct : TestDataProduct = TestDataDir + "\Products"
+Public TestDataValidation : TestDataValidation =  TestDataDir + "\Validations"
+Public MinimumPurchase : MinimumPurchase = Environment.Value("MinimumPurchaseAmount")
+Public GlobalUsername : GlobalUsername = Environment.Value("Global_Username")
+Public GlobalPassword : GlobalPassword = Environment.Value("Global_Password")
+Public TestCaseName :  TestCaseName = Environment.Value("TestName") 
+
+
+

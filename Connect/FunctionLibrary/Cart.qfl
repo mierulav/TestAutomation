@@ -1,0 +1,854 @@
+﻿'***********************************************************
+' Module		: Connect Cart 
+' Created by	: amirul.saddam@dksh.com
+' Last modified	: 27-4-2021
+' Modified by	: amirul.saddam@dksh.com
+
+'***********************************************************
+OPTION EXPLICIT
+
+'==================================================================
+'Standard Operations
+'==================================================================
+
+	Public CartPage : Set CartPage = Browser("DKSH Connect").Page("Shopping Cart")
+	
+	'General
+	Public ProceedCheckout : Set ProceedCheckout = CartPage.WebButton("Cart-ProceedCheckout")
+	Public CartContinueShopping : Set CartContinueShopping = CartPage.WebButton("Cart-ContinueShopping")
+	Public SaveOrder : Set SaveOrder = CartPage.WebButton("Cart-SaveOrder")
+	Public CartBreadcrumbs : Set CartBreadcrumbs = CartPage.WebElement("Cart-Breadcrumbs")
+	Public CartID : Set CartID = CartPage.WebElement("Cart-CartID")
+	Public CartHeader : Set CartHeader = CartPage.WebElement("Cart-ShoppingCartHeader")
+	'Alert
+	Public AlertMinimumPurchase : Set AlertMinimumPurchase = CartPage.WebElement("Cart-AlertMinimumPurchase")
+	Public AlertProductQuantityUpdated : Set AlertProductQuantityUpdated = CartPage.WebElement("Cart-AlertProductUpdated")
+	Public AlertProductRemoved : Set AlertProductRemoved = CartPage.WebElement("Cart-AlertProductRemoved")
+	'Calculation Summary AU
+	Public TotalAU : Set TotalAU = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-AU")
+	Public SubtotalAU : Set SubtotalAU = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-AU")
+	'Calculation Summary MY
+	Public TotalMY : Set TotalMY = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-MY")
+	Public SubtotalMY : Set SubtotalMY = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-MY")
+	'Calculation Summary KH
+	Public TotalKH : Set TotalKH = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-KH")
+	Public SubtotalKH : Set SubtotalKH = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-KH")
+	'Calculation Summary TH
+	Public TotalTH : Set TotalTH = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-TH")
+	Public SubtotalTH : Set SubtotalTH = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-TH")
+	Public ProductDiscountTH : Set ProductDiscountTH = CartPage.WebElement("Cart-ProductDiscount-TH")
+	'Calculation Summary SG
+	Public TotalSG : Set TotalSG = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-SG")
+	Public SubtotalSG : Set SubtotalSG = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-SG")
+	Public ProductDiscountSG : Set ProductDiscountSG = CartPage.WebElement("Cart-ProductDiscount-SG")
+	Public TotalBeforeVATSG : Set TotalBeforeVATSG = CartPage.WebElement("Cart-TotalBeforeVAT-SG")
+	Public VATCollectedSG : Set VATCollectedSG = CartPage.WebElement("Cart-VATCollected-SG")
+	Public FreightChargeSG : Set FreightChargeSG = CartPage.WebElement("Cart-FreightCharges-SG")
+	'Calculation Summary MM
+	Public TotalMM : Set TotalMM = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-MM")
+	Public SubtotalMM : Set SubtotalMM = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-MM")
+	Public ProductDiscountMM : Set ProductDiscountMM = CartPage.WebElement("Cart-ProductDiscount-MM")
+	Public TotalIncludeVATMM : Set TotalIncludeVATMM = CartPage.WebElement("Cart-TotalIncludeVAT-MM")
+	Public VATCollectedMM : Set VATCollectedMM = CartPage.WebElement("Cart-VATCollected-MM")
+	'Calculation Summary VN
+	Public TotalVN : Set TotalVN = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Total-VN")
+	Public SubtotalVN : Set SubtotalVN = Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-Subtotal-VN")
+	Public ProductDiscountVN : Set ProductDiscountVN = CartPage.WebElement("Cart-ProductDiscount-VN")
+	Public TotalBeforeVATVN : Set TotalBeforeVATVN = CartPage.WebElement("Cart-TotalBeforeVAT-VN")
+	Public VATCollectedVN : Set VATCollectedVN = CartPage.WebElement("Cart-VATCollected-VN")
+	'Calculation Summary	
+	Public ProductDiscount : Set ProductDiscount = CartPage.WebElement("Cart-ProductDiscount")
+	Public Subtotal : Set Subtotal = CartPage.WebElement("Cart-Subtotal")
+	Public Total : Set Total = CartPage.WebElement("Cart-Total")
+	Public TotalBeforeVAT : Set TotalBeforeVAT = CartPage.WebElement("Cart-TotalBeforeVAT")
+	Public TotalIncludeVAT : Set TotalIncludeVAT = CartPage.WebElement("Cart-TotalIncludeVAT")
+	Public VATCollected : Set VATCollected = CartPage.WebElement("Cart-VATCollected")
+'	Public Subtotal2 : Set Subtotal2 = CartPage.WebElement("Cart-Subtotal-AU-MY")
+'	Public Total2 : Set Total2 = CartPage.WebElement("Cart-Total-AU-MY")
+	Public FreightCharge : Set FreightCharge = CartPage.WebElement("Cart-FreightCharges")
+	'Cart Item
+	Public CartProductQuantity : Set CartProductQuantity = CartPage.WebEdit("Cart-ProductQuantity")
+	Public CartProductCode : Set CartProductCode = CartPage.WebElement("Cart-ProductCode")
+	Public CartProductName : Set CartProductName = CartPage.WebElement("Cart-ProductName")
+	Public CartQuantityMinus : Set CartQuantityMinus = CartPage.WebButton("Cart-QuantityMinus")
+	Public CartQuantityPlus : Set CartQuantityPlus = CartPage.WebButton("Cart-QuantityPlus")
+	Public CartProductImage : Set CartProductImage = CartPage.Image("Cart-ProductImage")	
+	Public CartProductPricePerUnit : Set CartProductPricePerUnit = CartPage.WebElement("Cart-ProductPriceAUnit")
+	Public CartProductPriceTotal : Set CartProductPriceTotal = CartPage.WebElement("Cart-ProductTotalPrice")
+	Public CartProductUOM : Set CartProductUOM = CartPage.WebElement("Cart-ProductUOM")
+	Public CartTaxDisclaimer : Set CartTaxDisclaimer =Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-TaxDisclaimer")
+	Public CartCreditAmount : Set CartCreditAmount =Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-CreditAmount")
+	'Delete
+	Public CartDeleteItem : Set CartDeleteItem = CartPage.WebButton("Cart-DeleteItem")
+	Public CartDeleteSelectedItem : Set CartDeleteSelectedItem = CartPage.WebButton("Cart-DeleteSelectedItem")
+	Public ConfirmDelete : Set ConfirmDelete = CartPage.WebButton("Cart-ConfimDelete")
+	Public ConfirmCancelDelete : Set ConfirmCancelDelete = CartPage.WebButton("Cart-ConfirmCancelDelete")
+	Public ConfirmDeleteHeader : Set ConfirmDeleteHeader = CartPage.WebElement("Cart-ConfirmDeleteHeader")
+	Public ConfirmDeleteSuccess : Set ConfirmDeleteSuccess = CartPage.WebElement("Cart-DeleteSuccesAlert")
+	
+'==================================================================
+'Function to modify product quantity
+'==================================================================
+
+Public Sub SetProductQuantity(strProductQuantity)
+
+	CartProductQuantity.WaitProperty "Visible", True, 3000
+	CartProductQuantity.Set strProductQuantity
+	wShell.Sendkeys "{ENTER}"
+	
+End Sub
+
+'==================================================================
+'Function to modify product quantity
+'==================================================================
+
+Public Sub SetSpecificProductQuantity(strProductQuantity, strItemNumber)
+
+	CartPage.Sync
+	strItemNumber = strItemNumber - 1
+	Dim i, j
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "WebEdit"
+	Dim arrObj : Set arrObj = Page.ChildObjects(objDesc)
+	For i = 0 To arrObj.Count-1
+		If arrObj(i).GetROProperty("html id") = "quantity_" & strItemNumber Then
+			arrObj(i).Set strProductQuantity
+			Exit For
+		End If
+	Next
+	wShell.Sendkeys "{ENTER}"
+	
+End Sub
+
+'==================================================================
+'Function to confirm checkut page
+'==================================================================
+
+Public Sub ProceedForCheckout()
+	
+	ProceedCheckout.WaitProperty "Visible", True
+	ProceedCheckout.Click
+	Wait(3)
+
+End Sub
+
+
+ '==================================================================
+'Function to Check the minimum purchase alert is displayed
+'==================================================================
+
+Public Function MinimumPurchaseAlert()	
+			
+	CartPage.Sync
+	MinimumPurchaseAlert = AlertMinimumPurchase.Exist
+	
+End Function
+
+'==================================================================
+'Function to Check the product amount updated alert is displayed
+'==================================================================
+
+Public Function ProductQuantityUpdatedAlert()
+
+	CartPage.Sync
+	ProductQuantityUpdatedAlert = AlertProductQuantityUpdated.Exist
+	
+End Function
+
+'==================================================================
+'Function to Check the product amount updated alert is displayed
+'==================================================================
+
+Public Function ProductRemovedAlert()
+
+	CartPage.Sync
+	ProductRemovedAlert = AlertProductRemoved.Exist
+	
+End Function
+
+'==================================================================
+'Function to get Product Unit Price
+'==================================================================
+
+ Public Function GetProductUnitPrice()
+ 
+ 	CartProductPricePerUnit.WaitProperty "visible", true, 3000
+ 	GetProductUnitPrice = CSng(Trim(GetNumber(CartProductPricePerUnit.GetROProperty("Innertext")))) 	
+ 	
+ End Function
+
+'==================================================================
+'Function to get Product Total Price
+'==================================================================
+
+Public Function GetProductTotalPrice()
+ 
+ 	CartProductPriceTotal.WaitProperty "visible", true, 3000
+ 	GetProductTotalPrice = CSng(Trim(GetNumber(CartProductPriceTotal.GetROProperty("Innertext")))) 	
+ 	
+ End Function
+
+'==================================================================
+'Function to get Cart's Sub Total
+'==================================================================
+
+ Public Function GetSubtotal()
+ 	
+ 	Select Case ProjectName
+ 		
+' 		Case "MYHEC", "KHHEC"
+'  			Subtotal2.WaitProperty "visible", true, 3000 
+'		  	GetSubtotal = Csng(Trim(GetNumber(Subtotal2.GetROProperty("Innertext"))))
+		  	
+		  Case "AUTEC"
+		  	SubtotalAU.WaitProperty "visible", true, 3000 
+		  	GetSubtotal = Csng(Trim(GetNumber(SubtotalAU.GetROProperty("Innertext"))))
+		  
+		  Case "MYHEC"
+		  	SubtotalMY.WaitProperty "visible", true, 3000  
+		  	GetSubtotal = Csng(Trim(GetNumber(SubtotalMY.GetROProperty("Innertext"))))
+		  	
+		  Case "KHHEC"
+		  	SubtotalKH.WaitProperty "visible", true, 3000  
+		  	GetSubtotal = Csng(Trim(GetNumber(SubtotalKH.GetROProperty("Innertext"))))
+		  
+		  Case "THHEC"
+ 			SubtotalTH.WaitProperty "visible", true, 3000  
+  			GetSubtotal = Csng(Trim(GetNumber(SubtotalTH.GetROProperty("Innertext"))))
+  			
+  		Case "MMHEC"
+ 			SubtotalMM.WaitProperty "visible", true, 3000  
+  			GetSubtotal = Csng(Trim(GetNumber(SubtotalMM.GetROProperty("Innertext"))))
+  			
+  		Case "VNHEC"
+ 			SubtotalVN.WaitProperty "visible", true, 3000  
+  			GetSubtotal = Csng(Trim(GetNumber(SubtotalVN.GetROProperty("Innertext"))))
+  			
+  		Case "SGHEC", "SGCG"
+  			SubtotalSG.WaitProperty "visible", true, 3000  
+  			GetSubtotal = Csng(Trim(GetNumber(SubtotalSG.GetROProperty("Innertext"))))
+		  	
+ 		Case Else
+ 			Subtotal.WaitProperty "visible", true, 3000  
+  			GetSubtotal = Csng(Trim(GetNumber(Subtotal.GetROProperty("Innertext"))))
+  			 	
+	End Select
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get Cart's Total
+'==================================================================
+
+ Public Function GetTotal()
+ 
+	Select Case ProjectName
+	
+		Case "MYHEC"
+			TotalMY.WaitProperty "visible", true, 3000
+ 			GetTotal = CSng(Trim(GetNumber(TotalMY.GetROProperty("Innertext")))) 
+ 			
+ 		Case "AUTEC"
+			TotalAU.WaitProperty "visible", true, 3000 
+ 			GetTotal = CSng(Trim(GetNumber(TotalAU.GetROProperty("Innertext")))) 
+ 		
+ 		Case "KHHEC"
+			TotalAU.WaitProperty "visible", true, 3000 
+ 			GetTotal = CSng(Trim(GetNumber(TotalKH.GetROProperty("Innertext")))) 
+ 		
+ 		Case "THHEC"
+ 			TotalTH.WaitProperty "Visible", True, 3000
+ 			GetTotal = CSng(Trim(GetNumber(TotalTH.GetROProperty("Innertext")))) 
+ 		
+ 		Case "MMHEC"
+ 			TotalMM.WaitProperty "Visible", True, 3000
+ 			GetTotal = CSng(Trim(GetNumber(TotalMM.GetROProperty("Innertext")))) 
+ 		
+ 		Case "VNHEC"
+ 			TotalVN.WaitProperty "Visible", True, 3000
+ 			GetTotal = CSng(Trim(GetNumber(TotalVN.GetROProperty("Innertext")))) 
+ 			
+ 		Case "SGHEC", "SGCG"
+ 			TotalSG.WaitProperty "Visible", True, 3000
+ 			GetTotal = CSng(Trim(GetNumber(TotalSG.GetROProperty("Innertext")))) 
+ 			
+		Case Else
+			Total.WaitProperty "visible", true, 3000 
+ 			GetTotal = CSng(Trim(GetNumber(Total.GetROProperty("Innertext")))) 	
+	End Select
+	
+ 	
+ End Function
+
+'==================================================================
+'Function to get Cart's Product discount
+'==================================================================
+
+ Public Function GetTotalDiscount()
+ 
+ 	Select Case ProjectName
+ 		Case "AUTEC", "MYHEC", "KHHEC"
+ 			GetTotalDiscount = 0
+ 		
+ 		Case "THHEC"
+ 			ProductDiscountTH.WaitProperty "visible", true, 3000 
+ 			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountTH.GetROProperty("Innertext")))) 	
+ 		
+ 		Case "MMHEC"
+ 			ProductDiscountMM.WaitProperty "visible", true, 3000 
+ 			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountMM.GetROProperty("Innertext")))) 
+ 		
+ 		Case "VNHEC"
+ 			ProductDiscountVN.WaitProperty "visible", true, 3000 
+ 			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountVN.GetROProperty("Innertext")))) 
+ 		
+ 		Case "SGHEC", "SGCG"
+ 			ProductDiscountSG.WaitProperty "visible", true, 3000 
+ 			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountSG.GetROProperty("Innertext")))) 	
+ 		
+ 		Case Else
+ 			ProductDiscount.WaitProperty "visible", true, 3000 
+ 			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscount.GetROProperty("Innertext")))) 	
+ 			
+ 	End Select
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get Cart's Total before VAT
+'==================================================================
+
+ Public Function GetTotalBeforeVAT()
+  	
+ 	Select Case ProjectName
+ 		Case "AUTEC", "MYHEC", "KHHEC", "THHEC"
+ 			GetTotalBeforeVAT = 0
+ 		
+ 		Case "MMHEC"
+ 			GetTotalBeforeVAT = GetTotalIncudeVAT
+ 		
+ 		Case "SGHEC", "SGCG"
+ 			TotalBeforeVATSG.WaitProperty "visible", true 
+ 			GetTotalBeforeVAT = Csng(Trim(GetNumber(TotalBeforeVATSG.GetROProperty("Innertext"))))
+ 		
+ 		Case "VNHEC"
+ 			TotalBeforeVATVN.WaitProperty "visible", true 
+ 			GetTotalBeforeVAT = Csng(Trim(GetNumber(TotalBeforeVATVN.GetROProperty("Innertext"))))
+ 			
+ 		Case Else
+ 			TotalBeforeVAT.WaitProperty "visible", true 
+ 			GetTotalBeforeVAT = Csng(Trim(GetNumber(TotalBeforeVAT.GetROProperty("Innertext"))))
+ 	End Select
+ 	
+ End Function
+ 
+ '==================================================================
+'Function to get Cart's Total include tax - for MMH
+'==================================================================
+
+ Public Function GetTotalIncudeVAT()
+ 
+ 	Select Case ProjectName
+ 		
+ 		Case "MMHEC"
+ 			TotalIncludeVATMM.WaitProperty "visible", true 
+ 			GetTotalIncudeVAT = Csng(Trim(GetNumber(TotalIncludeVATMM.GetROProperty("Innertext"))))
+ 			
+ 		Case Else
+ 			TotalIncludeVAT.WaitProperty "visible", true 
+ 			GetTotalIncudeVAT = Csng(Trim(GetNumber(TotalIncludeVAT.GetROProperty("Innertext"))))
+ 			
+ 	End Select
+ 	
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get Cart's VAT Collected
+'==================================================================
+
+ Public Function GetVATCollected()
+
+	Select Case ProjectName
+ 		Case "AUTEC", "MYHEC", "KHHEC", "THHEC"
+ 			GetVATCollected = 0
+ 		
+ 		Case "SGHEC", "SGCG"
+ 			VATCollectedSG.WaitProperty "visible", true 
+ 			GetVATCollected = CSng(Trim(GetNumber(VATCollectedSG.GetROProperty("Innertext"))))
+ 		
+ 		Case "MMHEC"
+ 			VATCollectedMM.WaitProperty "visible", true 
+ 			GetVATCollected = CSng(Trim(GetNumber(VATCollectedMM.GetROProperty("Innertext"))))
+ 		
+ 		Case "VNHEC"
+ 			VATCollectedVN.WaitProperty "visible", true 
+ 			GetVATCollected = CSng(Trim(GetNumber(VATCollectedVN.GetROProperty("Innertext"))))
+ 			
+ 		Case Else
+ 			VATCollected.WaitProperty "visible", true 
+ 			GetVATCollected = CSng(Trim(GetNumber(VATCollected.GetROProperty("Innertext"))))
+ 	End Select
+ 	
+ End Function
+ 
+'==================================================================
+'Function to get Cart's Freight Charge
+'==================================================================
+
+ Public Function GetFreightCharge()
+ 
+  	Select Case ProjectName
+ 		Case "MMHEC", "KHHEC", "VNHEC", "AUTEC", "MYHEC", "THHEC"
+ 			GetFreightCharge = 0
+ 		
+ 		Case "SGHEC", "SGCG"
+ 		 	FreightChargeSG.WaitProperty "visible", true 
+ 			GetFreightCharge = Csng(Trim(GetNumber(FreightChargeSG.GetROProperty("Innertext"))))
+ 		
+ 		Case Else
+ 			
+ 	End Select 
+ 	
+ End Function
+ 
+'==================================================================
+'Function to check order total
+'==================================================================
+
+Public Function CalculatedSubTotal()
+
+	Dim intCal
+	
+	Select Case ProjectName
+	
+		Case "THHEC"
+			intCal = Round(GetProductTotalPrice + GetTotalDiscount, 2)
+		
+		Case Else
+			intCal = Round(GetProductTotalPrice, 2)
+			
+	End Select
+
+	If intCal = GetProductTotalPrice Then
+		CalculatedSubTotal = True
+	Else
+		CalculatedSubTotal = False
+	End If 
+	
+End Function
+ 
+'==================================================================
+'Function to the check total before vat calculation 
+'==================================================================
+
+Public Function CalculatedTotalBeforeVAT()
+
+	Dim fTotalBeforeVAT : fTotalBeforeVAT = GetTotalBeforeVAT
+	Dim fCalc
+	
+	Select Case ProjectName
+		
+		Case "MMHEC"
+			fCalc = Round(GetSubtotal - GetTotalDiscount, 2)
+			
+		Case "AUTEC", "MYHEC", "KHHEC", "THHEC"
+			fCalc = 0
+		
+		Case "SGCG", "SGHEC"
+			fCalc = Round(GetSubtotal - GetTotalDiscount, 2)
+		
+		Case "VNHEC"
+			fCalc = Round(GetSubtotal - GetTotalDiscount, 2)
+			
+		Case Else
+			fCalc = Round(GetSubtotal - GetTotalDiscount, 2)
+		
+	End Select
+	
+	If fTotalBeforeVAT = fCalc Then
+		CalculatedTotalBeforeVAT = True	
+	Else
+		CalculatedTotalBeforeVAT = False
+	End If 
+	
+End Function
+
+'==================================================================
+'Function to check order total
+'==================================================================
+
+Public Function CalculatedTotal()
+
+	Dim fTotal : fTotal = GetTotal
+	Dim fSum
+	
+	Select Case ProjectName
+		
+		Case "MMHEC"
+			fSum = Round(GetTotalBeforeVAT, 2)
+			
+		Case "AUTEC", "MYHEC", "KHHEC"
+			fSum = GetSubTotal
+		
+		Case "THHEC"
+			fSum = Round(GetSubTotal - GetTotalDiscount, 2)
+			
+		Case "SGCG", "SGHEC"
+			fSum = Round(GetTotalBeforeVAT + GetVATCollected + GetFreightCharge, 2)
+			
+		Case "VNHEC"
+			fSum = Round(GetTotalBeforeVAT + GetVATCollected + GetFreightCharge, 2)
+			
+		Case Else
+			fSum = Round(GetTotalBeforeVAT + GetVATCollected + GetFreightCharge, 2)
+			
+	End Select
+		
+	If fSum = fTotal Then
+		CalculatedTotal = True	
+	Else
+		CalculatedTotal = False
+	End If
+	
+End Function
+
+'==================================================================
+'Function to go back to shopping
+'==================================================================
+
+Public Sub BackToShop()
+
+	CartContinueShopping.Click
+	
+End Sub
+
+'==================================================================
+'Function to get Product Name
+'==================================================================
+
+Public Function GetProductName()
+
+	CartProductName.WaitProperty "Visible", True, 3000
+	GetProductName = CartProductName.GetROProperty("Innertext")
+	
+End Function
+ 
+ 
+ '==================================================================
+'Function to get Product Code
+'==================================================================
+
+Public Function GetProductCode()
+
+	CartProductCode.WaitProperty "Visible", True, 3000
+	GetProductCode = ProductCode.GetROProperty("Innertext")
+	
+End Function
+
+'==================================================================
+'Function to check specific product code
+'==================================================================
+
+Public Function CheckSpecificProductCode(strProductCode)
+
+	CartPage.Sync
+	
+	Dim i, j
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "WebElement"
+	objDesc("class").Value = "item__price sku-cart"
+	Dim arrObj : Set arrObj = CartPage.ChildObjects(objDesc)
+	For i = 0 To arrObj.Count-1
+		If Instr(arrObj(i).GetROProperty("Innertext"), strProductCode) > 0 Then
+			CheckSpecificProductCode = True
+			Exit Function
+		End If
+	Next
+	CheckSpecificProductCode = False
+	
+End Function
+
+'==================================================================
+'Function to check specific product name
+'==================================================================
+
+Public Function CheckSpecificProductName(strProductName)
+
+	CartPage.Sync
+	
+	Dim i, j
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "WebElement"
+	objDesc("class").Value = "item__name"
+	Dim arrObj : Set arrObj = CartPage.ChildObjects(objDesc)
+	For i = 0 To arrObj.Count-1
+		If Instr(arrObj(i).GetROProperty("Innertext"), strProductName) > 0 Then
+			CheckSpecificProductName = True
+			Exit Function
+		End If
+	Next
+	CheckSpecificProductName = False
+	
+End Function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+' Validation Shopping Carts
+'	1. Add product from PLP and its shows in Mini Cart 
+'	3. Verify product added is correct
+'	2. Verify Mini carts components (Menu and pop out Cart)	
+'	6. Verify user can +/- quantity, manually key-in quantity with product quantity updated alert
+'	7. Verify user can removed by delete button or set quantity to 0 with deleted alert
+'	8. Verify user can navigate thru PDP from clicking in the product name
+'	9. Verify user submit below minimum purchase and minimum order alert showed
+'	4. Verify Shopping cart list can be saved order
+'	5. Verify user can continue shopping out from Shopping Cart
+'	10. Checkout successfully all the products listed
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+'==================================================================
+'Function to validate Cart screen layout
+'==================================================================
+
+Public Function CheckCartsObjects()
+
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	CartPage.Sync
+	
+	DicObj.Add "CartProductUOM", CartProductUOM.Exist
+	DicObj.Add "CartProductName", CartProductName.Exist(1)
+	DicObj.Add "CartProductPricePerUnit", CartProductPricePerUnit.Exist(1)
+	DicObj.Add "CartProductPriceTotal", CartProductPriceTotal.Exist(1)
+	DicObj.Add "CartProductCode", CartProductCode.Exist(1)
+	DicObj.Add "CartProductQuantity", CartProductQuantity.Exist(1)
+	DicObj.Add "CartDeleteItem", CartDeleteItem.Exist(1)
+	DicObj.Add "CartQuantityPlus", CartQuantityPlus.Exist(1)
+	DicObj.Add "CartQuantityMinus", CartQuantityMinus.Exist(1)
+	DicObj.Add "CartProductImage", CartProductImage.Exist(1)
+	DicObj.Add "ProceedCheckout", ProceedCheckout.Exist(1)
+	DicObj.Add "ContinueShopping", CartContinueShopping.Exist(1)
+	DicObj.Add "SaveOrder", SaveOrder.Exist(1)
+	DicObj.Add "CartHeader", CartHeader.Exist(1)
+	DicObj.Add "CartID", CartID.Exist(1)
+	DicObj.Add "CartBreadcrumbs", CartBreadcrumbs.Exist(1)
+	
+	Select Case ProjectName
+		
+		Case "SGHEC", "SGCG"
+			DicObj.Add "CartTaxDisclaimer", CartTaxDisclaimer.Exist(1)
+			DicObj.Add "CartCreditAmount", CartCreditAmount.Exist(1)
+			
+		Case "TWHEC", "VNHEC"
+			DicObj.Add "CartCreditAmount", Not CartCreditAmount.Exist(1)
+		
+		Case Else
+			DicObj.Add "CartCreditAmount", CartCreditAmount.Exist(1)
+			
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckCartsObjects = False
+			Exit For
+		End If
+		CheckCartsObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Function to validate Cart screen layout
+'==================================================================
+
+Public Function CheckCartsCalculationObjects()
+
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	CartPage.Sync
+		
+	Select Case ProjectName
+		Case "VNHEC"
+			DicObj.Add "Subtotal", SubtotalVN.Exist(1)
+			DicObj.Add "Total", TotalVN.Exist(1)
+			DicObj.Add "TotalBeforeVAT", TotalBeforeVATVN.Exist(1)
+			DicObj.Add "VATCollected", VATCollectedVN.Exist(1)
+			DicObj.Add "ProductDiscount", ProductDiscountVN.Exist(1)
+			
+		Case "MMHEC"
+			DicObj.Add "Subtotal", SubtotalMM.Exist(1)
+			DicObj.Add "Total", TotalMM.Exist(1)
+			DicObj.Add "TotalIncludeVAT", TotalIncludeVATMM.Exist(1)
+			DicObj.Add "VATCollected", VATCollectedMM.Exist(1)
+			DicObj.Add "ProductDiscount", ProductDiscountMM.Exist(1)
+			
+		Case "SGCG", "SGHEC"
+			DicObj.Add "Subtotal", SubtotalSG.Exist(1)
+			DicObj.Add "Total", TotalSG.Exist(1)
+			DicObj.Add "TotalBeforeVAT", TotalBeforeVATSG.Exist(1)
+			DicObj.Add "VATCollected", VATCollectedSG.Exist(1)
+			DicObj.Add "ProductDiscount", ProductDiscountSG.Exist(1)
+			DicObj.Add "FreightCharge", FreightChargeSG.Exist(1)
+			
+		Case "THHEC"
+			DicObj.Add "Subtotal", SubtotalTH.Exist(1)
+			DicObj.Add "Total", TotalTH.Exist(1)
+			DicObj.Add "ProductDiscount", ProductDiscountTH.Exist(1)
+			
+		Case "KHHEC"
+			DicObj.Add "Subtotal", SubtotalKH.Exist(1)
+			DicObj.Add "Total", TotalKH.Exist(1)
+			
+		Case "AUTEC"
+			DicObj.Add "Subtotal", SubtotalAU.Exist(1)
+			DicObj.Add "Total", TotalAU.Exist(1)
+			
+		Case "MYHEC"
+			DicObj.Add "Subtotal", SubtotalMY.Exist(1)
+			DicObj.Add "Total", TotalMY.Exist(1)
+			
+		Case Else
+			DicObj.Add "Subtotal", Subtotal.Exist(1)
+			DicObj.Add "Total", Total.Exist(1)
+	End Select
+	
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckCartsCalculationObjects = False
+			Exit For
+		End If
+		CheckCartsCalculationObjects = True
+	Next
+	
+	Set DicObj = nothing
+	
+End Function
+
+'==================================================================
+'Function to validate product added to cart is correct
+'==================================================================
+
+Public Function CheckProductDetails(strProductCode, strProductName)
+	
+	Dim bRes1 : bRes1 = CheckSpecificProductCode(strProductCode)
+	Dim bRes2 : bRes2 = CheckSpecificProductName(strProductName)
+	
+	If bRes1 and bRes2 Then
+		CheckProductDetails = True
+	Else
+		CheckProductDetails = False
+	End If
+	
+End Function
+
+'==================================================================
+'Function to validate calculation summary of the cart
+'==================================================================
+
+Public Function CheckCartSummaryCalculation()
+	
+	Dim DicObj, i, x, k
+	
+	Set DicObj = CreateObject("Scripting.Dictionary")
+	
+	CartPage.Sync
+	
+	DicObj.Add "Calculated SubTotals", CalculatedSubTotal
+	DicObj.Add "Calculated Totals", CalculatedTotal
+	
+	Select Case ProjectName
+		
+		Case "MYHEC", "AUTEC", "THHEC", "KHHEC"
+		
+		Case Else
+			DicObj.Add "Calculated Total Before Tax", CalculatedTotalBeforeVAT
+			
+	End Select
+	
+		
+	i = DicObj.Items
+	k = DicObj.Keys
+	
+	For x = 0 To DicObj.Count-1
+		'print k(x) & ", " & i(x)
+		If i(x) <> "True" Then
+			CheckCartSummaryCalculation = False
+			Exit For
+		End If
+		CheckCartSummaryCalculation = True
+	Next
+	
+	Set DicObj = nothing
+	
+	
+End Function
+
+'==================================================================
+'Function to validate total product price is correct
+'==================================================================
+
+Public Function CheckProductTotalPrice()
+
+	CartPage.Sync
+	Dim intPricePerUnit : intPricePerUnit = GetProductUnitPrice
+	Dim intTotalProductPrice : intTotalProductPrice = GetProductTotalPrice
+	CartProductQuantity.WaitProperty "Visible", True, 3000
+	Dim intQuantity : intQuantity = CSng(CartProductQuantity.GetROProperty("Value"))
+	
+	'Calculations
+	Dim fCalc : fCalc = intPricePerUnit * intQuantity
+	
+	If fCalc = intTotalProductPrice Then
+		CheckProductTotalPrice = True
+	Else
+		CheckProductTotalPrice = False
+	End If
+	
+		
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

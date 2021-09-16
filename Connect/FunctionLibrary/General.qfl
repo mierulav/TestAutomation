@@ -1,0 +1,50 @@
+﻿OPTION EXPLICIT
+
+Public Function GetNumber(strVal)
+	
+	Dim numStr, RegEx
+	Set RegEx = CreateObject("vbscript.regexp") 
+	RegEx.Pattern = "[^\d*(\.\d+)?]"
+	RegEx.IgnoreCase = True 
+	RegEx.Global = True 
+	numStr = RegEx.Replace(strVal, "") 
+	GetNumber = numStr
+	
+End Function
+
+Public Function wShell()
+
+	 Set wShell = CreateObject("WScript.Shell")
+	 
+End Function
+
+Public Function GetAllFunctionsLibraries()
+	
+	
+End Function
+
+Function GetStringDate()
+
+	Dim dtDate, junk, i
+	dtDate = now()
+	junk = Array(" ", "/", ":", "PM", "AM")
+	For each i in junk
+		dtDate = replace(dtDate, i, "")
+	Next
+	
+	GetStringDate = dtDate
+	
+End Function
+
+Sub ObjectSync(objVal)
+	Dim i : i = 0
+	If objVal.Object.readyState <> "complete" Then
+		Wait 1
+		i = i+1
+	ElseIf objVal.Object.readyState <> "complete" AND i = 15 Then
+		Reporter.ReportEvent micWarning, objVal, "Not Found"
+		Exit Sub
+	End If
+End Sub
+
+

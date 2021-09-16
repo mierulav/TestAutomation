@@ -1,0 +1,4 @@
+﻿<Properties>
+  <WatchEntry0 value="Datatable.GetSheet(&quot;ProductInfo&quot;).GetRowCount" />
+  <WatchEntry1 value="Datatable.Value(&quot;SalesOrg&quot;, &quot;ProductInfo&quot;)" />
+</Properties>
