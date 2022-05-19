@@ -1,0 +1,55 @@
+<Environment>
+	<Variable>
+		<Name>CountryCode</Name>
+		<Value><![CDATA[MY]]></Value>
+	</Variable>
+	<Variable>
+		<Name>ProjectDir</Name>
+		<Value><![CDATA[D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra]]></Value>
+	</Variable>
+	<Variable>
+		<Name>TestCaseDir</Name>
+		<Value><![CDATA[\TestCase]]></Value>
+	</Variable>
+	<Variable>
+		<Name>TestDataDir</Name>
+		<Value><![CDATA[\TestData]]></Value>
+	</Variable>
+	<Variable>
+		<Name>TestResultDir</Name>
+		<Value><![CDATA[\TestResult]]></Value>
+	</Variable>
+	<Variable>
+		<Name>OrDir</Name>
+		<Value><![CDATA[\OR]]></Value>
+	</Variable>
+	<Variable>
+		<Name>LibDir</Name>
+		<Value><![CDATA[\FunctionLibrary]]></Value>
+	</Variable>
+	<Variable>
+		<Name>ExecutionListDir</Name>
+		<Value><![CDATA[\ExecutionList]]></Value>
+	</Variable>
+	<Variable>
+		<Name>TestScriptDir</Name>
+		<Value><![CDATA[\TestScript]]></Value>
+	</Variable>
+	<Variable>
+		<Name>ExceedraAppPath</Name>
+		<Value><![CDATA[]]></Value>
+	</Variable>
+	<Variable>
+		<Name>PlanningCustomerCredentials</Name>
+		<Value><![CDATA[planning.customer;DKSHaaa11@]]></Value>
+	</Variable>
+	<Variable>
+		<Name>PortfolioManagerCredentials</Name>
+		<Value><![CDATA[portfolio.manager;DKSHaaa11@]]></Value>
+	</Variable>
+	<Variable>
+		<Name>SeniorManagerCredentials</Name>
+		<Value><![CDATA[senior.manager;DKSHaaa11@]]></Value>
+	</Variable>
+	
+</Environment>

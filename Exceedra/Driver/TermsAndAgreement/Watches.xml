@@ -1,0 +1,16 @@
+﻿<Properties>
+  <WatchEntry0 value="strTestAccount" />
+  <WatchEntry1 value="objGTDSheet.Cells(i, 3)" />
+  <WatchEntry10 value="tblEventList.GetCellData(i, 1)), strVal" />
+  <WatchEntry11 value="InStr(LCase(tblEventList.GetCellData(i, 1)), strVal)" />
+  <WatchEntry12 value="LCase(tblEventList.GetCellData(i, 1))" />
+  <WatchEntry13 value="strUsername" />
+  <WatchEntry2 value="(objTCSheet.Cells(i, strNeedParam))" />
+  <WatchEntry3 value="objTCSheet.Cells(i, strParam)" />
+  <WatchEntry4 value="objTCSheet.Cells(i, strKeyword)" />
+  <WatchEntry5 value="objTDSheet.Cells(j, k)" />
+  <WatchEntry6 value="objTDSheet.Cells(1, k)" />
+  <WatchEntry7 value="objC" />
+  <WatchEntry8 value="objC.Count" />
+  <WatchEntry9 value="tblEventList.GetCellData(i, 2)" />
+</Properties>

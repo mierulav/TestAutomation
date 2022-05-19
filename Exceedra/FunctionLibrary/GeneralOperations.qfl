@@ -1,0 +1,16 @@
+﻿Option Explicit
+
+Public Function getFalseTrue(objBase, strVal)
+	
+	If objBase.GetROProperty("text") = strVal Then
+		getFalseTrue = True
+	Else
+		getFalseTrue = False
+	End If
+
+End Function
+ 
+Function RecoveryFunctionItemNotFound(Object, Method, Arguments, retVal)
+ExitAction
+End Function 
+ 

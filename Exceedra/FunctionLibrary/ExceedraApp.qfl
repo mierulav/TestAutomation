@@ -1,0 +1,124 @@
+﻿Option Explicit
+
+Public Function ExceedraApp()
+	Set ExceedraApp = New ClassExApp
+End Function
+
+Class ClassExApp
+
+	Private LoginPage, LandingPage
+	Private InvalidCredentialsErr, btnOK, btnClose, InvalidSession
+	Private txtUsername, txtPassword, btnLogin
+	Private LandingUpperPanel, MenuTA, MenuSignOut
+	Private WShell
+	
+	Private Sub Class_Initialize()
+		Set LoginPage = WpfWindow("WpfWindow")
+		Set LandingPage = WpfWindow("Home")
+		LoginObjects
+		LandingObjects
+		InformationBoxObjects
+		Set WShell = CreateObject("WScript.Shell")	
+	End Sub
+	
+	Private Sub Class_Terminate()
+		Set LandingPage = Nothing
+		Set LoginPage = Nothing
+		Set WShell = Nothing
+	End Sub
+	
+	Private Sub InformationBoxObjects
+		Set InvalidCredentialsErr = WpfWindow("Information").WpfObject("Error-InvalidCredentials")
+		Set InvalidSession = WpfWindow("Information").WpfObject("None-InvalidSession")
+		Set btnOK = WpfWindow("Information").WpfButton("btnOK")
+		Set btnClose = WpfWindow("Information").WpfButton("btnClose")		
+	End Sub
+	
+	'All login objects
+	Private Sub LoginObjects()
+		Set txtUsername = LoginPage.WpfEdit("Login-txtUserName")
+		Set txtPassword = LoginPage.WpfEdit("Login-txtPassword")
+		Set btnLogin = LoginPage.WpfButton("Login-BtnLogin")
+	End Sub
+	
+	'All landing page objects
+	Private Sub LandingObjects()
+		Set LandingUpperPanel = LandingPage.WpfObject("TA-TermsAgreementScreen")
+		Set MenuTA = LandingPage.WpfButton("Menu-TermsAgreement")
+		Set MenuSignOut = LandingPage.WpfLink("Menu-SignOut")
+
+	End Sub
+	
+	'Launch Exceedra App
+	Public Function LaunchExceedra()
+		SystemUtil.Run "C:\Users\amirul.saddam\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Exceedra Software\SalesPlanner\Exceedra.Wpf.appref-ms"
+		LoginPage.RefreshObject
+		LaunchExceedra = LoginPage.Exist
+		LoginPage.Object.Focus
+		LoginPage.Maximize
+	End Function
+	
+	'Close Exceedra App
+	Public Function CloseExceedra()
+		LandingPage.Close
+	End Function
+	
+	'Login with Username and Password		
+	Public Function LoginWithUsernameAndPassword(strUsername, strPassword)
+		txtUsername.RefreshObject
+		txtPassword.RefreshObject
+		'txtUsername.WaitProperty "canfocus", True
+		txtUsername.Object.Focus
+		txtUsername.Set strUsername
+		'txtPassword.WaitProperty "canfocus", True
+		txtPassword.Object.Focus
+		txtPassword.Set strPassword
+		WShell.Sendkeys "{ENTER}"
+'		btnLogin.WaitProperty "canfocus", True
+'		btnLogin.Object.Focus
+'		btnLogin.Click
+		LoginWithUsernameAndPassword = LandingUpperPanel.Exist
+	End Function
+	
+	'Get Login
+	Public Function Login(strTestAccountCredentials)
+		LaunchExceedra
+		Dim arrVal : arrVal = Split(strTestAccountCredentials, ";")
+		Login = LoginWithUsernameAndPassword(arrVal(0), arrVal(1))
+	End Function
+	
+	'Navigate to Terms & Agreement module
+	Public Function NavigateToTermsAgreement()
+		MenuTA.Highlight
+		MenuTA.Click
+		NavigateToTermsAgreement = LandingUpperPanel.Exist
+	End Function
+	
+	'Sign-out from App
+	Public Function SignOut()
+		MenuSignOut.RefreshObject
+		btnClose.RefreshObject
+		InvalidSession.RefreshObject
+	
+		Dim i : i = 1
+		While WpfWindow("Home").WpfTable("TA-tblEventList").GetROProperty("Visible") = False
+			Wait(1)
+		Wend
+		MenuSignOut.Click
+		If InvalidSession.Exist(3) Then
+			btnClose.Object.Focus
+			btnClose.Click
+			WShell.Sendkeys "{ENTER}"
+		End If
+		If txtUsername.Exist Then
+			SignOut = True
+		Else
+			SignOut = False
+		End If
+		If LoginPage.Exist(1) Then
+			CloseExceedra
+		End If
+		
+	End Function
+		
+End Class

@@ -1,0 +1,365 @@
+﻿Option Explicit
+'On Error Resume Next
+
+Public Function TermsAndAgreement()
+	Set TermsAndAgreement = New ClassTnA
+End Function
+
+Class ClassTnA
+	
+	Private TAPage
+	Private TATab, TATable, TermsAgreementScreen, SubTypeOptionAmount, RecoveryOptionAmount, FundTypeOptionAmount, ddFundTypeOptionAmount, txtFilter, txtEventDescription, _
+		ddUpdateStatus, ddSubTypeOption, ddStatusSelection, ddRecoveryOption, ddProductSelection, ddProductLevel, ddFundTypeOption, ddEventType, _
+		ddEventSubType, ddCustomerSelection, ddCustomerLevel, dateStart, dateEnd, btnUpdateStatus, btnSave, btnNew, txtSetNote, ddNoteType, btnAddNote, _
+		btnSaveClose, filterPlanned, filterDraft, filterSubmittedToPortfolioManager, filterSubmittedToSeniorManager, filterConfirmedToRun, filterApproved, btnApply, filterAll, tblEventList
+	Private SavedSuccess, btnOK, ChangedStatus, btnYes, ChangedStatusSuccess, btnClose, InformationBox
+	Private tempRes, WShell
+	
+	Private Sub Class_Initialize()
+		Set TAPage = WpfWindow("Home")
+		TAObjects
+		InformationBoxObjects
+		Set WShell = CreateObject("WScript.Shell")
+		
+	End  Sub
+	
+	Private Sub Class_Terminate()
+		Set TAPage = Nothing
+		Set WShell = Nothing
+	End Sub
+	
+	Private Sub TAObjects()
+		Set filterPlanned = TAPage.WpfCheckBox("TA-FilterPlanned")
+		Set filterDraft = 	TAPage.WpfCheckBox("TA-FilterDraft")
+		Set filterAll = TAPage.WpfCheckBox("TA-FilterAll")
+		Set filterSubmittedToSeniorManager = WpfWindow("Home").WpfCheckBox("TA-FilterSubmittedToSeniorManager")
+		Set filterSubmittedToPortfolioManager = WpfWindow("Home").WpfCheckBox("TA-FilterSubmittedToPortfolioManager")
+		Set filterConfirmedToRun = WpfWindow("Home").WpfCheckBox("TA-FilterConfirmedToRun")	
+		Set filterApproved = WpfWindow("Home").WpfCheckBox("TA-FilterApproved")
+		Set btnApply = TAPage.WpfButton("TA-btnApply")
+		Set btnNew = TAPage.WpfButton("TA-btnNew")
+		Set btnSave = TAPage.WpfButton("TA-btnSave")
+		Set btnSaveClose = TAPage.WpfButton("TA-btnSaveClose")
+		Set btnUpdateStatus = TAPage.WpfButton("TA-btnUpdateStatus")
+		Set dateEnd = TAPage.WpfCalendar("TA-dateEnd")
+		Set dateStart = TAPage.WpfCalendar("TA-dateStart")
+		Set ddCustomerLevel = TAPage.WpfComboBox("TA-ddCustomerLevel")
+		Set ddCustomerSelection = TAPage.WpfComboBox("TA-ddCustomerSelection")
+		Set ddEventSubType = TAPage.WpfComboBox("TA-ddEventSubType")
+		Set ddEventType = TAPage.WpfComboBox("TA-ddEventType")
+		Set ddFundTypeOption = TAPage.WpfComboBox("TA-ddFundTypeOption")
+		Set ddProductLevel = TAPage.WpfComboBox("TA-ddProductLevel")
+		Set ddProductSelection = TAPage.WpfComboBox("TA-ddProductSelection")
+		Set ddRecoveryOption = TAPage.WpfComboBox("TA-ddRecoveryOption")
+		Set ddStatusSelection = TAPage.WpfComboBox("TA-ddStatusSelection")
+		Set ddSubTypeOption = TAPage.WpfComboBox("TA-ddSubTypeOption")
+		Set ddUpdateStatus = TAPage.WpfComboBox("TA-ddUpdateStatus")
+		Set txtEventDescription = TAPage.WpfEdit("TA-txtEventDescription")
+		Set txtFilter = TAPage.WpfEdit("TA-txtFilter")
+		Set FundTypeOptionAmount = TAPage.WpfObject("TA-FundTypeOptionAmount")
+		Set RecoveryOptionAmount = TAPage.WpfObject("TA-RecoveryOptionAmount")
+		Set SubTypeOptionAmount = TAPage.WpfObject("TA-SubTypeOptionAmount")
+		Set TermsAgreementScreen = TAPage.WpfObject("TA-TermsAgreementScreen")
+		Set TATable = TAPage.WpfTable("TA-TATable")
+		Set TATab = TAPage.WpfTabStrip("TA-TATab")
+		Set txtSetNote = TAPage.WpfEdit("TA-txtSetNote")
+		Set btnAddNote = TAPage.WpfButton("TA-btnAddNote")
+		Set ddNoteType = TAPage.WpfComboBox("TA-ddNoteType")
+		Set tblEventList = TAPage.WpfTable("TA-tblEventList")
+
+
+	End Sub
+	
+	Private Sub InformationBoxObjects
+		Set InformationBox = WpfWindow("Information")
+		Set SavedSuccess = WpfWindow("Information").WpfObject("Success-SavedSuccessfuly")
+		Set ChangedStatus = WpfWindow("Information").WpfObject("Warning-ChangeStatus")
+		Set ChangedStatusSuccess = WpfWindow("Information").WpfObject("None-Success")
+		Set 	btnOK = WpfWindow("Information").WpfButton("btnOK")
+		Set btnYes = WpfWindow("Information").WpfButton("btnYes")
+		Set btnClose = WpfWindow("Information").WpfButton("btnClose")
+
+	End Sub
+	
+	'General operations
+	
+	'To go to TA creation form
+	Public Function CreateTA()
+		btnNew.Click
+		CreateTA = txtEventDescription.Exist
+	End Function
+	
+	'To set TA event name/descriptions
+	Public Function SetTAEventName(strVal)
+		txtEventDescription.Set strVal
+		SetTAEventName = Trim(txtEventDescription.Object.Text)
+	End Function
+	
+	'To select cost element of the event
+	Public Function SelectTACostElement(strVal)
+		Wait(2)
+		ddEventType.Click
+		ddEventType.Select strVal
+		SelectTACostElement = Trim(ddEventType.Object.Text)
+	End Function
+
+	'To select event start date
+	Public Function SetTAStartDate(strVal)
+		dateStart.SetDate strVal 'DD-MMM-YYYY format
+		SetTAStartDate = Trim(dateStart.Object.Text)
+	End Function
+	
+	'To select event end date
+	Public Function SetTAEndDate(strVal)
+		dateEnd.SetDate strVal 'DD-MMM-YYYY format
+		SetTAEndDate = Trim(dateEnd.Object.Text)
+	End Function
+	
+	'To select customer level for the event
+	Public Function SelectTACustomerLevel(strVal)
+		'UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-CustomerLevel").Expand
+		ddCustomerLevel.Object.Focus
+		ddCustomerLevel.Type strVal
+		Wait(2)
+		ddCustomerLevel.Object.Focus
+		WShell.Sendkeys "{ENTER}"
+		'UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-CustomerLevel").Collapse
+		SelectTACustomerLevel = Trim(ddCustomerLevel.Object.Text)
+	End Function
+	
+	'To select customer level selection for the event
+	Public Function SelectTACustomerLevelSelection(strVal)
+		UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-CustomerSelection").Expand
+		UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-CustomerSelection").UIAObject("name:=" & strVal).Click
+		UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-CustomerSelection").Collapse
+		SelectTACustomerLevelSelection = Trim(ddCustomerSelection.Object.Text)
+	End Function
+	
+	'To select product level for the event
+	Public Function SelectTAProductLevel(strVal)
+		'UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-ProductLevel").Expand
+		ddProductLevel.Object.Focus
+		ddProductLevel.Select strVal
+		Wait(2)
+'		ddProductLevel.Object.Focus
+'		WShell.Sendkeys "{ENTER}"
+		'UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-ProductLevel").Collapse
+		SelectTAProductLevel = Trim(ddProductLevel.Object.Text)
+	End Function
+	
+	'To select product level selection for the event
+	Public Function SelectTAProductLevelSelection(strVal)
+		UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-ProductSelection").Expand
+		UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-ProductSelection").UIAObject("name:=" & strVal).Click
+		UIAWindow("Home").UIAObject("Rad Docking").UIATab("Rad Pane Group").UIAComboBox("TA-ProductSelection").Collapse
+		SelectTAProductLevelSelection = Trim(ddProductSelection.Object.Text)	
+	End Function
+	
+	'To select Cost Element Option
+	Public Function SelectTACostElementOption(strVal)
+		ddSubTypeOption.Click
+		ddSubTypeOption.MakeVisible
+		ddSubTypeOption.Select strVal
+		SelectTACostElementOption = Trim(ddSubTypeOption.Object.Text)
+	End Function
+	
+	'To Set Cost Element Amount
+	Public Function SetTACostElementAmount(strVal)
+		SubTypeOptionAmount.Click
+		SubTypeOptionAmount.Click
+		WShell.Sendkeys "^a"
+		wait(1)
+		WShell.Sendkeys "{BACKSPACE}"
+		wait (1)
+		WShell.Sendkeys strVal
+		Wait(2)
+		SetTACostElementAmount = Trim(SubTypeOptionAmount.Object.Value)
+	End Function
+	
+	'To Set Client Fund Type
+	Public Function SetTAClientFundType(strVal)
+		FundTypeOptionAmount.Click
+		FundTypeOptionAmount.Click
+		WShell.Sendkeys "^a"
+		wait(1)
+		WShell.Sendkeys "{BACKSPACE}"
+		wait (1)
+		WShell.Sendkeys strVal
+		Wait(2)
+		SetTAClientFundType = Trim(FundTypeOptionAmount.Object.Value)
+	End Function
+	
+	'To Set Client Recovery Amount
+	Public Function SetTAClientRecoveryAmount(strVal)
+		RecoveryOptionAmount.Click
+		RecoveryOptionAmount.Click
+		WShell.Sendkeys "^a"
+		wait(1)
+		WShell.Sendkeys "{BACKSPACE}"
+		wait (1)
+		WShell.Sendkeys strVal
+		Wait(2)
+		SetTAClientRecoveryAmount = Trim(RecoveryOptionAmount.Object.Value)
+	End Function
+	
+	'To save Terms And Agreement
+	Public Function SaveTA()
+		btnSave.RefreshObject
+		SavedSuccess.RefreshObject
+		btnOK.RefreshObject
+		
+		'btnSave.WaitProperty "canfocus", True
+		btnSave.Object.Focus
+		btnSave.Click
+		If SavedSuccess.Exist Then
+			SaveTA = True
+			btnOK.Object.Focus
+			btnOK.Click
+			WShell.Sendkeys "{ENTER}"
+			Exit Function
+		End If 
+		SaveTA = False
+		TAPage.Object.Focus
+		WShell.Sendkeys "{ENTER}"
+	End Function
+	
+	'To Set Notes
+	Public Function SetTANotes(strVal)
+		TAPage.RefreshObject
+		Dim i
+		txtSetNote.Set strVal
+		btnAddNote.Object.Focus
+		btnAddNote.Click
+		Wait(1)
+		SetTANotes = False
+		For i = 0 To TATable.RowCount-1
+			If Trim(TATable.GetCellData(i, 3)) = strVal Then
+				SetTANotes = True
+				TAPage.Object.Focus
+				TAPage.Click
+				Exit For
+			End If 	
+		Next
+	End Function
+	
+	'To Change Status in TA Event details screen
+	Public Function ChangeTAStatus(strVal)
+		ddStatusSelection.RefreshObject
+		ddStatusSelection.Object.Focus
+		'ddStatusSelection.Click
+		ddStatusSelection.Select strVal
+		WShell.Sendkeys "{ENTER}"
+		ChangeTAStatus = Trim(ddStatusSelection.Object.Text)
+	End Function
+	
+	'To Save TA and close the event detail screen
+	Public Function SaveTAandClose()
+		btnSaveClose.RefreshObject
+		SavedSuccess.RefreshObject
+		btnOK.RefreshObject
+		
+		'btnSaveClose.WaitProperty "canfocus", True
+		btnSaveClose.Object.Focus
+		btnSaveClose.Click
+		Wait(2)
+		If SavedSuccess.Exist Then
+			SaveTAandClose = True
+			btnOK.Object.Focus
+			btnOK.Click
+			WShell.Sendkeys "{ENTER}"
+			Exit Function
+		End If 
+		SaveTAandClose = False
+		TAPage.Object.Focus
+		WShell.Sendkeys "{ENTER}"
+	End Function
+	
+	'To Update Status in Main TA Screen
+	Public Function UpdateTAStatus(strVal)
+		ddUpdateStatus.Click
+		ddUpdateStatus.Select strVal
+		btnUpdateStatus.Click
+		If ChangedStatus.Exist Then
+			btnYes.Click
+			If ChangedStatusSuccess.Exist Then
+				UpdateTAStatus = True
+				btnClose.Click
+			End If
+		Else
+			UpdateTAStatus = False
+			If btnYes.Exist Then
+				btnYes.Click
+			End If 
+		End If
+	End Function
+	
+	'To Save New Status in Main TA Screen
+	Public Function SaveTAStatus()
+		btnUpdateStatus.Click
+		If SavedSuccess.Exist Then
+			SaveTAStatus = True
+			btnOK.Click
+		Else
+			SaveTAStatus = False
+			If btnOK.Exist Then
+				btnOK.Click
+			End If
+		End If
+	End Function
+	
+	'To filter Event Status
+	Public Sub FilterEventStatus(strVal)
+		While btnApply.Object.IsEnabled = False
+			Wait(1)
+		Wend
+		filterAll.Click
+		Select Case strVal
+			Case "Draft"
+				filterDraft.Click
+			Case "Planned"
+				filterPlanned.Click
+			Case "Submitted to Portfolio Manager"
+				filterSubmittedToPortfolioManager.Click
+			Case "Submitted to Senior Manager"
+				filterSubmittedToSeniorManager.Click 
+			Case "Approved"
+				filterApproved.Click
+			Case "Confirmed To Run"
+				filterConfirmedToRun.Click
+		End Select	
+		btnApply.Click
+		Wait(1)
+		tblEventList.WaitProperty "Visible", True
+	End Sub
+	
+	'To filter and search for specific event
+	Public Sub FilterEvent(strVal)
+		txtFilter.RefreshObject
+		
+		While tblEventList.GetROProperty("Visible") = False
+			Wait(1)
+		Wend
+		Dim objShell : Set objShell = CreateObject("Wscript.Shell")
+		txtFilter.Object.Focus
+		txtFilter.Click
+		txtFilter.Set strVal
+		txtFilter.Object.Focus
+		WShell.SendKeys "{ENTER}"
+		Wait(2)
+		Set objShell = Nothing	
+	End Sub 
+	
+	'To find rows in Event list table
+	Public Function FilterAndSelectRowFromEventListTable(strVal)
+		Dim i
+		FilterEvent(strVal)
+		For i = 0 To tblEventList.RowCount-1
+			If InStr(tblEventList.GetCellData(i, 1), strVal) > 0 Then
+				tblEventList.SelectCell i, 1
+				FilterAndSelectRowFromEventListTable = tblEventList.GetCellData(i, 1)
+				Exit For
+			End If
+		Next
+	End Function
+	
+End Class

@@ -1,0 +1,247 @@
+﻿Option Explicit
+
+Public objELWorkbook, objELSheet, objExcel
+Set objExcel = CreateObject("Excel.Application")
+
+Public Function TestEnv()
+	Set TestEnv = New ClassEnv
+End Function
+
+Class ClassEnv
+
+Private ProjectDir, TestCaseDir, TestDataDir, TestResultDir, OrDirectory, LibDir, ExecutionListDir, TestModule, TestScriptDir, CountryCode
+Private objTCWorkbook, objGTDWorkbook, objTCSheet, objGTDSheet, objTDSheet, NumRowsTC, NumRowsTD, NumRowsGTD, NumColsTD, NumColsGTD, tempRes
+Private TAModule, AppModule
+
+	Private Sub Class_Initialize()
+		
+		CountryCode = Environment.Value("CountryCode")
+		ProjectDir = Environment.Value("ProjectDir") & "\"
+		TestCaseDir = ProjectDir & Environment.Value("TestCaseDir")
+		TestDataDir = ProjectDir & Environment.Value("TestDataDir")
+		TestResultDir = ProjectDir & Environment.Value("TestResultDir")
+		OrDirectory = ProjectDir & Environment.Value("OrDir")
+		LibDir = ProjectDir & Environment.Value("LibDir")
+		ExecutionListDir = ProjectDir & Environment.Value("ExecutionListDir")
+		TestModule = ExecutionListDir & "\" & Environment.Value("TestName") + ".xlsx"
+		TestScriptDir = ProjectDir & Environment.Value("TestScriptDir")
+		'LoadFunctionLibs
+		'objExcel = CreateObject("Excel.Application")
+		Set TAModule = TermsAndAgreement()
+		Set AppModule = ExceedraApp()
+			
+	End Sub
+	
+	Private Sub Class_Terminate()
+		Set objELWorkbook = Nothing
+		Set objELSheet = Nothing
+		Set objExcel = Nothing
+		Set TAModule = Nothing
+		Set AppModule = Nothing
+	End Sub
+	
+	Public Function GetCountryCode()
+		GetCountryCode = CountryCode
+	End Function
+		
+	Public Function GetTestCaseDir()
+		GetTestCaseDir = TestCaseDir
+	End  Function
+	
+	Public Function GetTestDataDir()
+		GetTestDataDir = TestDataDir
+	End  Function
+	
+	Public Function GetExecutionListDir()
+		GetExecutionListDir = ExecutionListDir
+	End  Function
+	
+	Public Function GetTestModule()
+		GetTestModule = TestModule
+	End  Function
+	
+	Public Function GetTestAccountCredentials(strTestAccount)
+	
+		Dim i, strUsername, strPassword
+		Set objGTDWorkbook = objExcel.Workbooks.Open(GetTestDataDir  & "\GlobalTestData.xlsx")
+		Set objGTDSheet = objGTDWorkbook.Worksheets("Sheet1")		
+		NumColsGTD = objGTDSheet.UsedRange.Columns.Count
+		NumRowsGTD = objGTDSheet.UsedRange.Rows.Count
+		
+		For i = 1 To NumRowsGTD
+			If InStr(strTestAccount, objGTDSheet.Cells(i, 3))>0 Then
+				strUsername  =  objGTDSheet.Cells(i, 4).Value
+				strPassword = objGTDSheet.Cells(i, 5).Value
+				Exit For
+			End If
+		Next
+		
+		GetTestAccountCredentials = strUsername & ";" &strPassword
+		
+	End Function
+	
+	Public Function LoadFunctionLibs()
+		
+		Dim fileSysObj : Set fileSysObj= CreateObject("Scripting.FileSystemObject")
+		Set fileFile = fileSysObj.GetFolder(LibDir)
+		Set fC = fileFile.files
+		For Each singlefile in fC
+		    LoadFunctionLibrary (singlefile.name)
+		Next
+		
+	End Function
+	
+	Public Function ReadTest(TestCaseName)
+	
+		ReadTest = "Not Completed"
+		
+		Dim i, j, k, flag, flag2,strKeyword, strParam, strNeedParam, strParamVal, strParamType, blnTSResult, blnTDResult, strTSTimestamp, strTDTimestamp, tempVal
+		
+		'Create object Sheets and Get number of rows
+		Set objTCWorkbook = objExcel.Workbooks.Open(GetTestCaseDir & "\" & TestCaseName)
+		Set objTCSheet = objTCWorkbook.Worksheets("TestSteps")
+		Set objTDSheet = objTCWorkbook.Worksheets("TestData")
+		NumRowsTC = objTCSheet.UsedRange.Rows.Count
+		NumRowsTD = objTDSheet.UsedRange.Rows.Count
+		NumColsTD = objTDSheet.UsedRange.Columns.Count
+		
+		'Assign column name for test case
+		strKeyword = 5
+		strNeedParam = 6
+		strParam = 7
+		strParamType = 8
+		blnTSResult = 10
+		strTSTimestamp = 10
+		flag = 1 '--> This is to tell UFT to loop TC as many as test data rows
+		flag2 = 2 '--> This is to tell UFT to pickup which test data has not executed yet
+		
+		Do Until flag = NumRowsTD 
+		
+			'Loop test steps rows
+			For i = 2 To NumRowsTC
+				Select Case LCase(objTCSheet.Cells(i, strKeyword).Value)
+					Case "launchexceedra"
+						tempRes = ExecuteFunction(objTCSheet.Cells(i, strKeyword).Value, GetCountryCode)
+						
+					Case "login"
+						tempVal = objTCSheet.Cells(i, strParam).Value
+						tempRes = ExecuteFunction(objTCSheet.Cells(i, strKeyword).Value, GetTestAccountCredentials(tempVal))
+						
+					Case Else
+						If UCase(objTCSheet.Cells(i, strNeedParam).Value) = "Y" and Ucase(objTCSheet.Cells(i, strParamType).Value) <>  "GLOBAL" Then
+							'Loop test data rows
+							For j = flag2 to NumRowsTD
+								'Loop test data cols
+								For k = 1 To NumColsTD
+									If objTDSheet.Cells(1, k).Value = objTCSheet.Cells(i, strParam).Value And j = flag2 Then
+										tempRes = ExecuteFunction(objTCSheet.Cells(i, strKeyword).Value, objTDSheet.Cells(j, k).Value)
+										Exit For
+									End If 
+								Next
+								'flag2 = flag2 + 1
+							Next
+							
+						ElseIf UCase(objTCSheet.Cells(i, strNeedParam).Value) = "N" or UCase(objTCSheet.Cells(i, strNeedParam).Value) = "" Then
+							tempRes = ExecuteFunction(objTCSheet.Cells(i, strKeyword).Value, "")
+						End If
+						
+				End Select
+				
+				'Put result into each step in test case
+				objTCSheet.Cells(i, blnTSResult+flag).Value = tempRes
+				objTCSheet.Cells(i, strTSTimestamp).Value = Now
+			Next
+			flag = flag + 1
+			flag2 = flag2 + 1
+		Loop
+		
+		ReadTest = "Completed"
+		
+End Function
+	
+	Public Function ExecuteFunction(strKeyword, strParam)
+		Select Case strKeyword
+			
+			'ExceedraApp functions
+			Case "LaunchExceedra"
+				print "LaunchExceedra"
+				tempRes = AppModule.LaunchExceedra(strParam)
+			Case "Login"
+				print "Login"
+				tempRes = AppModule.Login(strParam)
+			Case "NavigateToTermsAgreement"
+				print "NavigateToTermsAgreement"
+				tempRes = AppModule.NavigateToTermsAgreement
+			Case "SignOut"
+				print "SignOut"
+				tempRes = AppModule.SignOut
+			Case "CloseExceedra"
+				print "CloseExceedra"
+				tempRes = AppModule.CloseExceedra
+				
+			'TermsAgreement functions	
+			Case "CreateTA"
+				print "CreateTA"
+				tempRes = TAModule.CreateTA
+			Case "SetTAEventName"
+				print "SetTAEventName"
+				tempRes = TAModule.SetTAEventName(strParam)
+			Case "SelectTACostElement"
+				print "SelectTACostElement"
+				tempRes = TAModule.SelectTACostElement(strParam)
+			Case "SetTAStartDate"
+				print "SetTAStartDate"
+				tempRes = TAModule.SetTAStartDate(strParam)
+			Case "SetTAEndDate"
+				print "SetTAEndDate"
+				tempRes = TAModule.SetTAEndDate(strParam)
+			Case "SelectTACustomerLevel"
+				print "SelectTACustomerLevel"
+				tempRes = TAModule.SelectTACustomerLevel(strParam)
+			Case "SelectTACustomerLevelSelection"
+				print "SelectTACustomerLevelSelection"
+				tempRes = TAModule.SelectTACustomerLevelSelection(strParam)
+			Case "SelectTAProductLevel"
+				print "SelectTAProductLevel"
+				tempRes = TAModule.SelectTAProductLevel(strParam)
+			Case "SelectTAProductLevelSelection"
+				print "SelectTAProductLevelSelection"
+				tempRes = TAModule.SelectTAProductLevelSelection(strParam)
+			Case "SelectTACostElementOption" 
+				print "SelectTACostElementOption"
+				tempRes = TAModule.SelectTACostElementOption(strParam)
+			Case "SetTACostElementAmount"
+				print "SetTACostElementAmount"
+				tempRes = TAModule.SetTACostElementAmount(strParam)
+			Case "SetTAClientFundType"
+				print "SetTAClientFundType"
+				tempRes = TAModule.SetTAClientFundType(strParam)
+			Case "SetTAClientRecoveryAmount"
+				print "SetTAClientRecoveryAmount"
+				tempRes = TAModule.SetTAClientRecoveryAmount(strParam)
+			Case "SaveTA"
+				print "SaveTA"
+				tempRes = TAModule.SaveTA
+			Case "SaveTAandClose"
+				print "SaveTAandClose"
+				tempRes = TAModule.SaveTAandClose
+			Case "SetTANotes"
+				print "SetTANotes"
+				tempRes = TAModule.SetTANotes(strParam)
+			Case "ChangeTAStatus"
+				print "ChangeTAStatus"
+				tempRes = TAModule.ChangeTAStatus(strParam)
+			Case "UpdateTAStatus"
+				print "UpdateTAStatus"
+				tempRes = TAModule.UpdateTAStatus(strParam)
+			Case "FilterEventStatus"
+				print "FilterEventStatus"
+				tempRes = TAModule.FilterEventStatus(strParam)
+			Case "FilterAndSelectRowFromEventListTable"
+				print "FilterAndSelectRowFromEventListTable"
+				tempRes = TAModule.FilterAndSelectRowFromEventListTable(strParam)	
+		End Select
+		ExecuteFunction = tempRes		
+	End Function
+	
+End Class

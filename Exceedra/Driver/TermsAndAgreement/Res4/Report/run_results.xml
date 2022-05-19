@@ -1,0 +1,2200 @@
+<?xml version="1.0"?>
+<Results version="1.0">
+<ReportNode type="testrun">
+<ReportNode type="Iteration">
+<ReportNode type="Action">
+<ReportNode type="Step">
+<Data>
+    <Name>SystemUtil.Run "C:\Users\amirul.saddam\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Exceedra Software\SalesPlanner\Exceedra.Wpf.appref-ms",1</Name>
+    <StartTime>2021-11-21 22:43:48</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <IconKey>e87663e7edff45819b697d4ac43934bf</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+    <Name>WpfWindow.Exist</Name>
+    <Description>"Object exists"</Description>
+    <StartTime>2021-11-21 22:43:53</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>Local</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+        </Path>
+        <Operation>Exist</Operation>
+        <OperationData><![CDATA["Object exists"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[window]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[.*]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>WpfWindow.Maximize</Name>
+    <Description />
+    <StartTime>2021-11-21 22:43:54</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>Local</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+        </Path>
+        <Operation>Maximize</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[window]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[.*]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Login-txtUserName.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:43:54</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[Login-txtUserName]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[edit]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[txtUserName;GroupBoxExceedraLogin;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[txtUserName]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Login-txtUserName.Set</Name>
+    <Description>"planning.customer"</Description>
+    <StartTime>2021-11-21 22:43:54</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[Login-txtUserName]]></Name>
+          </Object>
+        </Path>
+        <Operation>Set</Operation>
+        <OperationData><![CDATA["planning.customer"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[edit]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[txtUserName;GroupBoxExceedraLogin;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[txtUserName]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Login-txtPassword.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:43:54</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[Login-txtPassword]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[edit]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[txtPassword;GroupBoxExceedraLogin;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[txtPassword]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Login-txtPassword.Type</Name>
+    <Description>"DKSHaaa11@"</Description>
+    <StartTime>2021-11-21 22:43:55</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[Login-txtPassword]]></Name>
+          </Object>
+        </Path>
+        <Operation>Type</Operation>
+        <OperationData><![CDATA["DKSHaaa11@"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[edit]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[txtPassword;GroupBoxExceedraLogin;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[txtPassword]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Login-BtnLogin.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:43:57</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfButton</Type>
+            <Name><![CDATA[Login-BtnLogin]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[button]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[text]]></Name>
+            <Value><![CDATA[Login]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[btnLogin]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>49d1855d227547298fb5efe39dfafc2d</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Login-BtnLogin.Click</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:11</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfButton</Type>
+            <Name><![CDATA[Login-BtnLogin]]></Name>
+          </Object>
+        </Path>
+        <Operation>Click</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[button]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[text]]></Name>
+            <Value><![CDATA[Login]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[btnLogin]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>49d1855d227547298fb5efe39dfafc2d</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>WpfWindow</Name>
+    <Description>WpfWindow</Description>
+    <StartTime>2021-11-21 22:43:53</StartTime>
+    <Duration>23</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>Local</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[WpfWindow]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[WpfWindow]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[window]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[.*]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+    <Name>Error-InvalidCredentials.Exist</Name>
+    <Description>"Object does not exist"</Description>
+    <StartTime>2021-11-21 22:44:16</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Information]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfObject</Type>
+            <Name><![CDATA[Error-InvalidCredentials]]></Name>
+          </Object>
+        </Path>
+        <Operation>Exist</Operation>
+        <OperationData><![CDATA["Object does not exist"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[Error - Invalid Username/password.]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Information</Name>
+    <Description>WpfWindow</Description>
+    <StartTime>2021-11-21 22:44:16</StartTime>
+    <Duration>0</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Information]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[WpfWindow]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[window]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[this]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[classname]]></Name>
+            <Value><![CDATA[Exceedra.AlertsService.Messages.CustomMessageBoxWindow]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+    <Name>TA-TermsAgreementScreen.Exist</Name>
+    <Description>"Object exists"</Description>
+    <StartTime>2021-11-21 22:44:16</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfObject</Type>
+            <Name><![CDATA[TA-TermsAgreementScreen]]></Name>
+          </Object>
+        </Path>
+        <Operation>Exist</Operation>
+        <OperationData><![CDATA["Object exists"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[object]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[This;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[This]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>Menu-TermsAgreement.Click</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:18</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfButton</Type>
+            <Name><![CDATA[Menu-TermsAgreement]]></Name>
+          </Object>
+        </Path>
+        <Operation>Click</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[text]]></Name>
+            <Value><![CDATA[]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[FullSizeButton]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>49d1855d227547298fb5efe39dfafc2d</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-TermsAgreementScreen.Exist</Name>
+    <Description>"Object exists"</Description>
+    <StartTime>2021-11-21 22:44:19</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfObject</Type>
+            <Name><![CDATA[TA-TermsAgreementScreen]]></Name>
+          </Object>
+        </Path>
+        <Operation>Exist</Operation>
+        <OperationData><![CDATA["Object exists"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[object]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[This;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[This]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-btnNew.Click</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:20</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfButton</Type>
+            <Name><![CDATA[TA-btnNew]]></Name>
+          </Object>
+        </Path>
+        <Operation>Click</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[button]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[text]]></Name>
+            <Value><![CDATA[New]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[parent text]]></Name>
+            <Value><![CDATA[]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[New;TabsControl;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[New]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>49d1855d227547298fb5efe39dfafc2d</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-txtEventDescription.Exist</Name>
+    <Description>"Object exists"</Description>
+    <StartTime>2021-11-21 22:44:23</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[TA-txtEventDescription]]></Name>
+          </Object>
+        </Path>
+        <Operation>Exist</Operation>
+        <OperationData><![CDATA["Object exists"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[textbox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-txtEventDescription.Set</Name>
+    <Description>"DemoUFT8"</Description>
+    <StartTime>2021-11-21 22:44:23</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[TA-txtEventDescription]]></Name>
+          </Object>
+        </Path>
+        <Operation>Set</Operation>
+        <OperationData><![CDATA["DemoUFT8"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[textbox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-txtEventDescription.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:23</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfEdit</Type>
+            <Name><![CDATA[TA-txtEventDescription]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[textbox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>4bdedde7e9c24f91a24001d50b430187</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddEventType.Click</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:27</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddEventType]]></Name>
+          </Object>
+        </Path>
+        <Operation>Click</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;What;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddEventType.Select</Name>
+    <Description>"Channel  &amp; Customer - Consumer Discount"</Description>
+    <StartTime>2021-11-21 22:44:27</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddEventType]]></Name>
+          </Object>
+        </Path>
+        <Operation>Select</Operation>
+        <OperationData><![CDATA["Channel  & Customer - Consumer Discount"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;What;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddEventType.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:27</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddEventType]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;What;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-dateStart.SetDate</Name>
+    <Description>#13/10/2021#</Description>
+    <StartTime>2021-11-21 22:44:28</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfCalendar</Type>
+            <Name><![CDATA[TA-dateStart]]></Name>
+          </Object>
+        </Path>
+        <Operation>SetDate</Operation>
+        <OperationData><![CDATA[#13/10/2021#]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[d1]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>b7036936df4f4b68aa15d19ac33e550f</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-dateStart.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:28</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfCalendar</Type>
+            <Name><![CDATA[TA-dateStart]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[d1]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>b7036936df4f4b68aa15d19ac33e550f</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-dateEnd.SetDate</Name>
+    <Description>#13/10/2022#</Description>
+    <StartTime>2021-11-21 22:44:29</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfCalendar</Type>
+            <Name><![CDATA[TA-dateEnd]]></Name>
+          </Object>
+        </Path>
+        <Operation>SetDate</Operation>
+        <OperationData><![CDATA[#13/10/2022#]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[d2]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>b7036936df4f4b68aa15d19ac33e550f</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-dateEnd.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:29</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfCalendar</Type>
+            <Name><![CDATA[TA-dateEnd]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[d2]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>b7036936df4f4b68aa15d19ac33e550f</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddCustomerLevel.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:29</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddCustomerLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddCustomerLevel.Type</Name>
+    <Description>"Planning Customer"</Description>
+    <StartTime>2021-11-21 22:44:30</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddCustomerLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Type</Operation>
+        <OperationData><![CDATA["Planning Customer"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddCustomerLevel.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:32</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddCustomerLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddCustomerLevel.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:33</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddCustomerLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Home</Name>
+    <Description>WpfWindow</Description>
+    <StartTime>2021-11-21 22:44:16</StartTime>
+    <Duration>25</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[WpfWindow]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[window]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Context">
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+    <Name>TA-CustomerSelection.Expand</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:41</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-CustomerSelection]]></Name>
+          </Object>
+        </Path>
+        <Operation>Expand</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;Value;Scroll;ExpandCollapse;ItemContainer;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking:Rad Split Container:Rad Pane Group:*:frmMain:Where:MultiSelect:RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[ComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+    <Name>[ (MY01-800) 7-11 ].Click</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:43</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-CustomerSelection]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[[ (MY01-800) 7-11 ]]]></Name>
+          </Object>
+        </Path>
+        <Operation>Click</Operation>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>TA-CustomerSelection</Name>
+    <Description>UIAComboBox</Description>
+    <StartTime>2021-11-21 22:44:43</StartTime>
+    <Duration>2</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-CustomerSelection]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIAComboBox]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;Value;Scroll;ExpandCollapse;ItemContainer;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking:Rad Split Container:Rad Pane Group:*:frmMain:Where:MultiSelect:RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[ComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-CustomerSelection.Collapse</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:45</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-CustomerSelection]]></Name>
+          </Object>
+        </Path>
+        <Operation>Collapse</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;Value;Scroll;ExpandCollapse;ItemContainer;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking:Rad Split Container:Rad Pane Group:*:frmMain:Where:MultiSelect:RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[ComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Rad Pane Group</Name>
+    <Description>UIATab</Description>
+    <StartTime>2021-11-21 22:44:41</StartTime>
+    <Duration>4</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIATab]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;ItemContainer;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking:Rad Split Container:Rad Pane Group]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[Rad Pane Group]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[Tab]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[all items]]></Name>
+            <Value><![CDATA[Telerik.Windows.Controls.RadPane Header: Content:]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>c6761e5c59724403b1a0709384649b14</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Rad Docking</Name>
+    <Description>UIAObject</Description>
+    <StartTime>2021-11-21 22:44:41</StartTime>
+    <Duration>4</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIAObject]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[nativeclass]]></Name>
+            <Value><![CDATA[RadDocking]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[Rad Docking]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[frameworkid]]></Name>
+            <Value><![CDATA[WPF]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[Custom]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Home</Name>
+    <Description>UIAWindow</Description>
+    <StartTime>2021-11-21 22:44:41</StartTime>
+    <Duration>4</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIAWindow]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Window;Transform;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[frameworkid]]></Name>
+            <Value><![CDATA[WPF]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[Window]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddCustomerSelection.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:45</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddCustomerSelection]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[RadComboBox;MultiSelect;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddProductLevel.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:46</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddProductLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddProductLevel.Type</Name>
+    <Description>"Brand"</Description>
+    <StartTime>2021-11-21 22:44:46</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddProductLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Type</Operation>
+        <OperationData><![CDATA["Brand"]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddProductLevel.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:49</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddProductLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<ReportNode type="Step">
+<Data>
+    <Name>TA-ddProductLevel.Object</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:49</StartTime>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>WpfComboBox</Type>
+            <Name><![CDATA[TA-ddProductLevel]]></Name>
+          </Object>
+        </Path>
+        <Operation>Object</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[combo box]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devnamepath]]></Name>
+            <Value><![CDATA[ThisComboBox;thisControl;Where;frmMain;Rad Pane Group;Rad Split Container;Docking;;]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[ThisComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Home</Name>
+    <Description>WpfWindow</Description>
+    <StartTime>2021-11-21 22:44:45</StartTime>
+    <Duration>7</Duration>
+    <Result>Done</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>WpfWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[WpfWindow]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[wpftypename]]></Name>
+            <Value><![CDATA[window]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[regexpwndtitle]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[devname]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<ReportNode type="Context">
+<ReportNode type="Context">
+<ReportNode type="Context">
+<ReportNode type="Step">
+<ReportNode type="Step">
+<ReportNode type="Step">
+<ReportNode type="Step">
+<Data>
+    <Name>Stop Run</Name>
+    <Description>Run stopped by user.</Description>
+    <StartTime>2021-11-21 22:47:12</StartTime>
+    <Result>Information</Result>
+    <Extension>
+      <IconKey>0f7a711d84ba4a279aa3450359823560</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>[ UIAObject ]</Name>
+    <Description>Cannot&amp;nbsp;identify&amp;nbsp;the&amp;nbsp;object&amp;nbsp;"[&amp;nbsp;UIAObject&amp;nbsp;]"&amp;nbsp;(of&amp;nbsp;class&amp;nbsp;UIAObject).&lt;br/&gt;Verify&amp;nbsp;that&amp;nbsp;this&amp;nbsp;object's&amp;nbsp;properties&amp;nbsp;match&amp;nbsp;an&amp;nbsp;object&amp;nbsp;currently&amp;nbsp;displayed&amp;nbsp;in&amp;nbsp;your&amp;nbsp;application.&lt;br/&gt;&lt;br/&gt;Object's physical description:&lt;br&gt;Name = ASAHI \(0936-ASAHI-BR\)&lt;br&gt;</Description>
+    <StartTime>2021-11-21 22:45:57</StartTime>
+    <Duration>75</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-ProductSelection]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[[ UIAObject ]]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[Cannot&nbsp;identify&nbsp;the&nbsp;object&nbsp;"[&nbsp;UIAObject&nbsp;]"&nbsp;(of&nbsp;class&nbsp;UIAObject).<br/>Verify&nbsp;that&nbsp;this&nbsp;object's&nbsp;properties&nbsp;match&nbsp;an&nbsp;object&nbsp;currently&nbsp;displayed&nbsp;in&nbsp;your&nbsp;application.]]></OperationData>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+      <NodeType>Run Error</NodeType>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>[ UIAObject ]</Name>
+    <Description>Cannot&amp;nbsp;identify&amp;nbsp;the&amp;nbsp;object&amp;nbsp;"[&amp;nbsp;UIAObject&amp;nbsp;]"&amp;nbsp;(of&amp;nbsp;class&amp;nbsp;UIAObject).&lt;br/&gt;Verify&amp;nbsp;that&amp;nbsp;this&amp;nbsp;object's&amp;nbsp;properties&amp;nbsp;match&amp;nbsp;an&amp;nbsp;object&amp;nbsp;currently&amp;nbsp;displayed&amp;nbsp;in&amp;nbsp;your&amp;nbsp;application.&lt;br/&gt;&lt;br/&gt;Object's physical description:&lt;br&gt;Name = ASAHI \(0936-ASAHI-BR\)&lt;br&gt;</Description>
+    <StartTime>2021-11-21 22:45:16</StartTime>
+    <Duration>116</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-ProductSelection]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[[ UIAObject ]]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[Cannot&nbsp;identify&nbsp;the&nbsp;object&nbsp;"[&nbsp;UIAObject&nbsp;]"&nbsp;(of&nbsp;class&nbsp;UIAObject).<br/>Verify&nbsp;that&nbsp;this&nbsp;object's&nbsp;properties&nbsp;match&nbsp;an&nbsp;object&nbsp;currently&nbsp;displayed&nbsp;in&nbsp;your&nbsp;application.]]></OperationData>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+      <NodeType>Run Error</NodeType>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>TA-ProductSelection.Expand</Name>
+    <Description />
+    <StartTime>2021-11-21 22:44:52</StartTime>
+    <Duration>140</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAComboBox</Type>
+            <Name><![CDATA[TA-ProductSelection]]></Name>
+          </Object>
+        </Path>
+        <Operation>Expand</Operation>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;Value;Scroll;ExpandCollapse;ItemContainer;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking:Rad Split Container:Rad Pane Group:*:frmMain:Where:MultiSelect:RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[nativeclass]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[helptext]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[ComboBox]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[automationid]]></Name>
+            <Value><![CDATA[RadComboBox]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>69fe5624c8dc47e7b9b5ce6860959dbb</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <DeviceInfo />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Rad Pane Group</Name>
+    <Description>UIATab</Description>
+    <StartTime>2021-11-21 22:44:52</StartTime>
+    <Duration>140</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+          <Object>
+            <Type>UIATab</Type>
+            <Name><![CDATA[Rad Pane Group]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIATab]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;ItemContainer;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking:Rad Split Container:Rad Pane Group]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[Rad Pane Group]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[Tab]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[all items]]></Name>
+            <Value><![CDATA[Telerik.Windows.Controls.RadPane Header: Content:]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>c6761e5c59724403b1a0709384649b14</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Rad Docking</Name>
+    <Description>UIAObject</Description>
+    <StartTime>2021-11-21 22:44:52</StartTime>
+    <Duration>140</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+          <Object>
+            <Type>UIAObject</Type>
+            <Name><![CDATA[Rad Docking]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIAObject]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Selection;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*:Docking]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[nativeclass]]></Name>
+            <Value><![CDATA[RadDocking]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[Rad Docking]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[frameworkid]]></Name>
+            <Value><![CDATA[WPF]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[Custom]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>036e7b5ab66348198244b298b11e5f1a</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Home</Name>
+    <Description>UIAWindow</Description>
+    <StartTime>2021-11-21 22:44:52</StartTime>
+    <Duration>140</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <TestObject>
+        <Repository>D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Exceedra\OR\Exceedra.tsr</Repository>
+        <Path>
+          <Object>
+            <Type>UIAWindow</Type>
+            <Name><![CDATA[Home]]></Name>
+          </Object>
+        </Path>
+        <OperationData><![CDATA[UIAWindow]]></OperationData>
+        <Properties>
+          <Property>
+            <Name><![CDATA[supportedpatterns]]></Name>
+            <Value><![CDATA[Window;Transform;SynchronizedInput]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[path]]></Name>
+            <Value><![CDATA[*:*]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[name]]></Name>
+            <Value><![CDATA[MY_QA]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[frameworkid]]></Name>
+            <Value><![CDATA[WPF]]></Value>
+          </Property>
+          <Property>
+            <Name><![CDATA[controltype]]></Name>
+            <Value><![CDATA[Window]]></Value>
+          </Property>
+        </Properties>
+      </TestObject>
+      <IconKey>81291f6c728849dd9017ff29f29d81ff</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Action1</Name>
+    <Description />
+    <StartTime>2021-11-21 22:43:38</StartTime>
+    <Duration>214</Duration>
+    <Result>Failed</Result>
+    <InputParameters />
+    <Extension>
+      <IconKey>c583a40f5f8e4b18b838735c3d5132b1</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+  </Data>
+</ReportNode>
+<Data>
+    <Name>Action0</Name>
+    <Description />
+    <StartTime>2021-11-21 22:43:38</StartTime>
+    <Duration>215</Duration>
+    <Result>Failed</Result>
+    <Extension>
+      <IconKey>da8d070f0b41408f8536f608c2e31c67</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Index>1</Index>
+    <TestedApplications />
+  </Data>
+</ReportNode>
+<Data>
+    <Name>TermsAndAgreement</Name>
+    <ToolName>Micro Focus Unified Functional Testing</ToolName>
+    <ToolVersion>0</ToolVersion>
+    <ToolVersionStringLiteral>15.0.2</ToolVersionStringLiteral>
+    <Description />
+    <StartTime>2021-11-21 22:43:34</StartTime>
+    <Duration>219</Duration>
+    <Result>Failed</Result>
+    <InputParameters />
+    <Extension>
+      <IconKey>80a08e3b1b55420ba6f35fc5ec6b272c</IconKey>
+      <IsPlainTextNodeName>True</IsPlainTextNodeName>
+    </Extension>
+    <Environment>
+      <Timezone>+08:00:00</Timezone>
+      <Locale>English (Malaysia)</Locale>
+      <User>MYCSSC\amirul.saddam</User>
+      <CpuInfo>11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz</CpuInfo>
+      <NumberOfCores>8</NumberOfCores>
+      <TotalMemory>16064</TotalMemory>
+      <HostName>CSSC.dksh.net\NB-1239</HostName>
+      <OSInfo>Windows 10</OSInfo>
+    </Environment>
+    <TestedApplications />
+    <Links>
+      <Link type="DataTable" reference="Default.xlsx" displayname="Default Data Table" />
+    </Links>
+  </Data>
+</ReportNode>
+<GeneralInfo>
+    <ResultName>Res4</ResultName>
+    <RunStartTime>2021-11-21 22:43:34</RunStartTime>
+    <Timezone>+08:00:00</Timezone>
+    <OrchestrationToolName>Micro Focus Unified Functional Testing</OrchestrationToolName>
+    <OrchestrationToolVersion>0</OrchestrationToolVersion>
+    <OrchestrationToolVersionStringLiteral>15.0.2</OrchestrationToolVersionStringLiteral>
+  </GeneralInfo>
+</Results>
