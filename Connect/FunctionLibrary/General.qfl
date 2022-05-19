@@ -7,7 +7,9 @@ Public Function GetNumber(strVal)
 	RegEx.Pattern = "[^\d*(\.\d+)?]"
 	RegEx.IgnoreCase = True 
 	RegEx.Global = True 
-	numStr = RegEx.Replace(strVal, "") 
+	numStr = RegEx.Replace(strVal, "")
+	numStr = Replace(numStr, "(", "")	
+	numStr = Replace(numStr, ")", "")	
 	GetNumber = numStr
 	
 End Function
@@ -47,4 +49,47 @@ Sub ObjectSync(objVal)
 	End If
 End Sub
 
+Function PerformWait(intDisableTime, intDelay, object)
+
+	If CheckExist (intDelay , object) Then
+	    if ValidateDisabled(object, intDisableTime) Then
+	        object.Sync
+	        Reporter.ReportEvent 0 , "Element is ready to use" , "The  specified element is ready to use" & Date & Time
+		Else
+	       Reporter.ReportEvent 3 , "Object Disabled." , "Object remains disabled after specified time : " & refDisableTime & Date & Time   
+	    End If
+	Else
+	    Reporter.ReportEvent 3 , "Element not present." , "The specified element not present : " & Date & Time
+	End If
+
+End Function
+
+Function CheckExist(intDelay, object)
+	
+	object.RefreshObject
+	' -- validating the object is exist or not.
+	If object.Exist(intDelay) Then
+	    CheckExist = True
+	     Reporter.ReportEvent micPass , "Element is exist" , "The  specified element is ready to use"
+	Else
+	    CheckExist = False
+	     Reporter.ReportEvent micFail , "Element not present." , "The specified element not present"
+	End If
+
+End Function
+
+Function ValidateDisabled(object, intDisableTime)
+	For Iterator = 1 To intDisableTime Step 1
+	    ' -- validating the object is disabled or not.
+	    If object.GetROProperty("disabled") = 1 Then
+	        wait 1  
+	        ValidateDisabled = False
+	    Else
+	        ValidateDisabled = True
+	        Exit For    
+	    End If
+	    Iterator = Iterator + 1
+	Next
+
+End Function
 

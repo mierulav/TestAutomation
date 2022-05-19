@@ -66,11 +66,11 @@ Function OrderSubmission()
 	End If
 
 	'Validate Login screen
-	Assert "Login Objects", LoginObjects
+	AssertObjects "Login Objects", LoginObjects
 	
 	'Step 2: Login
 	Login strCustomerId, strPassword
-	Browser("DKSH Connect").Navigate SystemURL
+	Browser("DKSH Connect").Navigate ConnectURL
 	
 	'Step 3: Select ShipToId
 	If Datatable.Value("MultipleShipToAddress", "TestList") = "Y" Then
@@ -78,25 +78,25 @@ Function OrderSubmission()
 	End If
 	
 	'Validate landing page - Header objects
-	Assert "Landing page - Header", CheckHeaderObjects
+	AssertObjects "Landing page - Header", CheckHeaderObjects
 	
 	'Validate landing page - Footer objects
-	Assert "Landing page - Footer", CheckFooterObjects
+	AssertObjects "Landing page - Footer", CheckFooterObjects
 	
 	'Validate landing page - Navigation Menu objects
-	Assert "Landing page - Navigation Menu", CheckNavigationMenuObjects
+	AssertObjects "Landing page - Navigation Menu", CheckNavigationMenuObjects
 	
 	'Validate landing page - User Menu objects
-	Assert "Landing page - User Menu", CheckUserMenuList(strRole)
+	AssertObjects "Landing page - User Menu", CheckUserMenuList(strRole)
 	
 	'Step 4: Navigate to All Products
 	OpenAllProductPage
 	
 	'Validate PLP screen
-	Assert "PLP page", CheckPLPObjects
+	AssertObjects "PLP page", CheckPLPObjects
 	
 	'Validate PLP item objects
-	Assert "PLP page - Item objects", CheckPLPProductObjects
+	AssertObjects "PLP page - Item objects", CheckPLPProductObjects
 	
 	'Step 5: Search products
 	SearchProduct strProductCode
@@ -105,7 +105,7 @@ Function OrderSubmission()
 	OpenProductPDP
 	
 	'Validate PDP screen
-	Assert "PDP page", CheckPDPObjects
+	AssertObjects "PDP page", CheckPDPObjects
 	
 	'Validate Produt details
 	Assert "Product Code & Product Name", CheckPDPSelectedProduct(strProductCode, strProductName)
@@ -116,14 +116,15 @@ Function OrderSubmission()
 	'Error Handling for product that is not able to put into cart
 	If CheckSpecificProductCode(strProductCode) = False Then
 		OrderSubmission = "1"
+		AssertExitRun "Step 7: Add Product to Cart", "Product did not succesfully added to cart" 
 		Exit Function
 	End If
 	
 	'Validate Cart oage
-	Assert "Shopping Cats - Objects", CheckCartsObjects
+	AssertObjects "Shopping Cats - Objects", CheckCartsObjects
 	
 	'Validate Carts calculation summary objects
-	Assert "Shopping Carts - Calculation Summary Objects", CheckCartsCalculationObjects
+	AssertObjects "Shopping Carts - Calculation Summary Objects", CheckCartsCalculationObjects
 	
 	'Validate Carts product details
 	Assert "Shopping Carts - Added Product's details", CheckProductDetails(strProductCode, strProductName)
@@ -151,10 +152,10 @@ Function OrderSubmission()
 	End If
 	
 	'Validate Checkout objects
-	Assert "Checkout - Layout", CheckCheckoutObjects
+	AssertObjects "Checkout - Layout", CheckCheckoutObjects
 	
 	'Validate Checkout Calculation Summary objects
-	Assert "Checkout - Calculation Summary Objects", CheckCheckoutCalculationSummaryObjects
+	AssertObjects "Checkout - Calculation Summary Objects", CheckCheckoutCalculationSummaryObjects
 	
 	'Validate Product details 
 	Assert "Checkout - Product Details", CheckOrderDetails(strProductCode, strProductName, strShipToAddress)
@@ -170,7 +171,7 @@ Function OrderSubmission()
 		
 		Case "MMHEC"
 			SetPONumber strPONumber
-			SelectOOSProceedingAgreement "agree"
+			'SelectOOSProceedingAgreement "agree"
 			
 		Case Else
 			SetPONumber strPONumber

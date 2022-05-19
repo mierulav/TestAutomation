@@ -56,6 +56,8 @@ OPTION EXPLICIT
 	Public ProductDiscountVN : Set ProductDiscountVN = CartPage.WebElement("Cart-ProductDiscount-VN")
 	Public TotalBeforeVATVN : Set TotalBeforeVATVN = CartPage.WebElement("Cart-TotalBeforeVAT-VN")
 	Public VATCollectedVN : Set VATCollectedVN = CartPage.WebElement("Cart-VATCollected-VN")
+	'Calculation Summary TW
+	Public CashDiscountTW : Set CashDiscountTW = CartPage.WebElement("Cart-ProductDiscount-TW")
 	'Calculation Summary	
 	Public ProductDiscount : Set ProductDiscount = CartPage.WebElement("Cart-ProductDiscount")
 	Public Subtotal : Set Subtotal = CartPage.WebElement("Cart-Subtotal")
@@ -75,6 +77,7 @@ OPTION EXPLICIT
 	Public CartProductImage : Set CartProductImage = CartPage.Image("Cart-ProductImage")	
 	Public CartProductPricePerUnit : Set CartProductPricePerUnit = CartPage.WebElement("Cart-ProductPriceAUnit")
 	Public CartProductPriceTotal : Set CartProductPriceTotal = CartPage.WebElement("Cart-ProductTotalPrice")
+	Public CartProductItemDiscount : Set CartProductItemDiscount = CartPage.WebElement("Cart-ProductItemDiscount")
 	Public CartProductUOM : Set CartProductUOM = CartPage.WebElement("Cart-ProductUOM")
 	Public CartTaxDisclaimer : Set CartTaxDisclaimer =Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-TaxDisclaimer")
 	Public CartCreditAmount : Set CartCreditAmount =Browser("DKSH Connect").Page("Shopping Cart").WebElement("Cart-CreditAmount")
@@ -92,6 +95,7 @@ OPTION EXPLICIT
 
 Public Sub SetProductQuantity(strProductQuantity)
 
+	CartProductQuantity.RefreshObject
 	CartProductQuantity.WaitProperty "Visible", True, 3000
 	CartProductQuantity.Set strProductQuantity
 	wShell.Sendkeys "{ENTER}"
@@ -99,23 +103,34 @@ Public Sub SetProductQuantity(strProductQuantity)
 End Sub
 
 '==================================================================
-'Function to modify product quantity
+'Function to modify product quantity according to MOV
 '==================================================================
 
-Public Sub SetSpecificProductQuantity(strProductQuantity, strItemNumber)
+Public Sub SetProductQuantityBasedOnMOV()
 
-	CartPage.Sync
-	strItemNumber = strItemNumber - 1
-	Dim i, j
-	Dim objDesc : Set objDesc = Description.Create
-	objDesc("micclass").value = "WebEdit"
-	Dim arrObj : Set arrObj = Page.ChildObjects(objDesc)
-	For i = 0 To arrObj.Count-1
-		If arrObj(i).GetROProperty("html id") = "quantity_" & strItemNumber Then
-			arrObj(i).Set strProductQuantity
-			Exit For
-		End If
-	Next
+	CartProductQuantity.RefreshObject
+	CartProductQuantity.WaitProperty "Visible", True, 3000
+	Dim intMOV, intQty
+	Select Case ProjectName
+		Case "AUTEC"
+			intMOV = 200
+		Case "MYHEC"
+			intMOV = 250
+		Case "KHHEC" 
+			intMOV = 30
+		Case "MMHEC"
+			intMOV = 50000
+		Case "SGHEC", "SGCG"
+			intMOV = 150
+		Case "VNHEC"
+			intMOV = 500000
+		Case "THHEC"
+			intMOV = 2000
+		Case "TWHEC" 
+			intMOV = 3000			
+	End Select
+	intQty = Round(intMOV/GetProductUnitPrice, 0)+1
+	CartProductQuantity.Set intQty
 	wShell.Sendkeys "{ENTER}"
 	
 End Sub
@@ -126,9 +141,10 @@ End Sub
 
 Public Sub ProceedForCheckout()
 	
+	ProceedCheckout.RefreshObject
 	ProceedCheckout.WaitProperty "Visible", True
 	ProceedCheckout.Click
-	Wait(3)
+	COProductName.WaitProperty "Visible", True
 
 End Sub
 
@@ -140,6 +156,7 @@ End Sub
 Public Function MinimumPurchaseAlert()	
 			
 	CartPage.Sync
+	AlertMinimumPurchase.RefreshObject
 	MinimumPurchaseAlert = AlertMinimumPurchase.Exist
 	
 End Function
@@ -151,6 +168,7 @@ End Function
 Public Function ProductQuantityUpdatedAlert()
 
 	CartPage.Sync
+	AlertProductQuantityUpdated.RefreshObject
 	ProductQuantityUpdatedAlert = AlertProductQuantityUpdated.Exist
 	
 End Function
@@ -162,6 +180,7 @@ End Function
 Public Function ProductRemovedAlert()
 
 	CartPage.Sync
+	AlertProductRemoved.RefreshObject
 	ProductRemovedAlert = AlertProductRemoved.Exist
 	
 End Function
@@ -172,8 +191,16 @@ End Function
 
  Public Function GetProductUnitPrice()
  
- 	CartProductPricePerUnit.WaitProperty "visible", true, 3000
- 	GetProductUnitPrice = CSng(Trim(GetNumber(CartProductPricePerUnit.GetROProperty("Innertext")))) 	
+ 	Select Case ProjectName
+ 		Case "MYHEC"
+ 			CartPage.WebNumber("Cart-OpenUnitPricing").RefreshObject
+ 			GetProductUnitPrice = CSng(CartPage.WebNumber("Cart-OpenUnitPricing").GetROProperty("Value"))
+		Case Else
+			CartProductPricePerUnit.RefreshObject
+			CartProductPricePerUnit.WaitProperty "visible", true, 3000
+			GetProductUnitPrice = CSng(Trim(GetNumber(CartProductPricePerUnit.GetROProperty("Innertext")))) 
+ 	End Select
+ 		
  	
  End Function
 
@@ -183,8 +210,33 @@ End Function
 
 Public Function GetProductTotalPrice()
  
- 	CartProductPriceTotal.WaitProperty "visible", true, 3000
- 	GetProductTotalPrice = CSng(Trim(GetNumber(CartProductPriceTotal.GetROProperty("Innertext")))) 	
+ 	CartProductPriceTotal.RefreshObject
+ 	CartProductPriceTotal.WaitProperty "visible", true
+ 	Select Case ProjectName
+ 		Case "THHEC"
+ 			GetProductTotalPrice = GetProductUnitPrice*CSng(Browser("DKSH Connect").Page("Shopping Cart").WebEdit("Cart-ProductQuantity").GetROProperty("value"))
+ 		Case Else
+ 			GetProductTotalPrice = CSng(Trim(GetNumber(CartProductPriceTotal.GetROProperty("Innertext")))) 
+ 	End Select
+ 		
+ 	
+ End Function
+ 
+ '==================================================================
+'Function to get Product Total Price
+'==================================================================
+
+Public Function GetProductItemDiscount()
+ 
+ 	CartProductItemDiscount.RefreshObject
+ 	CartProductItemDiscount.WaitProperty "visible", true, 3000
+ 	Dim strVal : strVal = CartProductItemDiscount.GetROProperty("Innertext")
+ 	If Trim(strVal) <> "-" Then
+ 		GetProductItemDiscount = CSng(Trim(GetNumber(strVal))) 	
+ 		Exit Function
+ 	End If
+ 	
+ 	GetProductItemDiscount = 0
  	
  End Function
 
@@ -201,34 +253,47 @@ Public Function GetProductTotalPrice()
 '		  	GetSubtotal = Csng(Trim(GetNumber(Subtotal2.GetROProperty("Innertext"))))
 		  	
 		  Case "AUTEC"
+		  	SubtotalAU.RefreshObject
 		  	SubtotalAU.WaitProperty "visible", true, 3000 
 		  	GetSubtotal = Csng(Trim(GetNumber(SubtotalAU.GetROProperty("Innertext"))))
 		  
 		  Case "MYHEC"
+			SubtotalMY.RefreshObject 
 		  	SubtotalMY.WaitProperty "visible", true, 3000  
 		  	GetSubtotal = Csng(Trim(GetNumber(SubtotalMY.GetROProperty("Innertext"))))
 		  	
 		  Case "KHHEC"
+		  	SubtotalKH.RefreshObject
 		  	SubtotalKH.WaitProperty "visible", true, 3000  
 		  	GetSubtotal = Csng(Trim(GetNumber(SubtotalKH.GetROProperty("Innertext"))))
 		  
 		  Case "THHEC"
+		  	SubtotalTH.RefreshObject
  			SubtotalTH.WaitProperty "visible", true, 3000  
   			GetSubtotal = Csng(Trim(GetNumber(SubtotalTH.GetROProperty("Innertext"))))
   			
   		Case "MMHEC"
+  			SubtotalMM.RefreshObject
  			SubtotalMM.WaitProperty "visible", true, 3000  
   			GetSubtotal = Csng(Trim(GetNumber(SubtotalMM.GetROProperty("Innertext"))))
   			
   		Case "VNHEC"
+  			SubtotalVN.RefreshObject
  			SubtotalVN.WaitProperty "visible", true, 3000  
   			GetSubtotal = Csng(Trim(GetNumber(SubtotalVN.GetROProperty("Innertext"))))
   			
   		Case "SGHEC", "SGCG"
+  			SubtotalSG.RefreshObject
   			SubtotalSG.WaitProperty "visible", true, 3000  
   			GetSubtotal = Csng(Trim(GetNumber(SubtotalSG.GetROProperty("Innertext"))))
+  			
+  		Case "TWHEC"
+ 			Subtotal.RefreshObject
+ 			Subtotal.WaitProperty "visible", true, 3000  
+  			GetSubtotal = Csng(Trim(GetNumber(Subtotal.GetROProperty("Innertext"))))
 		  	
  		Case Else
+ 			Subtotal.RefreshObject
  			Subtotal.WaitProperty "visible", true, 3000  
   			GetSubtotal = Csng(Trim(GetNumber(Subtotal.GetROProperty("Innertext"))))
   			 	
@@ -245,34 +310,47 @@ Public Function GetProductTotalPrice()
 	Select Case ProjectName
 	
 		Case "MYHEC"
+			TotalMY.RefreshObject
 			TotalMY.WaitProperty "visible", true, 3000
  			GetTotal = CSng(Trim(GetNumber(TotalMY.GetROProperty("Innertext")))) 
  			
  		Case "AUTEC"
+ 			TotalAU.RefreshObject
 			TotalAU.WaitProperty "visible", true, 3000 
  			GetTotal = CSng(Trim(GetNumber(TotalAU.GetROProperty("Innertext")))) 
  		
  		Case "KHHEC"
+ 			TotalAU.RefreshObject
 			TotalAU.WaitProperty "visible", true, 3000 
  			GetTotal = CSng(Trim(GetNumber(TotalKH.GetROProperty("Innertext")))) 
  		
  		Case "THHEC"
+ 			TotalTH.RefreshObject
  			TotalTH.WaitProperty "Visible", True, 3000
  			GetTotal = CSng(Trim(GetNumber(TotalTH.GetROProperty("Innertext")))) 
  		
  		Case "MMHEC"
+ 			TotalMM.RefreshObject
  			TotalMM.WaitProperty "Visible", True, 3000
  			GetTotal = CSng(Trim(GetNumber(TotalMM.GetROProperty("Innertext")))) 
  		
  		Case "VNHEC"
+ 			TotalVN.RefreshObject
  			TotalVN.WaitProperty "Visible", True, 3000
  			GetTotal = CSng(Trim(GetNumber(TotalVN.GetROProperty("Innertext")))) 
  			
  		Case "SGHEC", "SGCG"
+ 			TotalSG.RefreshObject
  			TotalSG.WaitProperty "Visible", True, 3000
  			GetTotal = CSng(Trim(GetNumber(TotalSG.GetROProperty("Innertext")))) 
+ 		
+ 		Case "TWHEC"
+			Total.RefreshObject
+			Total.WaitProperty "visible", true, 3000 
+ 			GetTotal = CSng(Trim(GetNumber(Total.GetROProperty("Innertext")))) 	
  			
 		Case Else
+			Total.RefreshObject
 			Total.WaitProperty "visible", true, 3000 
  			GetTotal = CSng(Trim(GetNumber(Total.GetROProperty("Innertext")))) 	
 	End Select
@@ -291,22 +369,32 @@ Public Function GetProductTotalPrice()
  			GetTotalDiscount = 0
  		
  		Case "THHEC"
+ 			ProductDiscountTH.RefreshObject
  			ProductDiscountTH.WaitProperty "visible", true, 3000 
  			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountTH.GetROProperty("Innertext")))) 	
  		
  		Case "MMHEC"
+ 			ProductDiscountMM.RefreshObject
  			ProductDiscountMM.WaitProperty "visible", true, 3000 
  			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountMM.GetROProperty("Innertext")))) 
  		
  		Case "VNHEC"
+ 			ProductDiscountVN.RefreshObject
  			ProductDiscountVN.WaitProperty "visible", true, 3000 
  			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountVN.GetROProperty("Innertext")))) 
  		
  		Case "SGHEC", "SGCG"
+ 			ProductDiscountSG.RefreshObject
  			ProductDiscountSG.WaitProperty "visible", true, 3000 
  			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscountSG.GetROProperty("Innertext")))) 	
  		
+ 		Case "TWHEC"
+ 			CashDiscountTW.RefreshObject
+ 			CashDiscountTW.WaitProperty "visible", true, 3000 
+ 			GetTotalDiscount = Csng(Trim(GetNumber(CashDiscountTW.GetROProperty("Innertext")))) 
+ 		
  		Case Else
+ 			ProductDiscount.RefreshObject
  			ProductDiscount.WaitProperty "visible", true, 3000 
  			GetTotalDiscount = Csng(Trim(GetNumber(ProductDiscount.GetROProperty("Innertext")))) 	
  			
@@ -321,21 +409,24 @@ Public Function GetProductTotalPrice()
  Public Function GetTotalBeforeVAT()
   	
  	Select Case ProjectName
- 		Case "AUTEC", "MYHEC", "KHHEC", "THHEC"
+ 		Case "AUTEC", "MYHEC", "KHHEC", "THHEC", "TWHEC"
  			GetTotalBeforeVAT = 0
  		
  		Case "MMHEC"
  			GetTotalBeforeVAT = GetTotalIncudeVAT
  		
  		Case "SGHEC", "SGCG"
+ 			TotalBeforeVATSG.RefreshObject
  			TotalBeforeVATSG.WaitProperty "visible", true 
  			GetTotalBeforeVAT = Csng(Trim(GetNumber(TotalBeforeVATSG.GetROProperty("Innertext"))))
  		
  		Case "VNHEC"
+ 			TotalBeforeVATVN.RefreshObject
  			TotalBeforeVATVN.WaitProperty "visible", true 
  			GetTotalBeforeVAT = Csng(Trim(GetNumber(TotalBeforeVATVN.GetROProperty("Innertext"))))
  			
  		Case Else
+ 			TotalBeforeVAT.RefreshObject
  			TotalBeforeVAT.WaitProperty "visible", true 
  			GetTotalBeforeVAT = Csng(Trim(GetNumber(TotalBeforeVAT.GetROProperty("Innertext"))))
  	End Select
@@ -351,10 +442,12 @@ Public Function GetProductTotalPrice()
  	Select Case ProjectName
  		
  		Case "MMHEC"
+ 			TotalIncludeVATMM.RefreshObject
  			TotalIncludeVATMM.WaitProperty "visible", true 
  			GetTotalIncudeVAT = Csng(Trim(GetNumber(TotalIncludeVATMM.GetROProperty("Innertext"))))
  			
  		Case Else
+ 			TotalIncludeVAT.RefreshObject
  			TotalIncludeVAT.WaitProperty "visible", true 
  			GetTotalIncudeVAT = Csng(Trim(GetNumber(TotalIncludeVAT.GetROProperty("Innertext"))))
  			
@@ -370,22 +463,26 @@ Public Function GetProductTotalPrice()
  Public Function GetVATCollected()
 
 	Select Case ProjectName
- 		Case "AUTEC", "MYHEC", "KHHEC", "THHEC"
+ 		Case "AUTEC", "MYHEC", "KHHEC", "THHEC", "TWHEC"
  			GetVATCollected = 0
  		
  		Case "SGHEC", "SGCG"
+ 			VATCollectedSG.RefreshObject
  			VATCollectedSG.WaitProperty "visible", true 
  			GetVATCollected = CSng(Trim(GetNumber(VATCollectedSG.GetROProperty("Innertext"))))
  		
  		Case "MMHEC"
+ 			VATCollectedMM.RefreshObject
  			VATCollectedMM.WaitProperty "visible", true 
  			GetVATCollected = CSng(Trim(GetNumber(VATCollectedMM.GetROProperty("Innertext"))))
  		
  		Case "VNHEC"
+ 			VATCollectedVN.RefreshObject
  			VATCollectedVN.WaitProperty "visible", true 
  			GetVATCollected = CSng(Trim(GetNumber(VATCollectedVN.GetROProperty("Innertext"))))
  			
  		Case Else
+ 			VATCollected.RefreshObject
  			VATCollected.WaitProperty "visible", true 
  			GetVATCollected = CSng(Trim(GetNumber(VATCollected.GetROProperty("Innertext"))))
  	End Select
@@ -399,10 +496,11 @@ Public Function GetProductTotalPrice()
  Public Function GetFreightCharge()
  
   	Select Case ProjectName
- 		Case "MMHEC", "KHHEC", "VNHEC", "AUTEC", "MYHEC", "THHEC"
+ 		Case "MMHEC", "KHHEC", "VNHEC", "AUTEC", "MYHEC", "THHEC", "TWHEC"
  			GetFreightCharge = 0
  		
  		Case "SGHEC", "SGCG"
+ 			FreightChargeSG.RefreshObject
  		 	FreightChargeSG.WaitProperty "visible", true 
  			GetFreightCharge = Csng(Trim(GetNumber(FreightChargeSG.GetROProperty("Innertext"))))
  		
@@ -452,7 +550,7 @@ Public Function CalculatedTotalBeforeVAT()
 		Case "MMHEC"
 			fCalc = Round(GetSubtotal - GetTotalDiscount, 2)
 			
-		Case "AUTEC", "MYHEC", "KHHEC", "THHEC"
+		Case "AUTEC", "MYHEC", "KHHEC", "THHEC", "TWHEC"
 			fCalc = 0
 		
 		Case "SGCG", "SGHEC"
@@ -491,7 +589,7 @@ Public Function CalculatedTotal()
 		Case "AUTEC", "MYHEC", "KHHEC"
 			fSum = GetSubTotal
 		
-		Case "THHEC"
+		Case "THHEC", "TWHEC"
 			fSum = Round(GetSubTotal - GetTotalDiscount, 2)
 			
 		Case "SGCG", "SGHEC"
@@ -519,6 +617,7 @@ End Function
 
 Public Sub BackToShop()
 
+	CartContinueShopping.RefreshObject
 	CartContinueShopping.Click
 	
 End Sub
@@ -529,6 +628,7 @@ End Sub
 
 Public Function GetProductName()
 
+	CartProductName.RefreshObject
 	CartProductName.WaitProperty "Visible", True, 3000
 	GetProductName = CartProductName.GetROProperty("Innertext")
 	
@@ -541,8 +641,9 @@ End Function
 
 Public Function GetProductCode()
 
+	CartProductCode.RefreshObject
 	CartProductCode.WaitProperty "Visible", True, 3000
-	GetProductCode = ProductCode.GetROProperty("Innertext")
+	GetProductCode = CartProductCode.GetROProperty("Innertext")
 	
 End Function
 
@@ -553,6 +654,7 @@ End Function
 Public Function CheckSpecificProductCode(strProductCode)
 
 	CartPage.Sync
+	CartPage.RefreshObject
 	
 	Dim i, j
 	Dim objDesc : Set objDesc = Description.Create
@@ -565,6 +667,7 @@ Public Function CheckSpecificProductCode(strProductCode)
 			Exit Function
 		End If
 	Next
+	
 	CheckSpecificProductCode = False
 	
 End Function
@@ -576,6 +679,7 @@ End Function
 Public Function CheckSpecificProductName(strProductName)
 
 	CartPage.Sync
+	CartPage.RefreshObject
 	
 	Dim i, j
 	Dim objDesc : Set objDesc = Description.Create
@@ -617,6 +721,7 @@ Public Function CheckCartsObjects()
 	Set DicObj = CreateObject("Scripting.Dictionary")
 	
 	CartPage.Sync
+	CartPage.RefreshObject
 	
 	DicObj.Add "CartProductUOM", CartProductUOM.Exist
 	DicObj.Add "CartProductName", CartProductName.Exist(1)
@@ -651,7 +756,7 @@ Public Function CheckCartsObjects()
 	
 	i = DicObj.Items
 	k = DicObj.Keys
-	
+		
 	For x = 0 To DicObj.Count-1
 		'print k(x) & ", " & i(x)
 		If i(x) <> "True" Then
@@ -676,6 +781,7 @@ Public Function CheckCartsCalculationObjects()
 	Set DicObj = CreateObject("Scripting.Dictionary")
 	
 	CartPage.Sync
+	CartPage.RefreshObject
 		
 	Select Case ProjectName
 		Case "VNHEC"
@@ -716,6 +822,11 @@ Public Function CheckCartsCalculationObjects()
 		Case "MYHEC"
 			DicObj.Add "Subtotal", SubtotalMY.Exist(1)
 			DicObj.Add "Total", TotalMY.Exist(1)
+			
+		Case "TWHEC"
+			DicObj.Add "Subtotal", Subtotal.Exist(1)
+			DicObj.Add "Total", Total.Exist(1)
+			DicObj.Add "CashDiscount", CashDiscountTW.Exist(1)
 			
 		Case Else
 			DicObj.Add "Subtotal", Subtotal.Exist(1)
@@ -766,20 +877,20 @@ Public Function CheckCartSummaryCalculation()
 	Set DicObj = CreateObject("Scripting.Dictionary")
 	
 	CartPage.Sync
+	CartPage.RefreshObject
 	
 	DicObj.Add "Calculated SubTotals", CalculatedSubTotal
 	DicObj.Add "Calculated Totals", CalculatedTotal
 	
 	Select Case ProjectName
 		
-		Case "MYHEC", "AUTEC", "THHEC", "KHHEC"
+		Case "MYHEC", "AUTEC", "THHEC", "KHHEC", "TWHEC"
 		
 		Case Else
 			DicObj.Add "Calculated Total Before Tax", CalculatedTotalBeforeVAT
 			
 	End Select
-	
-		
+			
 	i = DicObj.Items
 	k = DicObj.Keys
 	
@@ -804,13 +915,25 @@ End Function
 Public Function CheckProductTotalPrice()
 
 	CartPage.Sync
+	CartPage.RefreshObject
+	
+	Dim fCalc
 	Dim intPricePerUnit : intPricePerUnit = GetProductUnitPrice
 	Dim intTotalProductPrice : intTotalProductPrice = GetProductTotalPrice
+	CartProductQuantity.RefreshObject
 	CartProductQuantity.WaitProperty "Visible", True, 3000
 	Dim intQuantity : intQuantity = CSng(CartProductQuantity.GetROProperty("Value"))
 	
 	'Calculations
-	Dim fCalc : fCalc = intPricePerUnit * intQuantity
+	Select Case ProjectName
+		Case "THHEC"
+			Dim intTotalItemDiscount : intTotalItemDiscount = GetProductItemDiscount
+			fCalc = (intPricePerUnit * intQuantity) - intTotalItemDiscount
+		
+		Case Else
+			fCalc = intPricePerUnit * intQuantity
+	End Select
+	
 	
 	If fCalc = intTotalProductPrice Then
 		CheckProductTotalPrice = True

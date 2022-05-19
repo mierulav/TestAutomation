@@ -70,13 +70,14 @@ Public Function LoginObjects()
 	
 	Set DicObj = CreateObject("Scripting.Dictionary")
 	
-	ObjectSync LoginPage
-	
+	LoginPage.Sync
+	LoginPage.RefreshObject
+		
 	DicObj.Add "Username", Username.Exist(1)
-	DicObj.Add "Password", Password.Exist(1)
+	DicObj.Add "Password",  Password.Exist(1)
 	DicObj.Add "LogInBtn", LogInBtn.Exist(1)
-	DicObj.Add "ApplyNow", ApplyNow.Exist(1)
-	DicObj.Add "ForgotPassword", ForgotPassword.Exist(1)
+	DicObj.Add "ApplyNow",  ApplyNow.Exist(1)
+	DicObj.Add "ForgotPassword",  ForgotPassword.Exist(1)
 	DicObj.Add "RememberMe", RememberMe.Exist(1)
 	DicObj.Add "LoginBanner", LoginBanner.Exist(1)
 	DicObj.Add "LoginFooter", LoginFooter.Exist(1)
@@ -86,11 +87,10 @@ Public Function LoginObjects()
 	If ProjectName <> "VNHEC" Then
 		DicObj.Add "TrackAndTrace", TrackAndTrace.Exist(1)
 	End If
-	
-	
+		
 	i = DicObj.Items
 	k = DicObj.Keys
-	
+
 	For x = 0 To DicObj.Count-1
 		'print k(x) & ", " & i(x)
 		If i(x) <> "True" Then
@@ -103,16 +103,5 @@ Public Function LoginObjects()
 	Set DicObj = nothing
 	
 End Function
-
-'==================================================================
-'Operation for acceptng DKSH Commitment to Privacy 
-'==================================================================
-
-Public Sub GoToTrackAndTrace()
- 
- 	ObjectSync TrackAndTrace
- 	TrackAndTrace.Click
-  	 	
-End Sub
 
 

@@ -13,6 +13,7 @@ Public MinimumPurchase : MinimumPurchase = Environment.Value("MinimumPurchaseAmo
 Public GlobalUsername : GlobalUsername = Environment.Value("Global_Username")
 Public GlobalPassword : GlobalPassword = Environment.Value("Global_Password")
 Public TestCaseName :  TestCaseName = Environment.Value("TestName") 
+'Public MissingObject
 
 
 
