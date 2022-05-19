@@ -1,0 +1,5 @@
+﻿<Properties>
+  <WatchEntry0 value="strVal" />
+  <WatchEntry1 value="strDisplayedInfo" />
+  <WatchEntry2 value="Instr(Lcase(strDisplayedInfo), &quot;fr742,500.00&quot;)" />
+</Properties>

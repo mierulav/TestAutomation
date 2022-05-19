@@ -1,0 +1,66 @@
+﻿option explicit
+
+'check email
+Public Sub checkYopmail(strEmail)
+
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("class").value = "lmf"
+	objDesc("html tag").value = "SPAN"
+	objDesc("innertext").value = "DKSH Discover"
+	
+	Browser("Yopmail").Page("Home").WebEdit("login").Set strEmail
+	Browser("Yopmail").Page("Home").WebButton("go-button").Click
+	Wait(3)
+	Dim objChild : Set objChild = Browser("Yopmail").Page("Inbox").ChildObjects(objDesc)
+	If objChild(0).Exist Then
+		objChild(0).Click
+	End If 
+	
+	Set objChild = nothing
+	Set objDesc = nothing
+	
+end Sub
+
+'check activation email disco+ account
+Public Sub checkActivationEmailLink()
+ 	
+ 	Browser("Yopmail").Page("Inbox").Frame("ifmail").Link("Verify and activate my").Click
+	Browser("DKSH Discover | Performance").Page("Login").Check CheckPoint("Login")
+	
+ end Sub
+ 
+ 'check order confirmation email 
+Public Function checkOrderConfirmationEmail()
+
+	checkOrderConfirmationEmail = Browser("Yopmail").Page("Inbox").Frame("ifmail").WebTable("Order confirmation email status").Exist
+	
+End Function
+
+'Check PO attachment on Order Confirmation Email
+Public Function checkPOAttachment(strVal)
+	
+	Dim objAttachment : Set objAttachment = Browser("Yopmail").Page("Inbox").Object.all.tags("A")
+	Dim i
+	For i = 0 To objAttachment.Length-1
+		If objAttachment(i).title = strVal Then
+			checkPOAttachment = True
+			Exit Function
+		End If
+	Next
+	checkPOAttachment =  False
+	
+End Function
+
+'check quotation sent email 
+Public Function checkQuoteSentEmail()
+
+	checkQuoteSentEmail = Browser("Yopmail").Page("Inbox").Frame("ifmail").WebTable("Quotation sent email status").Exist
+	
+End Function
+
+'check quotation resubmitted email 
+Public Function checkQuoteResubmittedEmail()
+	
+	checkQuoteResubmittedEmail = Browser("Yopmail").Page("Inbox").Frame("ifmail").WebTable("Resubmitted quotation email status").Exist
+	
+End Function

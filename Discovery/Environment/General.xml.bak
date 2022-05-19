@@ -1,0 +1,44 @@
+<Environment>
+
+	<Variable>
+		<Name>DiscoURL</Name>
+		<Value><![CDATA[https://stg-connect-udp.dksh.com/pim/en/]]></Value>
+	</Variable>
+	<Variable>
+		<Name>SFURL</Name>
+		<Value><![CDATA[https://pm-azure-dksh--staging.my.salesforce.com/]]></Value>
+	</Variable>
+	<Variable>
+		<Name>BOURL</Name>
+		<Value><![CDATA[https://backoffice-stg-connect-udp.dksh.com/backoffice]]></Value>
+	</Variable>
+	<Variable>
+		<Name>YopMailURL</Name>
+		<Value><![CDATA[https://yopmail.com/en/]]></Value>
+	</Variable>
+	<Variable>
+		<Name>SFUsername</Name>
+		<Value><![CDATA[adiana.alias@dksh.com.staging]]></Value>
+	</Variable>
+	<Variable>
+		<Name>SFPassword</Name>
+		<Value><![CDATA[Test@123]]></Value>
+	</Variable>
+	<Variable>
+		<Name>BOUsername</Name>
+		<Value><![CDATA[admin]]></Value>
+	</Variable>
+	<Variable>
+		<Name>BOPassword</Name>
+		<Value><![CDATA[DKSHcdp@2021]]></Value>
+	</Variable>
+	<Variable>
+		<Name>Browser</Name>
+		<Value><![CDATA[Chrome]]></Value>
+	</Variable>
+	<Variable>
+		<Name>ProjectFolder</Name>
+		<Value><![CDATA[D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Discovery]]></Value>
+	</Variable>
+	
+</Environment>

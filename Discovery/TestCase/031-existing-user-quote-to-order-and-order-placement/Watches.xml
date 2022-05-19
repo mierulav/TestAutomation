@@ -1,0 +1,4 @@
+﻿<Properties>
+  <WatchEntry0 value="Browser(&quot;DKSH Discover | Performance&quot;).Page(&quot;Checkout&quot;).WebCheckBox(&quot;termsCheck&quot;).GetROProperty(&quot;value&quot;)" />
+  <WatchEntry1 value="strVal" />
+</Properties>

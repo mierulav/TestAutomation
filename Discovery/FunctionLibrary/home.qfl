@@ -1,0 +1,58 @@
+﻿option explicit
+
+'go to disco+ login screen
+Public Sub signInToDiscover()
+
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").Link("Sign in").Click
+	
+End Sub
+
+'go to disco+ registration screen
+Public Sub goToUserRegistration()
+
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").Link("Register").Click
+
+End Sub
+
+'global search
+Public Sub searchProduct(strVal)
+
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").WebEdit("text").Set strVal
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").WebButton("WebButton").Click
+	
+End Sub
+
+'go to My Quote Request
+Public Sub navigateToMyQuoteRequest()
+	
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").WebElement("User menu").HoverTap
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").Link("My quote requests").Click
+	
+End Sub
+
+Public Sub navigateToOrderTracking()
+	
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").WebElement("User menu").HoverTap
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").Link("My orders & tracking").Click
+	
+End Sub
+
+'go to My Profile
+Public Sub navigateToMyProfile()
+	
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").WebElement("User menu").HoverTap
+	Browser("DKSH Discover | Performance").Page("DKSH Discover | Performance").Link("My profile").Click
+
+End Sub
+
+'check customer verified in My Profile
+Public Function checkCustomerVerified()
+
+	Browser("DKSH Discover | Performance").Page("My Profile").SAPButton("My Address Book").Click
+	checkCustomerVerified = Browser("DKSH Discover | Performance").Page("My Profile").WebElement("Default address mark").Exist
+	Browser("DKSH Discover | Performance").Page("My Profile").WebElement("Close box").Click
+
+End Function
+
+
+

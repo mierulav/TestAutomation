@@ -1,0 +1,14 @@
+﻿option explicit
+
+Public Function loginDiscover(strUser, strPwd)
+	
+	Browser("DKSH Discover | Performance").Page("Login").WebEdit("j_username").Set strUser
+	Browser("DKSH Discover | Performance").Page("Login").WebEdit("j_password").Set strPwd
+	Browser("DKSH Discover | Performance").Page("Login").WebButton("Login").Click
+	
+	loginDiscover = Browser("DKSH Discover | Performance").Page("Login").WebElement("alert when login failed").Exist(5)
+	
+End Function
+
+
+

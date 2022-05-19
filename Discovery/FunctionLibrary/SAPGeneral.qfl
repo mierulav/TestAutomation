@@ -1,0 +1,459 @@
+﻿'***********************************************************
+' Module		: Login 
+' Created by	: amirul.saddam@dksh.com
+' Last modified	: 27-4-2021
+' Modified by	: amirul.saddam@dksh.com
+
+'***********************************************************
+
+OPTION EXPLICIT
+
+Public Sub SAPEasyAccessScreen()
+	
+	OKCode.Set "/ns000"
+	Enter.Click
+	StatusBar.Sync
+	
+End Sub
+
+Public Function SAPClickContinueInformationPopUp
+	
+	If SAPGuiSession("Session").SAPGuiWindow("Information").SAPGuiButton("Continue   (Enter)") Then
+		SAPGuiSession("Session").SAPGuiWindow("Information").SAPGuiButton("Continue   (Enter)").Click
+		SAPClickContinueInformationPopUp = True
+	Else
+		SAPClickContinueInformationPopUp = False
+	End If
+	
+End  Function
+
+
+Public Sub ReleaseCredit(strOrderNumber)
+
+		'To release credit block
+		SAPGuiSession("Session").SAPGuiWindow("SAP Easy Access").Maximize
+		SAPGuiSession("Session").SAPGuiWindow("SAP Easy Access").SAPGuiOKCode("OKCode").Set "/nvkm3"
+		SAPGuiSession("Session").SAPGuiWindow("SAP Easy Access").SAPGuiButton("Enter").Click
+		SAPGuiSession("Session").SAPGuiWindow("Sales Documents").SAPGuiEdit("Sales document").Set strOrderNumber
+		SAPGuiSession("Session").SAPGuiWindow("Sales Documents").SAPGuiButton("Execute   (F8)").Click
+		SAPGuiSession("Session").SAPGuiWindow("SD Documents").SAPGuiCheckBox("SAPGuiCheckBox").Set "ON"
+		SAPGuiSession("Session").SAPGuiWindow("SD Documents").SAPGuiButton("Release   (Ctrl+F10)").Click
+		SAPGuiSession("Session").SAPGuiWindow("SD Documents").SAPGuiButton("Save   (Ctrl+S)").Click
+		
+		'Go back to initial screen
+		SAPGuiSession("Session").SAPGuiWindow("SD Documents").SAPGuiOKCode("OKCode").Set "/ns000"
+		SAPGuiSession("Session").SAPGuiWindow("SD Documents").SAPGuiButton("Enter").Click
+		SAPGuiSession("Session").SAPGuiWindow("SAP Easy Access").SAPGuiStatusBar("StatusBar").Sync
+
+End Sub
+
+Public Function CreateDeliveryOrder(strOrderNumber)
+
+	Select Case ProjectName
+		Case "VNHEC", "THHEC"
+			OKCode.Set "/nva02"
+			Enter.Click
+			SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+			Enter.Click
+			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiEdit("Req. deliv.date").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiEdit("Req. deliv.date").Set DateFormatGeneral(Date())
+			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiTable("All items").SelectCell 1,"First date"
+			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiTable("All items").SetCellData 1,"First date", DateFormatGeneral(Date())
+			MenuBar.Select "Sales document;Deliver"
+			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SendKey ENTER
+			SAPGuiSession("Session").SAPGuiWindow("Information_3").SAPGuiButton("Continue   (Enter)").Click
+			SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery  Create:").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery  Create:").SAPGuiButton("Save   (Ctrl+S)").Click
+			SAPGuiSession("Session").SAPGuiWindow("Create Outbound Delivery").SAPGuiStatusBar("StatusBar").Sync
+			CreateDeliveryOrder = GetNumber(SAPGuiSession("Session").SAPGuiWindow("Create Outbound Delivery").SAPGuiStatusBar("StatusBar").GetROProperty("Text"))
+			
+		Case Else
+			OKCode.Set "/nva03"
+			Enter.Click
+			SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+			Enter.Click
+			MenuBar.Select "Sales document;Deliver"
+			Save.Click
+			StatusBar.Sync
+			Dim StatusBarText : StatusBarText = StatusBar.GetROProperty("Text")
+			CreateDeliveryOrder = GetNumber(StatusBarText)
+
+	End Select
+	
+	
+End Function
+
+Public Sub Picking(strDO)
+
+	OKCode.Set "/nvl02n"
+	Enter.Click
+	
+	SAPGuiSession("Session").SAPGuiWindow("Change Outbound Delivery").SAPGuiEdit("Outbound Delivery").Set strDO
+	SAPGuiSession("Session").SAPGuiWindow("Change Outbound Delivery").SAPGuiButton("Enter").Click
+	SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTabStrip("TAXI_TABSTRIP_OVERVIEW").Select "Picking"
+	
+	'If batch split icon exist
+	Dim strQty : strQty = SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTable("All Items").GetCellData(1, "Deliv. Qty")
+	SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTable("All Items").ClickCell 1,"Batch Split Indicator"
+	StatusBar.Sync
+	
+	'Continue edit the cell with the same aount picked and delivery
+	SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTable("All Items").SetCellData 2,"Picked Qty", strQty
+	SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTable("All Items").SelectCell 2,"Picked Qty"
+	Enter.Click
+	
+	'Save the thing
+	Save.Click
+	StatusBar.Sync
+
+End Sub
+
+
+Public Sub PostGoodsIssue()
+	
+	OKCode.Set "/nvl02n"
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Change Outbound Delivery").SAPGuiButton("Post Goods Issue").Click
+	StatusBar.Sync
+	
+	Wait(5)
+	
+End Sub
+
+Public Function CreateInvoice(strDO)
+	
+	OKCode.Set "/nvf01"
+	Enter.Click
+	
+	'Create invoice
+	SAPGuiSession("Session").SAPGuiWindow("Create Billing Document").SAPGuiTable("Docs to be processed").SetCellData 1,"Document", strDO
+	Enter.Click
+	Save.Click
+	StatusBar.Sync
+	
+	'Get the Invoice Order Number
+	Dim StatusBarText : StatusBarText = StatusBar.GetROProperty("Text")
+	
+	'Store as an Output of the action
+	CreateInvoice = GetNumber(StatusBarText)
+	
+End Function
+
+Public Function CreateShipment(strDO, strPlantPT, strShipType, strFwdAgent)
+	
+	Select Case ProjectName
+		Case "VNHEC"
+			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiEdit("TransportPlanningPt").Set strPlantPT
+			SAPGuiSession("Session").SAPGuiWindow("Information_2").SAPGuiButton("Continue   (Enter)").Click
+			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiComboBox("Shipment type").Select strShipType
+			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiComboBox("Shipment type").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiButton("Shipment Overview   (Enter)").Click
+			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiEdit("FwdAgent").Set "221122"
+			Enter.Click
+			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiButton("Deliveries").Click
+			SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Outbound Delivery").Set strDO
+			SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Outbound Delivery").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiButton("Execute   (F8)").Click
+			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003_2").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003_2").SAPGuiButton("Save   (Ctrl+S)").Click
+			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiOKCode("OKCode").Set "/nvt02n"
+			Enter.Click
+			Enter.Click
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("VTTK-DTDIS").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("VTTK-DTDIS").Set "02.03.2022"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("SAPGuiEdit").Set "15:00"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("SAPGuiEdit").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Partner"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partn.Funct.","Transporter ID (PDA)"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partner","0"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SelectCell 2,"Partner"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Deadl."
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion").Set "02.03.2022"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion_2").Set "15:30"
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion_2").SetFocus
+			Enter.Click
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiButton("Save   (Ctrl+S)").Click
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment: Initial").SAPGuiStatusBar("StatusBar").Sync
+	End Select
+	
+	'Navigtae to shipmet creation page
+	OKCode.Set "/nvt01n"
+	Enter.Click
+	
+	'Create shipment
+	SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiEdit("TransportPlanningPt").Set strPlantPT
+	SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiComboBox("Shipment type").Select strShipType
+	SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiComboBox("Shipment type").SetFocus
+	Enter.Click
+	
+	'Set shipping type
+	SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiEdit("Shipping type").Set "01"
+	SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiEdit("Shipping type").SetFocus
+	Enter.Click
+	
+	'Select forwarding agent
+	SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiEdit("FwdAgent").Set strFwdAgent
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiStatusBar("StatusBar").Sync
+	
+	'Saving deliveries
+	SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiButton("Deliveries").Click
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Warehouse Number").Set "*"
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Scheduling end").Set ""
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("to").Set ""
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Total gds mvt stat.").Set ""
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Trns.plan.status").Set ""
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("to_2").Set ""
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiEdit("Outbound Delivery").Set strDO
+	SAPGuiSession("Session").SAPGuiWindow("Select outbound deliveries").SAPGuiButton("Execute   (F8)").Click
+	
+	StatusBar.Sync
+	Save.Click
+	StatusBar.Sync
+	
+	'Get the Delivery Order Number
+	Dim StatusBarText : StatusBarText = StatusBar.GetROProperty("Text")
+	
+	'Store as an Output of the action
+	CreateShipment = GetNumber(StatusBarText)
+	
+	'Complete the Shipment
+	SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiOKCode("OKCode").Set "/nvt02n"
+	Enter.Click
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("VTTK-DTDIS").SetFocus
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("VTTK-DTDIS").Set  DateFormatGeneral(Date())
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("SAPGuiEdit").Set "12:00"
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("SAPGuiEdit").SetFocus
+	Select Case ProjectName
+		Case "VNHEC", "MMHEC", "TWHEC"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Partner"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partn.Funct.","Transporter ID (PDA)"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partner","0"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SelectCell 2,"Partner"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Deadl."
+		Case Else
+	End Select
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion").SetFocus
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion").Set DateFormatGeneral(Date())
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion_2").Set "15:30"
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion_2").SetFocus
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiStatusBar("StatusBar").Sync
+	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiButton("Save   (Ctrl+S)").Click
+	If ProjectName = "KHHEC" Then
+		Wait(3)
+		Exit Function
+	End If
+		SAPGuiSession("Session").SAPGuiWindow("Change Shipment: Initial").SAPGuiStatusBar("StatusBar").Sync
+
+End Function
+
+Public Function CreateCustomerConfirmationReceipt(strDO)
+	
+	Dim strBeginActual : strBeginActual = DateFormatGeneral(Date())
+	
+	OKCode.Set "/nvl02n"
+	Enter.Click
+	
+	SAPGuiSession("Session").SAPGuiWindow("Change Outbound Delivery").SAPGuiEdit("Outbound Delivery").Set strDO
+	Enter.Click
+	MenuBar.Select "Goto;Header;Dates"
+	SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTable("SAPLTSEDTC_TSEG_STD").SetCellData 1,"Begin  actual", strBeginActual
+	Enter.Click
+	
+	Dim strDateEntered : strDateEntered = SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery").SAPGuiTable("SAPLTSEDTC_TSEG_STD").GetCellData(1, "Begin  actual")
+	Save.Click
+	StatusBar.Sync
+	
+	CreateCustomerConfirmationReceipt = strDateEntered
+	
+End Function
+
+Public Sub CreateConfirmTransferOrder(strDO)
+	
+	OKCode.Set "/nvl02n"
+	Enter.Click
+	
+	'Create TO
+	MenuBar.Select "Subsequent Functions;Create Transfer Order"
+	If SAPGuiSession("Session").SAPGuiWindow("End Document Processing").SAPGuiButton("Yes").Exist Then
+		SAPGuiSession("Session").SAPGuiWindow("End Document Processing").SAPGuiButton("Yes").Click
+	End If
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Create TO for Delivery").SAPGuiButton("Posting   (Ctrl+S)").Click
+	StatusBar.Sync
+	Dim sBarText : sBarText = StatusBar.GetROProperty("Text")
+	Dim strTransferOrder : strTransferOrder = GetNumber(sBarText)
+	
+	While SAPGuiSession("Session").SAPGuiWindow("Print: PICKING LIST- TO").Exist
+		SAPGuiSession("Session").SAPGuiWindow("Print: PICKING LIST- TO").SAPGuiButton("Cancel   (F12)").Click
+		SAPGuiSession("Session").SAPGuiWindow("Create Transfer Order").SAPGuiStatusBar("StatusBar").Sync
+	Wend
+	
+	'Confirm TO
+	MenuBar.Select "Transfer Order;Confirm;Transfer Order"
+	SAPGuiSession("Session").SAPGuiWindow("Confirm Transfer Order:").SAPGuiEdit("Warehouse Number").SetFocus
+	Enter.Click
+	Wait(2)
+	If SAPGuiSession("Session").SAPGuiWindow("Confirm Transfer Order:").Exist Then
+		Enter.Click
+	End If
+	SavePosting.Click
+	StatusBar.Sync
+	
+	Wait(5)
+	
+End Sub
+
+Public Function CheckSalesOrderNumberInSAP(strOrderNumber)
+
+	OKCode.Set "/nva03"
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+	Enter.Click
+	CheckSalesOrderNumberInSAP = SAPGuiSession("Session").SAPGuiWindow("Display Standard Order").SAPGuiEdit("Standard Order").Exist
+	
+End Function
+
+Public Function CheckDocumentFlow(strOrderNumber, strSearchVal)
+	
+	OKCode.Set "/nva03"
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+	Enter.Click
+	
+	SAPGuiSession("Session").SAPGuiWindow("Display Standard Order").SAPGuiButton("Display document flow").Click
+		
+	'Search for the document	
+	CheckDocumentFlow = FindItemGuiTree(strSearchVal)
+	
+End Function
+
+Public Function GetDeliveryInstruction(strOrderNumber, strProject)
+	
+	OKCode.Set "/nva03"
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Display Standard Order").SAPGuiButton("Display header details").Click
+	
+	Select Case strProject
+	
+		Case "AUTEC"
+			SAPGuiSession("Session").SAPGuiWindow("Display Standard Order_2").SAPGuiTree("TableTreeControl").ActivateItem "AU Shipping Instructions","AU Shipping Instructions"
+		
+		Case "THHEC", "TWHEC", "VNHEC"
+			SAPGuiSession("Session").SAPGuiWindow("Display Standard Order_2").SAPGuiTree("TableTreeControl").ActivateItem "Header note 2","Header note 2"
+			
+		Case Else
+			SAPGuiSession("Session").SAPGuiWindow("Display Standard Order_2").SAPGuiTree("TableTreeControl").ActivateItem "Header note 1","Header note 1"
+			
+	End Select
+		
+	GetDeliveryInstruction = SAPGuiSession("Session").SAPGuiWindow("Display Standard Order_2").SAPGuiTextArea("TextAreaControl").GetROProperty("Value")
+
+End Function
+
+Public Function GetShippingInstructionForOOSItem(strOrderNumber)
+		
+	Dim ShippingInstruction
+	
+	OKCode.Set "/nva03"
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+	Enter.Click
+	MenuBar.Select "Goto;Header;Texts"
+	
+	Dim GUIWindow : Set GUIWindow = SAPGuiSession("Session").SAPGuiWindow("Display Standard Order")
+	
+	GUIWindow.Maximize
+	GUIWindow.SAPGuiTree("TableTreeControl").ActivateItem "Shipping instructions","Shipping instructions"
+	GetShippingInstructionForOOSItem = GUIWindow.SAPGuiTextArea("TextAreaControl").GetROProperty("Value")
+	
+End Function
+	
+Public Function GetPONumber(strOrderNumber)
+	
+	OKCode.Set "/nva03"
+	Enter.Click
+	SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+	Enter.Click
+	GetPONumber = SAPGuiSession("Session").SAPGuiWindow("Display Standard Order").SAPGuiEdit("Purch. Order No.").GetROProperty("Value")
+
+End Function
+
+Function FindItemGuiTree(strSearchNodeText)
+
+    'get all the objects of SAPGUITree
+    'Descriptive programming has been used
+    Dim ObjSAPGuiTree, ObjKeyValues, intNodeCount, blnFlag, strNodeText
+    Set ObjSAPGuiTree = SAPGuiSession("name:=ses\[0\]","guicomponenttype:=12").SAPGuiWindow("name:=wnd\[0\]", "guicomponenttype:=21").SAPGuiTree("micclass:=SAPGuiTree").Object
+
+    'Get the node keys , a key is a number/position in the 
+    'A key value starts from 1.
+    Set ObjKeyValues = ObjSAPGuiTree.GetAllNodeKeys
+
+    'get the total count
+    ''This count indicates the number of items/nodes in the Tree
+    intNodeCount = ObjKeyValues.Count 
+
+    blnFlag=False
+    'Iterate through the nodes of the tree
+    Dim i
+    For i = 0 to intNodeCount-1
+        'Get the node text
+        strNodeText=ObjSAPGuiTree.GetNodeTextByKey(ObjKeyValues(i))
+
+        'Check if the match was found for the key that you are looking for
+        'if yes then activate the item
+        If Instr(strNodeText,strSearchNodeText)>0 Then
+            'Select the node and double click on it
+            'This is equivalent to ActivateItem
+            ObjSAPGuiTree.SelectNode ObjKeyValues(i)
+            ObjSAPGuiTree.DoubleClickNode ObjKeyValues(i)
+            blnFlag=True 'set a flag to indicate the macth was found
+            Exit For
+        End If
+    
+    Next 
+
+    'Chk the flag and return values to function
+    If blnFlag Then
+        FindItemGuiTree=True
+    Else
+        FindItemGuiTree=False
+    End If
+
+    'Release the objects
+    Set ObjKeyValues=Nothing
+    Set ObjSAPGuiTree=Nothing
+
+End Function
+
+Public Function DateFormatGeneral(mydate)
+	
+	Dim dd : dd = AddZero(Day(mydate))
+	Dim mm : mm = AddZero(Month(mydate))
+	Dim yyyy : yyyy = Year(mydate)
+	
+	DateFormatGeneral = dd & "." & mm & "." & yyyy
+	
+End Function
+
+Private Function AddZero(num)
+	If Len(num) = 1 Then
+		AddZero = "0" & num
+	Else
+		AddZero = num
+	End If
+	
+End Function
+

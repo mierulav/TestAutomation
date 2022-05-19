@@ -1,0 +1,330 @@
+﻿option explicit
+
+'salesforce login
+Public Sub loginSalesforce(strUsr, strPwd)
+	
+	Browser("Home | Salesforce").Page("Login | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Login | Salesforce").WebEdit("username").Set strUsr
+	Browser("Home | Salesforce").Page("Login | Salesforce").WebEdit("pw").Set strPwd
+	Browser("Home | Salesforce").Page("Login | Salesforce").WebButton("Log In to Sandbox").Click
+	
+End Sub
+
+'global search salesforce
+Public Sub searchItem(strVal)
+	
+	Browser("Home | Salesforce").Page("Home | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Home | Salesforce").WebButton("Search").WaitProperty "Visible", True
+	Browser("Home | Salesforce").Page("Home | Salesforce").WebButton("Search").Click
+	Browser("Home | Salesforce").Page("Home | Salesforce").WebEdit("Search...").Object.Focus
+	Browser("Home | Salesforce").Page("Home | Salesforce").WebEdit("Search...").Set strVal
+	Wait(2)
+	Browser("Home | Salesforce").Page("Home | Salesforce").WebElement("Show more results for").Object.Focus
+	Browser("Home | Salesforce").Page("Home | Salesforce").WebElement("Show more results for").Object.Click
+	
+End Sub
+
+'click into the result found
+Public Sub clickIntoSearchedQuote()
+
+	Browser("Home | Salesforce").Page("search-result | Salesforce").Sync
+	Browser("Home | Salesforce").Page("search-result | Salesforce").Link("Quote search result").Click
+	
+End Sub
+
+'check quote is found
+Public Function checkSearchedQuote()
+	
+	Browser("Home | Salesforce").Page("search-result | Salesforce").Sync
+	checkSearchedQuote = Browser("Home | Salesforce").Page("search-result | Salesforce").Link("Quote search result").Exist
+	
+End Function
+
+'click into the result found
+Public Sub clickIntoSearchedAccount()
+
+	Browser("Home | Salesforce").Page("search-result | Salesforce").Sync
+	Dim objTable : Set objTable = Browser("Home | Salesforce").Page("search-result | Salesforce").WebTable("account searched table").ChildItem(2, 2, "Link", 0)
+	objTable.Object.Click
+	Set objTable = nothing
+	
+End Sub
+
+'check account is found
+Public Function checkSearchedAccount()
+	
+	Browser("Home | Salesforce").Page("search-result | Salesforce").Sync
+	If Browser("Home | Salesforce").Page("search-result | Salesforce").WebTable("account searched table").Exist(3) Then
+		Dim objTable : Set objTable = Browser("Home | Salesforce").Page("search-result | Salesforce").WebTable("account searched table").ChildItem(2, 2, "Link", 0)
+		checkSearchedAccount = objTable.Exist
+		Set objTable = nothing
+	Else
+		checkSearchedAccount = False
+	End If
+	
+	
+End Function
+
+'go to Account module
+Public Sub goToAccount()
+	
+	Browser("Home | Salesforce").Page("Home | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Home | Salesforce").Link("Accounts").Click
+	
+End Sub
+
+'search for existing account
+Public Sub searchAccountName(strVal)
+	
+	Browser("Home | Salesforce").Page("Accounts | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Accounts | Salesforce").WebEdit("Search Recently Viewed").Set strVal
+
+End Sub
+
+'go to account details information
+Public Sub clickIntoAccountDetails(strVal)
+	
+	Browser("Home | Salesforce").Page("Accounts | Salesforce").Sync
+	Dim i
+	For i = 0 To Browser("Home | Salesforce").Page("Accounts | Salesforce").WebTable("Account List Table").RowCount-1
+		If Browser("Home | Salesforce").Page("Accounts | Salesforce").WebTable("Account List Table").GetCellData(i, 2) = strVal Then
+			Dim objCell : Set objCell = Browser("Home | Salesforce").Page("Accounts | Salesforce").WebTable("Account List Table").Cell(i, 2)
+			objCell.Click
+		End If
+	Next	
+
+End  Sub
+
+'save account details information
+Public Sub saveAccountDetails()
+
+	Browser("Home | Salesforce").Page("Account Details | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Account Details | Salesforce").WebButton("Save").Object.Click
+	Browser("Home | Salesforce").Page("Account Details | Salesforce").Sync
+	
+End Sub
+
+'set account with SAP Customer code
+Public Sub setCustomerSAPCode(strVal)
+
+	Browser("Home | Salesforce").Page("Account Details | Salesforce").Sync
+	If Browser("Home | Salesforce").Page("Account Details | Salesforce").WebEdit("SAP_Customer_Code__c").Exist(1) = False Then
+		Browser("Home | Salesforce").Page("Account Details | Salesforce").WebButton("Edit SAP Customer Code").Click
+	End If
+	Browser("Home | Salesforce").Page("Account Details | Salesforce").WebEdit("SAP_Customer_Code__c").Set "200537650"
+
+End  Sub
+
+'go to Quotations module
+Public Sub goToQuotation()
+
+	Browser("Home | Salesforce").Page("Home | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Home | Salesforce").Link("Quotations").Click
+
+End Sub
+
+'go to quotation product details information from quotation details information page
+Public Sub goToQuotationProductDetails()
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Link("DKSH Discover-Quote Product-CU").Object.Focus
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Link("DKSH Discover-Quote Product-CU").Click
+
+End  Sub
+
+'search for quotation
+Public Sub searchQuotationNumber(strVal)
+	
+	Browser("Home | Salesforce").Page("Quotations | Salesforce").Sync
+	Browser("Home | Salesforce").Page("Quotations | Salesforce").WebEdit("Search Recently Viewed").Set strVal
+
+End Sub
+
+'go to quotation detail information page
+Public Sub clickIntoQuotationDetails(strVal)
+	
+	Browser("Home | Salesforce").Page("Quotations | Salesforce").Sync
+	Dim i
+	For i = 0 To Browser("Home | Salesforce").Page("Quotations | Salesforce").WebTable("Quotation list table").RowCount-1
+		If Browser("Home | Salesforce").Page("Quotations | Salesforce").WebTable("Quotation list table").GetCellData(i, 2) = strVal Then
+			Dim objCell : Set objCell = Browser("Home | Salesforce").Page("Quotations | Salesforce").WebTable("Quotation list table").Cell(i, 2)
+			objCell.Click
+		End If
+	Next	
+
+End  Sub
+
+'save quotation product details information
+Public Sub saveQuotationProductDetails()
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebButton("Save").Object.Focus
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebButton("Save").Object.Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	
+End Sub
+
+'save quotation header information
+Public Sub saveQuotationHeader()
+		
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Save").Object.Focus
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Save").Object.Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	
+End Sub
+
+'set quotation validity period
+Public Sub setQutoationValidity(strVal)
+	
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebEdit("Quotation_Valid_Until__c").Exist = False Then
+		Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Edit Quotation Valid Until").Object.Focus
+		Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Edit Quotation Valid Until").Click
+	End If
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebEdit("Quotation_Valid_Until__c").Set strVal 'dd/mm/yyyy
+	
+End Sub
+
+'set comment made by DKSH
+Public Sub setDKSHComment(strVal)
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebEdit("DKSH Comment").GetROProperty("visible") = False Then
+		Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Edit Discover: Answer").Click
+	End If
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebEdit("DKSH Comment").Set strVal 'E.g. ''ok"
+
+End Sub
+
+'set payment and inco terms value
+Public Sub setPaymentAndIncoTerms(strPaymentVal, strIncoVal)
+	
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Payment Term, --None--").GetROProperty("visible") = False  Then
+		Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Edit Payment Term").Click
+	End If
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Payment Term, --None--").Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebList("Payment dd").Select strPaymentVal 'E.g. "0015 - Within 30 days 1%, 60 days Due"
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Incoterm, --None--").Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebList("Incoterm dd").Select strIncoVal 'E.g. "CIF - Cost, Insurance, Freight"
+	
+End Sub
+
+'set quotation type - "One-off"
+Public Sub setOneOffQuotationType()
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebList("Quotation Type dd").Exist(1) = False Then
+		Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebButton("Edit Quote Type").Click
+	End If
+	Wait(1)
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebList("Quotation Type dd").Select "One-Off"
+
+End Sub
+
+'set quotation price
+Public Sub setQuoationPrice(strVal)
+	
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Price_Per_Unit__c").Exist(1) = False Then
+		Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebButton("Edit Price Per Unit").Click
+	End If
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Price_Per_Unit__c").Set strVal 'E.g. "100000"
+	
+End Sub
+
+'set quotation package
+Public Sub setProductPackage(strVal)
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Search SKU...").GetROProperty("visible") = False Then
+		Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebButton("Edit SKU Package Search").Click
+	End If
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Search SKU...").Object.Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Search SKU...").Set strVal
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebList("Package dd").Select(1)  
+
+End Sub
+
+'set quotation project
+Public Sub setQuotatationProject(strVal)
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Search Projects...").Object.Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Search Projects...").Set strVal
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebEdit("Search Projects...").Object.Click
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").WebList("Project dd").Select(1)
+	
+End  Sub
+
+'go back to Quotation header information from product details
+Public Sub goBackToQuoationHeader()
+
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Sync
+	Browser("Home | Salesforce").Page("DKSH Discover-Quote Product-CU").Link("DKSH Discover-Quotation").Click
+	
+End Sub
+
+'check quotation status
+Public Function checkQuotationHeaderStatus(strVal)
+	
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").Sync
+	Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Edit Status").Object.Click
+	If Browser("Home | Salesforce").Page("DKSH Discover-Quotation").WebButton("Status Button").GetROProperty("value") = strVal Then
+		checkQuotationHeaderStatus = True
+	Else
+		checkQuotationHeaderStatus = False
+	End If 
+	
+End Function
+
+'Convert lead
+Sub convertLead()
+
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").Sync
+	If Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebList("Available").Exist(1) = False Then
+		Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebButton("Edit Industry Cluster").Click
+	End If
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebList("Available").Object.Focus
+	wScript.Sendkeys "^a"
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebButton("Move selection to Chosen").Click
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebList("Available_2").Object.Focus
+	wScript.Sendkeys "^a"
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebButton("Move selection to Chosen_2").Click
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebButton("Save").Submit
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebButton("DC Convert").Click
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").WebButton("Convert").Click
+	Browser("Home | Salesforce").Page("new-user-email | Salesforce").Check CheckPoint("Lightning Experience | Salesforce")
+'	select case strIndustry
+'		case fbi
+'			Browser("Salesforce").Page("new-user-email | Salesforce").WebList("Available").Select "Confectionary & Bakery (CB)"
+'			Browser("Salesforce").Page("new-user-email | Salesforce").WebButton("Move selection to Chosen").Click
+'			Browser("Salesforce").Page("new-user-email | Salesforce").WebList("Available_2").Select "Others (OTH)"
+'			Browser("Salesforce").Page("new-user-email | Salesforce").WebButton("Move selection to Chosen_2").Click
+'		case else
+'	end select
+	
+End Sub
+
+
+'Consolidate operation - Tie Account with Existing SAP Cust Code
+Public Sub setCustomerSAPCodeInQuotation(strEmail, strSAPCustomerCode)
+
+	goToAccount()
+	searchAccountName(strEmail)
+	clickIntoAccountDetails(strEmail)
+	setCustomerSAPCode(strSAPCustomerCode)	
+	saveAccountDetails()
+	
+End  Sub
+
+
+
+
+
+
+
+
+
+

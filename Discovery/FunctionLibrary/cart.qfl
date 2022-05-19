@@ -1,0 +1,126 @@
+﻿option explicit
+
+'=======================================
+' Mini cart from product page
+'=======================================
+
+'to navigate to cart page for checkout
+Public Sub toCartPage()
+
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Browser("DKSH Discover | Performance").Page("Product").Link("Check out").Click
+
+End Sub
+
+'check mini cart information
+Public Function checkProductMiniCartInformation(strVal)
+	
+	Dim strDisplayedInfo : strDisplayedInfo = Trim(Browser("DKSH Discover | Performance").Page("Product").WebElement("Mini cart information").GetROProperty("innertext"))
+	
+	If Instr(Lcase(strDisplayedInfo), Lcase(strVal)) > 0  Then
+		checkProductMiniCartInformation = True
+	Else
+		checkProductMiniCartInformation = False
+	End If
+	
+End Function
+
+'=======================================
+' Cart from product page
+'=======================================
+
+'proceed checkout from cart page to final review
+Public Function clickCheckoutToFinalReview()
+	
+	Browser("DKSH Discover | Performance").Page("Your Shopping Cart").SAPButton("Check out").Click
+	
+End Function
+
+'loop cart table for information finder
+Private Function loopCartTable(strField, strVal)
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	loopCartTable = False
+	Dim intCol, i, intRowCount, objCol4
+	Select Case strField
+		Case "Ingredients"
+			intCol = 2
+		Case "Packaging"
+			intCol = 3
+		Case "Quantity"
+			intCol = 4
+		Case "Total"
+			intCol = 7
+	End Select
+	Dim objTbl : Set objTbl = Browser("DKSH Discover | Performance").Page("Your Shopping Cart").WebTable("Cart table")
+	intRowCount  = objTbl.RowCount
+	
+	'for quantity
+	
+	If intCol = 4 Then
+		For i = 1 To intRowCount
+			Set objCol4 = Browser("DKSH Discover | Performance").Page("Your Shopping Cart").Object.getElementById("quantity_0")
+			If Lcase(objCol4.value) = GetNumber(strVal) Then
+				loopCartTable = True
+				Exit Function
+			End If		
+		Next
+		Set objCol4 = nothing
+		Set objTbl = nothing
+		Exit Function
+	End If
+	
+	For i = 1 To intRowCount	
+		If Instr(objTbl.GetCellData(i, intCol), strVal) > 0  Then
+			loopCartTable = True
+		End If		
+	Next
+	
+	Set objTbl = nothing
+End Function
+
+'check cart ingredients information (product name, code)
+Public Function checkCartIngredientInformation(strVal)
+	
+	checkCartIngredientInformation = loopCartTable("Ingredients", strVal)
+	
+End Function
+
+'check cart packaging type information 
+Public Function checkCartPackagingInformation(strVal)
+	
+	checkCartPackagingInformation = loopCartTable("Packaging", strVal)
+	
+End Function
+
+'check cart packaging type information 
+Public Function checkCartQuantityInformation(strVal)
+	
+	checkCartQuantityInformation = loopCartTable("Quantity", strVal)
+	
+End Function
+
+'check cart packaging type information 
+Public Function checkCartTotalPrice(strVal)
+	
+	checkCartTotalPrice = loopCartTable("Total", strVal)
+	
+End Function
+
+'check product unit price
+Public Function checkCartProductUnitPrice()
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Dim intPriceUnit : intPriceUnit =  CSng(GetNumber(Trim(Browser("DKSH Discover | Performance").Page("Your Shopping Cart").WebTable("Cart table").GetCellData(2, 6))))
+	Dim intTotal : intTotal =  CSng(GetNumber(Trim(Browser("DKSH Discover | Performance").Page("Your Shopping Cart").WebTable("Cart table").GetCellData(2, 7))))
+	Dim objCol4 : Set objCol4 = Browser("DKSH Discover | Performance").Page("Your Shopping Cart").Object.getElementById("quantity_0")
+	Dim intQuantity : intQuantity = CSng(GetNumber(objCol4.value))
+	Dim fCalc : fCalc = Round(intTotal/intQuantity, 2)
+	
+	If fCalc = intPriceUnit Then
+		checkCartProductUnitPrice = True
+	Else
+		checkCartProductUnitPrice = False
+	End If
+	
+	Set objCol4 = nothing
+End Function

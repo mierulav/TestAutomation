@@ -1,0 +1,92 @@
+﻿option explicit
+
+'=======================================
+' Order list page
+'=======================================
+
+'search sales order
+Public Sub searchOrder(strVal)
+
+	Browser("DKSH Discover | Performance").Page("Track").Sync
+	Browser("DKSH Discover | Performance").Page("Track").WebEdit("search product").Set strVal
+	Browser("DKSH Discover | Performance").Page("Track").WebElement("search icon").Click
+
+End  Sub
+
+'check search result first item
+Public Function checkSearchResultFirstItem(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Track").Sync
+	Dim strDisplayedSO : strDisplayedSO = Trim(Browser("DKSH Discover | Performance").Page("Track").WebElement("Order card information").GetROProperty("innertext"))
+	If Instr(strDisplayedSO, strVal) > 0 Then
+		checkSearchResultFirstItem = True
+	Else
+		checkSearchResultFirstItem = False
+	End If 
+	
+End Function
+
+'click reorder order of first item in order list
+Public Sub clickReorderOnOrderPage()
+	
+	Browser("DKSH Discover | Performance").Page("Track").Sync
+	Browser("DKSH Discover | Performance").Page("Track").SAPButton("Reorder").Click
+	
+End Sub
+
+'to view order details page of the first item in order list
+Public Sub clickViewDetailsOnOrderPage()
+	
+	Browser("DKSH Discover | Performance").Page("Track").Sync
+	Browser("DKSH Discover | Performance").Page("Track").SAPButton("View Details").Click
+	
+End Sub
+
+
+'check order status on order detail page
+Public Function  checkOrderStatusOnOrderDetailPage(strVal)
+	
+	Dim strDisplayedOrderStatus : strDisplayedOrderStatus = Trim(Browser("DKSH Discover | Performance").Page("Track").WebElement("order status track details").GetROProperty("innertext"))
+	
+	If Instr(strDisplayedOrderStatus, strVal) > 0  Then
+		checkOrderStatusOnOrderDetailPage = True
+	Else
+		checkOrderStatusOnOrderDetailPage = False
+	End If
+	
+End Function
+
+'get order product code information
+Public Function getTODisplayedProductCode()
+	
+	getTODisplayedProductCode = Trim(Replace(Browser("DKSH Discover | Performance").Page("Track").WebElement("Product code:  track details").GetROProperty("innertext"), "Product code", ""))
+
+End Function
+
+'get order product name information
+Public Function getTODisplayedProductName()
+
+End Function
+
+'get order package type 
+Public Function getTODisplayedPackageType()
+
+	Dim strTemp1 : strTemp1 = Trim(Replace(Browser("DKSH Discover | Performance").Page("Track").WebElement("Package type: track details").GetROProperty("innertext"), "Package type", ""))
+	Dim strTemp2 : strTemp2 = Trim(Replace(Browser("DKSH Discover | Performance").Page("Track").WebElement("Package size: track details").GetROProperty("innertext"), "Package size", ""))
+	Dim strMeasurement : strMeasurement = Trim(Replace(strTemp2, GetNumber(strTemp2), ""))
+	Dim strWholeNum : strWholeNum = Round(CSng(GetNumber(strTemp2)), 0)
+	getTODisplayedPackageType = strTemp1 & " " & strWholeNum & " " &  strMeasurement
+
+End Function
+
+'get order quantity
+Public Function getToDisplayedQuantity()
+
+	getToDisplayedQuantity = Trim(Replace(Browser("DKSH Discover | Performance").Page("Track").WebElement("Quantity: track details").GetROProperty("innertext"), "Quantity", ""))
+
+End Function
+
+
+
+
+

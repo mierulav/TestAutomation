@@ -1,0 +1,28 @@
+﻿option explicit
+
+Public Function registerNewUser(strField, strVal)
+	
+	Browser("DKSH Discover").Page("Register").Check CheckPoint("Register")
+	Browser("DKSH Discover").Page("Register").WebList("titleCode").Select "Dr."
+	Browser("DKSH Discover").Page("Register").WebEdit("firstName").Set "fbi-indo-at2403"
+	Browser("DKSH Discover").Page("Register").WebEdit("lastName").Set "at"
+	Browser("DKSH Discover").Page("Register").WebElement("First name").Click
+	Browser("DKSH Discover").Page("Register").WebEdit("email").Set "fbi-indo-at2403@yopmail.com"
+	Browser("DKSH Discover").Page("Register").WebEdit("pwd").SetSecure "623c7ef9b2e62b04eeabae9bd05bdc5b611acdc0a9633ac319b7"
+	Browser("DKSH Discover").Page("Register").WebEdit("checkPwd").SetSecure "623c7efd89901838ac3dca0a239104c8ec771646ca86c2150695"
+	Browser("DKSH Discover").Page("Register").WebEdit("company").Set "AT"
+	Browser("DKSH Discover").Page("Register").WebList("industry").Select "Food & Beverage Ingredients"
+	Browser("DKSH Discover").Page("Register").WebList("department").Select "Accounting & Finance"
+	Browser("DKSH Discover").Page("Register").WebList("position").Select "Assistant Manager"
+	Browser("DKSH Discover").Page("Register").WebList("country").Select "Indonesia"
+	Browser("DKSH Discover").Page("Register").WebEdit("city").Set "surabaya"
+	Browser("DKSH Discover").Page("Register").WebEdit("postCode").Set "10110"
+	Browser("DKSH Discover").Page("Register").WebEdit("addresses").Set "surabay @ permai "
+	Browser("DKSH Discover").Page("Register").WebEdit("phone").Set "12341234"
+	Browser("DKSH Discover").Page("Register").WebElement("WebElement").Click
+	Browser("DKSH Discover").Page("Register").WebButton("Register").Click
+	Browser("DKSH Discover").Page("Register Thankyou Page").Image("PIM-Register-Thankyou-1400x400").Check CheckPoint("PIM-Register-Thankyou-1400x400")
+	
+End Function
+
+

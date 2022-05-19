@@ -1,0 +1,40 @@
+﻿option explicit
+
+Public Sub loginBackOffice(strUser, strPwd)
+	
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice | Login").WebEdit("j_username").Set strUser
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice | Login").WebEdit("j_password").Set strPwd
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice | Login").WebButton("Login").Click
+	
+End Sub
+
+Public Sub goToCustomerModule()
+		
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice").WebEdit("Filter tree (Alt+Down").Set "customer"
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice").WebElement("Customer module").Click
+	
+End Sub
+
+Public Sub findCustomer(strVal)
+
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice").WebEdit("WebEdit").Set strVal 'E.g."idn-sci-30032022@yopmail.com"
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice").WebButton("Search").Click
+	
+End  Sub
+
+Public Sub goToFirstResultCustomerDetails()
+	Browser("SAP CX Backoffice").Page("SAP CX Backoffice").WebElement("Customer first line item").Click
+End Sub
+
+Public Function checkCustomerSAPCode(strVal)
+	
+	If Browser("SAP CX Backoffice").Page("SAP CX Backoffice").WebEdit("WebEdit_2").GetROProperty("value") = strVal Then
+		checkCustomerSAPCode = True
+	Else
+		checkCustomerSAPCode = False
+	End If
+	
+End Function
+
+
+

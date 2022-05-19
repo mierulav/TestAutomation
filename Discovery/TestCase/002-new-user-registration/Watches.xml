@@ -1,0 +1,7 @@
+﻿<Properties>
+  <WatchEntry0 value="arrTempStr" />
+  <WatchEntry1 value="Left(arrTempStr(i), 1)" />
+  <WatchEntry2 value="strTempStr" />
+  <WatchEntry3 value="Ubound(arrTempStr)" />
+  <WatchEntry4 value="objTable" />
+</Properties>

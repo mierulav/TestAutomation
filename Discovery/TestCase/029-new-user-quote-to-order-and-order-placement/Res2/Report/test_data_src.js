@@ -1,0 +1,1 @@
+﻿var __testDataSource={items:[{dataFilePath:'Default.xlsx',dataFileFormat:'excel',dataFileFolder:'D:\\Microsoft\\OneDrive\\OneDrive - DKSH\\Documents\\automation\\Discovery\\TestCase\\029-new-user-quote-to-order-and-order-placement\\Res2',namePairs:[]}]};

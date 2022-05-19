@@ -1,0 +1,119 @@
+﻿option explicit
+
+'=======================================
+' Checkout page
+'=======================================
+
+'To place order in Checkout page
+Public Sub placeOrder()
+
+	Browser("DKSH Discover | Performance").Page("Checkout").Sync
+	If Ucase(Browser("DKSH Discover | Performance").Page("Checkout").WebCheckBox("termsCheck").GetROProperty("checked")) = 0 Then
+		Browser("DKSH Discover | Performance").Page("Checkout").WebCheckBox("termsCheck").Click
+	End If
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").WebButton("Place Order").Click
+
+End  Sub
+
+'To set PO number
+Public Sub setPONumber(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").WebEdit("poNumber").Set strVal
+	
+End Sub
+
+'To set delivery instructions
+Public Sub setDeliveryInstructions(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").WebEdit("deliveryInstruction").Set strVal
+	
+End Sub
+
+'To attach PO 
+Public Sub attachPODocument()
+
+	Browser("DKSH Discover | Performance").Page("Checkout").WebElement("Add Attachment").Click
+	Wait(1)
+	Browser("DKSH Discover | Performance").Page("Checkout").WebFile("file1").Set  Environment.Value("ProjectFolder") & "\TestData\" & "000-po-attachment.xlsx"
+	Assert Browser("DKSH Discover | Performance").Page("Checkout").WebElement("uploadsuccessmessgae").Exist, "Upload PO Document is not successful !"
+
+End Sub
+
+'To check checkout product information
+Public Function checkCheckoutProductName(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").Sync
+	Dim strDisplayedInfo : strDisplayedInfo = Trim(Browser("DKSH Discover | Performance").Page("Checkout").WebElement("Product summary").GetROProperty("innertext"))
+	
+	If Instr(strDisplayedInfo, strVal) > 0  Then
+		checkCheckoutProductName = True
+	Else
+		checkCheckoutProductName = False
+	End If
+	
+End Function
+
+'To check checkout package type information
+Public Function checkCheckoutPackage(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").Sync
+	Dim strDisplayedInfo : strDisplayedInfo = Trim(Browser("DKSH Discover | Performance").Page("Checkout").WebElement("Product summary").GetROProperty("innertext"))
+	Dim arrVal : arrVal = Split(strVal, " ")
+	
+	If Instr(Lcase(strDisplayedInfo), "package type: " &  Lcase(arrVal(0))) > 0 Then
+		checkCheckoutPackage = True
+	Else
+		checkCheckoutPackage = False
+	End If
+	
+End Function
+
+'To check checkout quantity type information
+Public Function checkCheckoutQuantity(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").Sync
+	Dim strDisplayedInfo : strDisplayedInfo = Trim(Browser("DKSH Discover | Performance").Page("Checkout").WebElement("Product summary").GetROProperty("innertext"))
+	
+	If Instr(Lcase(strDisplayedInfo), "quantity: " &  Lcase(strVal)) > 0 Then
+		checkCheckoutQuantity = True
+	Else
+		checkCheckoutQuantity = False
+	End If
+	
+End Function
+
+'To check checkout total price information
+Public Function checkCheckoutTotalPrice(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Checkout").Sync
+	Dim strDisplayedInfo : strDisplayedInfo = Trim(Browser("DKSH Discover | Performance").Page("Checkout").WebElement("Product summary").GetROProperty("innertext"))
+	
+	If Instr(Lcase(strDisplayedInfo), Lcase(strVal)) > 0 Then
+		checkCheckoutTotalPrice = True
+	Else
+		checkCheckoutTotalPrice = False
+	End If
+	
+End Function
+
+
+'=======================================
+' Confirmation page
+'=======================================
+
+'to check order submission succesful
+Public Function checkOrderSubmission()
+
+	Browser("DKSH Discover | Performance").Page("Order Confirmation").Sync
+	checkOrderSubmission = Browser("DKSH Discover | Performance").Page("Order Confirmation").WebElement("Thank you for your order!").Exist
+	
+End Function
+
+'to get the sales order number generated
+Public Function getSalesOrderNumber()
+
+	Browser("DKSH Discover | Performance").Page("Order Confirmation").Sync
+	getSalesOrderNumber =GetNumber(Browser("DKSH Discover | Performance").Page("Order Confirmation").WebElement("Your order number is ..").GetROProperty("innertext"))
+	
+End Function

@@ -1,0 +1,93 @@
+﻿option explicit
+
+'=======================================
+' PLP page
+'=======================================
+
+'to request a quote for a product (first item in plp)
+Public Sub toQuoteRequest()
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Browser("DKSH Discover | Performance").Page("Product").SAPButton("Quote request").Click
+
+End  Sub
+
+'to view more details of the selected product (first item in plp)
+Public Sub toViewDetails()
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Browser("DKSH Discover | Performance").Page("Product").SAPButton("View details plp").Click
+	
+End Sub
+
+'to check product name of the first item
+Public Function checkPLPProductNameOfFirstItem(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Dim strDisplayedName : strDisplayedName = Trim(Browser("DKSH Discover | Performance").Page("Product").WebElement("Product name first item").GetROProperty("innertext"))
+	If  strDisplayedName = strVal Then
+		checkPLPProductNameOfFirstItem = True
+	Else
+		checkPLPProductNameOfFirstItem = False
+	End If 
+	
+End Function
+
+'=======================================
+' PDP page
+'=======================================
+
+'to click pdp add to cart button
+Public Sub clickAddToCart()
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Browser("DKSH Discover | Performance").Page("Product").SAPButton("Add to cart").Click
+	
+End Sub
+
+'to click checkout and navigate to cart page
+Public Sub clickCheckoutToCartPage()
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Browser("DKSH Discover | Performance").Page("Product").Link("Check out").WaitProperty "Visible", True
+	Browser("DKSH Discover | Performance").Page("Product").Link("Check out").Click
+	
+End Sub
+
+'to set product packaging type pdp
+Public Sub setPackagingType(strVal)
+
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	Browser("DKSH Discover | Performance").Page("Product").WebList("Packaging type pdp").Select strVal
+
+End Sub
+
+'to set product quantity pdp
+Public Sub setPDPQuantity(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Product").Sync
+	
+	Dim arrItems : arrItems = Split(Browser("DKSH Discover | Performance").Page("Product").WebList("Quantity pdp").GetROProperty("all items"), ";")
+	Dim i
+	For i = 0 To Ubound(arrItems)
+		If GetNumber(arrItems(i)) = GetNumber(strVal) Then
+			Browser("DKSH Discover | Performance").Page("Product").WebList("Quantity pdp").Select arrItems(i)
+			Exit Sub
+		End If		
+	Next
+
+End Sub
+
+'get product unit price
+Public Function getProductUnitPrice()
+	
+	getProductUnitPrice = GetNumber(Browser("DKSH Discover | Performance").Page("Product").WebElement("Unit price pdp").GetROProperty("innertext"))
+
+End Function
+
+'get product total price
+Public Function getProductTotalPrice()
+	
+	getProductTotalPrice = Trim(Replace(Browser("DKSH Discover | Performance").Page("Product").WebElement("total price pdp").GetROProperty("innertext"), "Your total value: ", ""))
+
+End Function

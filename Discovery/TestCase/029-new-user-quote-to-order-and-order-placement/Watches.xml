@@ -1,0 +1,6 @@
+﻿<Properties>
+  <WatchEntry0 value="strQuoteValidity" />
+  <WatchEntry1 value="strFormmattedDate" />
+  <WatchEntry2 value="intDisplayedQuotePrice" />
+  <WatchEntry3 value="strVal" />
+</Properties>

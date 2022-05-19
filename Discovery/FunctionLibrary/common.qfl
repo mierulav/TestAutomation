@@ -1,0 +1,72 @@
+﻿option explicit
+
+'assert function
+sub Assert(boolExpr, strOnFail)
+	if not boolExpr then
+		Reporter.ReportHtmlEvent micFail, strOnFail, "Fail !"	
+	end if
+end sub
+
+'shell script object
+function wScript()
+	Set wScript = CreateObject("Wscript.Shell")
+end function
+
+'mouse object
+function objMouse()
+	Set objMouse = CreateObject("Mercury.DeviceReplay")
+end function
+
+'get number in string
+function GetNumber(strVal)
+	Dim numStr, RegEx
+	Set RegEx = CreateObject("vbscript.regexp") 	
+	RegEx.Pattern = "[^\d*(\.\d+)?]"
+	RegEx.IgnoreCase = True 
+	RegEx.Global = True 
+	numStr = RegEx.Replace(strVal, "")
+	numStr = Replace(numStr, "(", "")	
+	numStr = Replace(numStr, ")", "")	
+	GetNumber = numStr
+End function
+
+'remove any number in a string
+Function removeNum(stdText)
+	Dim i, str
+    	For i = 1 To Len(stdText)
+        If Not IsNumeric(Mid(stdText, i, 1)) Then
+            str = str & Mid(stdText, i, 1)
+        End If
+    	Next 
+	removeNum = trim(str) ' * 1
+End Function
+
+'retrieve all initials of each string
+Function GetInitialEachStrings(strVal)
+	Dim arrTempStr, strTempStr, i
+	arrTempStr = Split(strVal, " ")
+	strTempStr = ""
+	For i = 0 To Ubound(arrTempStr)
+		strTempStr = strTempStr & Left(arrTempStr(i), 1)
+	Next
+	GetInitialEachStrings = Lcase(strTempStr)	
+End Function
+
+'get string date
+Function GetStringDate()
+	Dim junk, i
+	Dim currDate : currDate = Date()
+	randomize
+	Dim randNum : randNum = Int((100-1+1)*Rnd+1)
+	GetStringDate = Right(Year(currDate), 2) & Month(currDate) & Day(currDate) & randNum
+End Function
+
+'browser object
+Function objBrowser()
+
+	SystemUtil.Run "chrome.exe", ""
+	Set objBrowser = Browser("CreationTime:=0")
+	
+End Function
+
+

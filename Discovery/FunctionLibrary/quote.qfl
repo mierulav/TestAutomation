@@ -1,0 +1,216 @@
+﻿option explicit
+
+'=======================================
+' Quotes list page
+'=======================================
+
+'search quote in My Quote Request
+Public Sub searchQuoteAndViewDetails(strVal)
+
+	Browser("DKSH Discover | Performance").Page("My Quote Requests").WebEdit("Enter Product name / CAS").Set strVal 'E.g. "02332019"
+	Browser("DKSH Discover | Performance").Page("My Quote Requests").WebElement("Search icon").Click
+	Browser("DKSH Discover | Performance").Page("My Quote Requests").Link("View Details").Click
+	
+End  Sub
+
+'=======================================
+' Quote details page
+'=======================================
+
+'set a customer comment into the quote information
+Public Sub setCustomerComments(strVal)
+	
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("customer comments").Set strVal
+	
+End Sub
+
+'set expected annual amount to order
+Public Sub setProductExpectedAnnualAmount(strVal)
+
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("annual amount").Set strVal
+	
+End  Sub
+
+'To edit quote
+Public Sub editQuotation()
+
+	Browser("DKSH Discover | Performance").Page("My Quote Details").SAPButton("Edit quote").Click
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebButton("Yes").Click
+	
+End Sub
+
+'To edit shipping address
+Public Sub editShipping()
+	
+	Browser("DKSH Discover | Performance").Page("Quote Edit").SAPButton("Edit shipping address").Click
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-fname").Set "UFTFname"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-lname").Set "UFTLname"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-company").Set "AT"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-address").Set "Address1"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-address2").Set "Address2"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebList("country").Select "Indonesia"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebList("region").Select "Surabaya"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-postal").Set "10110"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-address2").Set "Surabaya"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebEdit("shp-phoneno").Set "12341234"
+	Browser("DKSH Discover | Performance").Page("Quote Edit").SAPButton("Save").Click
+	
+End Sub
+
+'To set tax information for the new customer
+Public Sub setTaxInformation()
+
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebEdit("taxNumber").Set "tax-num-indo-1234"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebEdit("vatNumber").Set "vat-reg-indo-1234"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebEdit("contactInfo.name").Set "idn-sci"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebEdit("contactInfo.email").Set "idn-sci-30032022@yopmail.com"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebElement("Name").Click
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebEdit("deliveryInfo.name").Set "idn-sci"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebElement("Email").Click
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebEdit("deliveryInfo.email").Set "idn-sci-30032022@yopmail.com"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebCheckBox("asSomeDelivery").Set "ON"
+	Browser("DKSH Discover | Performance").Page("My Quote Details").Link("Submit").Click
+	Browser("DKSH Discover | Performance").Page("My Quote Details").SAPButton("Continue").Click
+
+End Sub
+
+'check quote header status
+Public Function checkQuoteStatus(strVal)
+
+	If strVal = Browser("DKSH Discover | Performance").Page("My Quote Details").WebElement("Quotation status").GetROProperty("innertext") Then
+		checkQuoteStatus = True
+	Else 
+		checkQuoteStatus = False
+	End If
+	
+End Function
+
+'to be used for modifying date test data into format displayed in discover
+Private Function modifyDateFormatForQuoteValidity(strVal)
+	
+	'date will be in mm/dd/yyyy
+	Dim strMonth
+	Dim arrItem : arrItem = Split(strVal, "/")
+	Select Case arrItem(0)
+		Case "01"
+			strMonth = "Jan"
+		Case "02"
+			strMonth = "Feb"
+		Case "03"
+			strMonth = "Mar"
+		Case "04"
+			strMonth = "Apr"
+		Case "05"
+			strMonth = "May"
+		Case "06"
+			strMonth = "Jun"
+		Case "07"
+			strMonth = "Jul"
+		Case "08"
+			strMonth = "Aug"
+		Case "09"
+			strMonth = "Sep"
+		Case "10"
+			strMonth = "Oct"
+		Case "11"
+			strMonth = "Nov"
+		Case "12"
+			strMonth = "Dec"		
+	End Select
+	
+	'remove 0 for date ranges between 1 to 9
+	If  Left(arrItem(1), 1) = "0" Then
+		arrItem(1) = Replace(arrItem(1), "0", "")
+	End If
+	
+	modifyDateFormatForQuoteValidity = strMonth & " " & arrItem(1) & ", " & arrItem(2)
+	
+End Function
+
+'check quote validity period given by DKSH
+Public Function checkQuoteValidityDate(strVal)
+
+	Dim strQuoteValidity : strQuoteValidity = Trim(Browser("DKSH Discover | Performance").Page("My Quote Details").WebElement("Quote validity").GetROProperty("innertext"))
+	Dim strFormmattedDate : strFormmattedDate = modifyDateFormatForQuoteValidity(strVal)
+	
+	If Browser("DKSH Discover | Performance").Page("My Quote Details").WebElement("Quote validity").Exist= False Then
+		checkQuoteValidityDate = False
+		Assert False, "Quote Validity field is missing !" 
+		Exit Function
+	End If
+	
+	If InStr(strQuoteValidity, strFormmattedDate) > 0 Then
+		checkQuoteValidityDate =  True
+	Else
+		checkQuoteValidityDate = False
+	End If
+
+End Function
+
+'Check quote price given by DKSH
+Public Function checkQuotePrice(strVal)
+
+	Dim intDisplayedQuotePrice : intDisplayedQuotePrice = GetNumber(Browser("DKSH Discover | Performance").Page("My Quote Details").WebElement("Quote price").GetROProperty("innertext"))
+	If intDisplayedQuotePrice = strVal Then
+		checkQuotePrice = True
+	Else
+		checkQuotePrice = False
+	End If 
+
+End Function
+
+'Check comment respond from DKSH
+Public Sub checkDKSHComment()
+
+	Browser("DKSH Discover | Performance").Page("My Quote Details").Check CheckPoint("DKSH Comment")
+	
+End Sub
+
+'Check customer aligned payment term and incoterm
+Public Sub checkPaymentAndIncoTerms()
+
+	Browser("DKSH Discover | Performance").Page("My Quote Details").Check CheckPoint("Incoterms")
+	Browser("DKSH Discover | Performance").Page("My Quote Details").Check CheckPoint("Payment Terms")
+	
+End Sub
+
+'submitting a quote
+Public Sub submitQuote()
+	
+	Browser("DKSH Discover | Performance").Page("Quote Edit").SAPButton("Submit").Click
+	Browser("DKSH Discover | Performance").Page("Quote Edit").WebButton("Yes").Click
+	
+End Sub
+
+'check quote successfully submitted
+Public Function checkQuoteSubmission()
+	
+	Browser("DKSH Discover | Performance").Page("Quote Submitted").Check CheckPoint("Quote Submitted")
+	
+End Function
+
+'get generated quote number
+Public Function getQuoteNumber()
+
+	getQuoteNumber = getNumber(Browser("DKSH Discover | Performance").Page("Quote Submitted").WebElement("Your quotation number").GetROProperty("innertext"))
+
+End Function
+
+'To place order from status quote order
+Public Sub placeQuotedOrder()
+
+	Browser("DKSH Discover | Performance").Page("My Quote Details").SAPButton("Place Order").Click
+	Browser("DKSH Discover | Performance").Page("My Quote Details").WebButton("Yes to place order").Click
+
+End  Sub
+
+
+'Consolidated process - fill in quote details
+Public Sub fillInQuoteDetails(strAnnualAmt, strComments)
+		
+	setProductExpectedAnnualAmount(strAnnualAmt)
+	setCustomerComments(strComments)
+		
+End Sub
+
+
