@@ -1,0 +1,8 @@
+﻿<Properties>
+  <WatchEntry0 value="strName" />
+  <WatchEntry1 value="objChild(i).GetROProperty(&quot;innertext&quot;)" />
+  <WatchEntry2 value="Ubound(arrProductCodes)" />
+  <WatchEntry3 value="FLPage.WebElement(objDesc)" />
+  <WatchEntry4 value="trim1" />
+  <WatchEntry5 value="trim2" />
+</Properties>

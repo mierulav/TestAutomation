@@ -1,0 +1,11 @@
+Warning (-17892): Unknown script language	[MsgId: MWAR-17892]
+Virtual User Script started at: 10/3/2022 3:10:30 PM	[MsgId: MMSG-15967]
+Running Vuser...	[MsgId: MMSG-15964]
+SAPGuiUtil.AutoLogon "AMIRULSDA", "01B   Pegasus Q00 [QA]"	[MsgId: MMSG-23001]
+The following add-in(s) were associated with your test, but are not currently loaded: 
+SAP NWBC Desktop.	[MsgId: MMSG-23001]
+Starting action Action1.	[MsgId: MMSG-15919]
+Error:  Line(10): Object doesn't support this property or method: 'Datatable.GetSheet(...).GetRowCount'	[MsgId: MERR-23001]
+Ending action Action1.	[MsgId: MMSG-15918]
+Ending Vuser...	[MsgId: MMSG-15966]
+Vuser Terminated.	[MsgId: MMSG-15963]

@@ -1,0 +1,86 @@
+﻿'***********************************************************
+' Module		: Connect+ Scenarios 
+' Created by	: amirul.saddam@dksh.com
+' Last modified	: 09-02-2022
+' Modified by	: amirul.saddam@dksh.com
+
+'***********************************************************
+
+OPTION EXPLICIT
+
+'==================================================================
+'Order Submission 
+'==================================================================
+
+Function OrderSubmission()
+
+	'Step 4: Navigate to All Products
+	OpenAllProductPage
+	
+	'Step 5: Search products
+	SearchProduct strProductCode
+	
+	'Step 6: Open product's PDP
+	OpenProductPDP
+	
+	'Validate Produt details
+	Assert "Product Code & Product Name", CheckPDPSelectedProduct(strProductCode, strProductName)
+	
+	'Step 7: Add product to Cart
+	AddProductAndGoToCart
+	
+	'Error Handling for product that is not able to put into cart
+	If CheckSpecificProductCode(strProductCode) = False Then
+		OrderSubmission = False
+		AssertExitRun "Step 7: Add Product to Cart", "Product did not succesfully added to cart" 
+		Exit Function
+	End If
+	
+	'Validate Carts product details
+	Assert "Shopping Carts - Added Product's details", CheckProductDetails(strProductCode, strProductName)
+	
+	'Validate Carts summary calculation (based on 1 item added calculation)
+	Assert "Shopping Carts - Calculation Summary", CheckCartSummaryCalculation
+	
+	'Validate Total Product Total Price (Quantity * Price per unit)
+	SetProductQuantity strProductQuantity
+	Assert "Shopping Carts - Product Total Price", CheckProductTotalPrice
+	
+	'Step 8: Proceed Checkout
+	ProceedForCheckout
+	
+	'Step 8.1: For MYHEC to cater for unmapped payer code
+	If ProjectName = "MYHEC" Then
+		COUseThisPayer.Click
+	End If
+	
+	'Validate Product details 
+	Assert "Checkout - Product Details", CheckOrderDetails(strProductCode, strProductName, strShipToAddress)
+	
+	'Validate Calculation Summary
+	Assert "Checkout - Calculation Summary", Checkout_CheckCalculationSummary
+	
+	'Step 9: Submit order
+	SetDeliveryInstruction strDeliveryInstruction
+	
+	Select Case ProjectName
+		Case "VNHEC"
+		
+		Case "MMHEC"
+			SetPONumber strPONumber
+			'SelectOOSProceedingAgreement "agree"
+			
+		Case Else
+			SetPONumber strPONumber
+	End Select
+		
+	SubmitOrder
+	
+	'Validate Order Confirmation Page
+	If CheckSalesOrderConfirmed Then
+		OrderSubmission = GetOrderNumber
+	Else
+		OrderSubmission = False
+	End If 
+	
+End Function

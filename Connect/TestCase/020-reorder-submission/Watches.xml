@@ -1,0 +1,6 @@
+﻿<Properties>
+  <WatchEntry0 value="objChild" />
+  <WatchEntry1 value="objChild.Count" />
+  <WatchEntry2 value="arrProductCodes" />
+  <WatchEntry3 value="strOrderNumber" />
+</Properties>

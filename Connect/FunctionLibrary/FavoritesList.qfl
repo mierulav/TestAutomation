@@ -1,0 +1,299 @@
+﻿Option Explicit
+
+Public FLPage : Set FLPage = Browser("DKSH Connect").Page("Favorites List")
+Public FLPDPPage : Set FLPDPPage = Browser("DKSH Connect").Page("Favorites List (Product Details)")
+'Favorites List modules
+Public FLlinkName : Set FLlinkName =  FLPage.Link("FL-Name")
+Public FLbtnSave : Set FLbtnSave = FLPage.WebButton("FL-SaveBtn")
+Public FLeditName : Set FLeditName = FLPage.WebEdit("FL-NameEdit")
+Public FLDAddItemToCart : Set FLDAddItemToCart = FLPage.WebElement("FL-AddItemToCart")
+Public FLbtnCreateNew : Set FLbtnCreateNew = FLPage.WebElement("FL-CreateNewbtn")
+Public FLDHeaderName : Set FLDHeaderName = FLPage.WebElement("FLD-HeaderName")
+Public FLDcbSelectAllItems : Set FLDcbSelectAllItems = FLPage.WebElement("FLD-SelectAllItemsCb")
+Public FLDeleteFavoritesList : Set FLDeleteFavoritesList = FLPage.WebElement("FL-DeleteList")
+'Favorites list in PDP
+Public FLPDPbtnSave : Set FLPDPbtnSave =  FLPDPPage.WebButton("FL-PDPSavebtn")
+Public FLPDPedtName : Set FLPDPedtName = FLPDPPage.WebEdit("FL-PDPNameedit")
+Public FLPDPAlertSuccessful : Set FLPDPAlertSuccessful = FLPDPPage.WebElement("FL-AlertSuccessfulSave")
+Public FLPDBoxHeader : Set FLPDBoxHeader = FLPDPPage.WebElement("FL-PDPBoxHeader")
+Public FLPDPddExistingFL : Set FLPDPddExistingFL = FLPDPPage.WebList("FL-PDPSelectExistingdd")
+Public FLPDPAddToFav : Set FLPDPAddToFav = FLPDPPage.WebElement("FL-PDPAddToFavoritesicon")
+Public FLPDPCloseBox : Set FLPDPCloseBox = FLPDPPage.WebElement("FL-PDPCloseBox")
+
+'==================================================================
+'Function to click Add To Favorite icon in PDP
+'==================================================================
+
+Public Sub FavoriteAProduct()
+	
+	FLPDPAddToFav.RefreshObject
+	FLPDPAddToFav.WaitProperty "Visible", True, 3000
+	FLPDPAddToFav.Click
+	
+End  Sub	
+
+'==================================================================
+'Function to select existing favorites list from the dropdown in PDP
+'==================================================================
+
+Public Sub SelectExistingFavoritesList(strName)
+	
+	Browser("DKSH Connect").Page("Favorites List (Product Details)").WebList("FL-PDPSelectExistingdd").WaitProperty "Visible", True, 3000
+	Browser("DKSH Connect").Page("Favorites List (Product Details)").WebList("FL-PDPSelectExistingdd").Select strName
+		
+End Sub
+
+'==================================================================
+'Function to set new favorites list on PDP
+'==================================================================
+
+Public Sub PDPSetFavoritesListName(strName)	
+	
+	FLPDPedtName.RefreshObject
+	FLPDPedtName.WaitProperty "Visible", True, 3000
+	FLPDPedtName.Set strName
+	
+End  Sub
+
+'==================================================================
+'Function to click Save on saving the product into favorites list from PDP
+'==================================================================
+
+Public Sub SaveProductAsFavorite()	
+	
+	FLPDPbtnSave.RefreshObject
+	FLPDPbtnSave.WaitProperty "Visible", True, 3000
+	FLPDPbtnSave.Click
+	
+End  Sub
+
+'==================================================================
+'Function to close favorites list box in PDP
+'==================================================================
+
+Public Sub CloseFavoritesListBox()
+
+	FLPDPCloseBox.RefreshObject
+	FLPDPCloseBox.WaitProperty "Visible", True, 3000
+	FLPDPCloseBox.Click
+
+End  Sub
+
+'==================================================================
+'Function to click create new button in favorites list module
+'==================================================================
+
+Public Sub ClickNewFavoritesList()	
+	
+	FLbtnCreateNew.RefreshObject
+	FLbtnCreateNew.WaitProperty "Visible", True, 3000
+	FLbtnCreateNew.Click
+	
+End  Sub
+
+'==================================================================
+'Function to set favorites list name in favorites list module
+'==================================================================
+
+Public Sub FLSetFavoritesListName(strName)	
+	
+	FLeditName.RefreshObject
+	FLeditName.WaitProperty "Visible", True, 3000
+	FLeditName.Set strName
+	
+End  Sub
+
+'==================================================================
+'Function to click Save on saving the product into favorites list
+'==================================================================
+
+Public Sub FLSaveFavoritesList()	
+	
+	FLbtnSave.RefreshObject
+	FLbtnSave.WaitProperty "Visible", True, 3000
+	FLbtnSave.Click
+	
+End  Sub
+
+'==================================================================
+'Function to click Save on saving the product into favorites list
+'==================================================================
+
+Public Sub AddAllItemsToCart()	
+	
+	FLDcbSelectAllItems.RefreshObject
+	FLDcbSelectAllItems.WaitProperty "Visible", True, 3000
+	FLDcbSelectAllItems.Click
+	FLDAddItemToCart.RefreshObject
+	FLDAddItemToCart.WaitProperty "Visible", True, 3000
+	FLDAddItemToCart.Click
+	
+End  Sub
+
+'==================================================================
+'Function to check successfull alert
+'==================================================================
+
+Public Function CheckSuccesfulAlert()	
+	
+	FLPDPAlertSuccessful.RefreshObject
+	CheckSuccesfulAlert = FLPDPAlertSuccessful.Exist(1)
+	
+End  Function
+
+'==================================================================
+'Function to check successfull alert
+'==================================================================
+
+Public Function GetFLPaginationCount()	
+	
+	FLPage.Sync
+	FLPage.RefreshObject
+	
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("class").value = "page"
+	Wait(3)
+	Dim trim1 : trim1 = Trim(Replace(FLPage.WebElement(objDesc).GetROProperty("innertext"), "(current)", ""))
+	Dim trim2 : trim2 = Trim(Replace(Replace(trim1, "<", ""), ">", ""))
+	Dim strLastNumber  : strLastNumber = Right(trim2,  1)
+		
+	GetFLPaginationCount = strLastNumber
+End  Function
+
+'==================================================================
+'Function to check specific favorites list existed
+'==================================================================
+
+Public Function CheckFavoritesList(strName)
+	
+	Dim x, intPaginationCount
+	intPaginationCount = CSng(GetFLPaginationCount)
+	CheckFavoritesList = False
+	For x = 0 To intPaginationCount-1
+		FLPage.Sync
+		FLPage.RefreshObject
+		
+		Dim objDesc : Set objDesc = Description.Create
+		objDesc("micclass").value = "link"
+		objDesc("class").value = "wishName"
+		Wait(3)
+		Dim objChild : Set objChild = FLPage.ChildObjects(objDesc)
+		Dim i
+		For i = 0 To objChild.Count-1
+			If objChild(i).GetROProperty("innertext") = strName Then
+				CheckFavoritesList = True
+				Set objDesc = Nothing
+				Set objChild = Nothing
+				Exit Function
+			End If
+		Next
+		
+		Select Case ProjectName
+			Case "AUTEC"
+				Browser("DKSH Connect").Navigate("https://stg-connect-udp.dksh.com/connect/en/wishlist?page=" & x+1 )
+				
+			Case Else
+				Browser("DKSH Connect").Navigate("https://stg-connect-udp.dksh.com/" & ProjectName & "/en/wishlist?page=" & x+1 )
+		End Select
+		
+	Next
+	
+	
+	
+End Function
+
+'==================================================================
+'Function to check specific favorites list existed
+'==================================================================
+
+Public Sub SelectFavoritesList(strName)
+	
+	FLPage.Sync
+	FLPage.RefreshObject
+	
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "link"
+	objDesc("class").value = "wishName"
+	
+	Dim objChild : Set objChild = FLPage.ChildObjects(objDesc)
+	Dim i
+	For i = 0 To objChild.Count-1
+		If objChild(i).GetROProperty("innertext") = strName Then
+			objChild(i).Click
+			Exit Sub
+		End If
+	Next
+	
+	AssertExitRun "Select Existing Favorites List", strName & " - No such list existed. Run exited"	
+	
+	Set objDesc = Nothing
+	Set objChild = Nothing
+	
+End Sub
+
+'==================================================================
+'Function to check specific favorites list existed
+'==================================================================
+
+Public Function CheckProductInFavoritesList(strProductCode)
+	
+	CheckProductInFavoritesList = False
+	FLPage.Sync
+	FLPage.RefreshObject
+	
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "WebElement"
+	objDesc("innertext").value = "SKU:.*"
+	
+	Dim objChild : Set objChild = FLPage.ChildObjects(objDesc)
+	Dim i
+	For i = 0 To objChild.Count-1
+		If InStr(objChild(i).GetROProperty("innertext"), strProductCode) > 0 Then
+			CheckProductInFavoritesList = True
+		End If
+	Next
+	
+	Set objDesc = Nothing
+	Set objChild = Nothing
+	
+End Function
+
+'==================================================================
+'Function to get all items in the favorites list
+'==================================================================
+
+Public Function GetAllItemsInFavoritesList()
+	
+	GetAllItemsInFavoritesList = False
+	FLPage.Sync
+	FLPage.RefreshObject
+	
+	Dim objDesc : Set objDesc = Description.Create
+	objDesc("micclass").value = "WebElement"
+	objDesc("innertext").value = "SKU:.*"
+	
+	Dim objChild : Set objChild = FLPage.ChildObjects(objDesc)
+	Dim i, arrProductCodes
+	ReDim arrProductCodes(objChild.Count-1)
+	For i = 0 To objChild.Count-1
+		arrProductCodes(i) = Trim(Replace(objChild(i).GetROProperty("innertext"), "SKU:", ""))
+	Next
+	
+	GetAllItemsInFavoritesList = arrProductCodes
+	
+	Set objDesc = Nothing
+	Set objChild = Nothing
+	
+End Function
+
+'==================================================================
+'Function to delete  favorites list
+'==================================================================
+
+Public Function DeleteFavoritesList()
+	
+	FLDeleteFavoritesList.RefreshObject
+	FLDeleteFavoritesList.WaitProperty "Visible", True, 3000
+	FLDeleteFavoritesList.Click
+		
+End Function
