@@ -36,7 +36,9 @@ Public TrackAndTrace : Set TrackAndTrace = LoginPage.WebElement("TrackAndTrace")
 
 Public Sub AcceptDKSHCommitmentPrivacy()
  
+ 	DKSHAgreementAcceptCheckbox.RefreshObject
  	DKSHAgreementAcceptCheckbox.Set "ON"
+ 	DKSHAgreementAcceptButton.RefreshObject
  	DKSHAgreementAcceptButton.Click
   	 	
 End Sub
@@ -46,11 +48,15 @@ End Sub
 '==================================================================
 
  Public Function Login(strUsername, strPassword)
- 	  	 
+ 	
+ 	Username.RefreshObject
  	Username.Set strUsername
+ 	Password.RefreshObject
  	Password.Set strPassword
+ 	LogInBtn.RefreshObject
  	LogInBtn.Click
  	
+ 	AlertInvalidLogin.RefreshObject
  	If AlertInvalidLogin.Exist(5) Then
  		Login = False
  	Else
