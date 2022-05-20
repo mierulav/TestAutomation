@@ -3,34 +3,40 @@
 ' 1. Test Data Path
 Dim TestList : TestList = TestDataDir + "\Validations\" & Environment.Value("TestName") & ".xls"
 Datatable.ImportSheet TestList, "TestData", "Global"
-ProjectName = "TWHEC"
 
 'Get Test Data
 Dim i
 For i = 1 To Datatable.GetSheet("Global").GetRowCount
 	Datatable.GetSheet("Global").SetCurrentRow(i)
-	If UCase(Datatable.Value("ToTest", "Global")) = "Y" and UCase( Datatable.Value("Market", "Global")) = ProjectName Then
+	If UCase(Datatable.Value("ToTest", "Global")) = "Y" Then 
+		ProjectName = Datatable.Value("Market", "Global")
+		LoginIntoConnect
 		ReorderSubmission	
-		'''LogoutAndCloseBrowser
+		LogoutAndCloseBrowser
 	End If
 Next
 
+Sub LoginIntoConnect()
 
-Sub ReorderSubmission()
+	Dim ConnectURL
 	'1. Launch the Connect Market URL 
 	If UCase(ProjectName) <> "AUTEC" Then
-		SystemURL = SystemURL + LCase(ProjectName) + "/en"
+		ConnectURL = SystemURL + LCase(ProjectName) + "/en"
 	Else
-		SystemURL = SystemURL + "connect/en"
+		ConnectURL = SystemURL + "connect/en"
 	End If
 	
 	If Not Browser("Creationtime:=0").Exist Then
-		SystemUtil.Run DefaultBrowser, SystemURL
+		SystemUtil.Run DefaultBrowser, ConnectURL
 	End If
 	
 	'2. Login as an existing account member, and select shipto
 	Login Datatable.Value("Username", "Global"), Datatable.Value("Password", "Global")
 	SelectShipToDefault
+	
+End Sub
+
+Sub ReorderSubmission()
 	
 	'3. Navigate to track and order
 	OpenTrackOrderPage
