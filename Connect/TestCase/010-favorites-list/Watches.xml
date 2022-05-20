@@ -5,4 +5,5 @@
   <WatchEntry3 value="FLPage.WebElement(objDesc)" />
   <WatchEntry4 value="trim1" />
   <WatchEntry5 value="trim2" />
+  <WatchEntry6 value="ProjectName" />
 </Properties>

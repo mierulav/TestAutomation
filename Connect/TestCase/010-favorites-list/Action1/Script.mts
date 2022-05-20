@@ -3,14 +3,14 @@
 ' 1. Test Data Path
 Dim TestList : TestList = TestDataDir + "\Validations\" & Environment.Value("TestName") & ".xls"
 Datatable.ImportSheet TestList, "TestData", "Global"
-ProjectName = "THHEC"
 
 'Get Test Data
 Dim i
 For i = 1 To Datatable.GetSheet("Global").GetRowCount
 	Datatable.GetSheet("Global").SetCurrentRow(i)
-	If UCase(Datatable.Value("ToTest", "Global")) = "Y" and UCase( Datatable.Value("Market", "Global")) = ProjectName Then
+	If UCase(Datatable.Value("ToTest", "Global")) = "Y" Then 
 		'List for test
+		ProjectName = Datatable.Value("Market", "Global")
 		Dim strDate : strDate = GetStringDate
 		Dim strListName : strListName = strDate & "-DNU-Automation"
 		Dim strListName2 : strListName2 = strDate & "-DNU-Automation2"
@@ -22,7 +22,8 @@ For i = 1 To Datatable.GetSheet("Global").GetRowCount
 		AddToCartAllProductsInFavoritesList
 		OrderSubmission
 		DeleteAllCreatedFavoritesLists(strListName)
-		DeleteAllCreatedFavoritesLists(strListName2)		
+		DeleteAllCreatedFavoritesLists(strListName2)
+		LogoutAndCloseBrowser		
 		
 	End If 
 	
@@ -31,21 +32,22 @@ Next
 
 Sub LoginIntoConnect()
 
+	Dim ConnectURL
 	'1. Launch the Connect Market URL 
 	If UCase(ProjectName) <> "AUTEC" Then
-		SystemURL = SystemURL + LCase(ProjectName) + "/en"
+		ConnectURL = SystemURL + LCase(ProjectName) + "/en"
 	Else
-		SystemURL = SystemURL + "connect/en"
+		ConnectURL = SystemURL + "connect/en"
 	End If
 	
 	If Not Browser("Creationtime:=0").Exist Then
-		SystemUtil.Run DefaultBrowser, SystemURL
+		SystemUtil.Run DefaultBrowser, ConnectURL
 	End If
 	
 	'2. Login as an existing account member, and select shipto
 	Login Datatable.Value("Username", "Global"), Datatable.Value("Password", "Global")
 	SelectShipToDefault
-
+	
 End Sub
 
 Sub OrderSubmission()
@@ -80,7 +82,7 @@ Sub OrderSubmission()
 	If CheckSalesOrderConfirmed and GetOrderNumber <> False Then
 		Dim strOrderNumber : strOrderNumber = GetOrderNumber
 	Else
-		AssertExitRun "Order Submission", "Unsuccessful order submission"
+		AssertExitRun "Order Submission for " & ProjectName, "Unsuccessful order submission"
 		Exit Sub
 	End If 
 	
@@ -103,7 +105,7 @@ Sub CreateNewFavoritesList()
 	FLSaveFavoritesList
 	
 	'Check newly created list
-	Assert "Create New Favourites List in Favorites List module", CheckFavoritesList(strListName)
+	Assert ProjectName & "- Create New Favourites List in Favorites List module", CheckFavoritesList(strListName)
 	
 End Sub
 
@@ -119,11 +121,11 @@ Sub AddProductIntoExistingFavoritesList()
 	SelectExistingFavoritesList strListName
 	SaveProductAsFavorite
 	'Check product saved alert
-	Assert "Alert Succesful Added to Favorites List ", CheckSuccesfulAlert
+	Assert ProjectName & " - Alert Succesful Added to Favorites List ", CheckSuccesfulAlert
 	CloseFavoritesListBox @@ script infofile_;_ZIP::ssf66.xml_;_
 	OpenFavoritesList
 	SelectFavoritesList strListName
-	Assert "Add Product into Existing Favorites List", CheckProductInFavoritesList(Datatable.Value("ProductCode", "Global"))
+	Assert  ProjectName & " - Add Product into Existing Favorites List", CheckProductInFavoritesList(Datatable.Value("ProductCode", "Global"))
 	
 End Sub
 
@@ -139,11 +141,11 @@ Sub AddProductIntoNewFavoritesList()
 	PDPSetFavoritesListName strListName2
 	SaveProductAsFavorite
 	'Check product saved alert
-	Assert "Alert Succesful Added to Favorites List ", CheckSuccesfulAlert
+	Assert  ProjectName & " - Alert Succesful Added to Favorites List ", CheckSuccesfulAlert
 	CloseFavoritesListBox @@ script infofile_;_ZIP::ssf66.xml_;_
 	OpenFavoritesList
 	SelectFavoritesList strListName2
-	Assert "Add Product into Created Favorites List from PDP", CheckProductInFavoritesList(Datatable.Value("ProductCode", "Global"))
+	Assert  ProjectName & " - Add Product into Created Favorites List from PDP", CheckProductInFavoritesList(Datatable.Value("ProductCode", "Global"))
 	
 End Sub
 
@@ -156,7 +158,7 @@ Sub AddToCartAllProductsInFavoritesList()
 	AddAllItemsToCart
 	Dim i
 	For i = 0 To Ubound(arrProductCodes)-1
-		Assert "Check Product " & arrProductCodes(i) & " is In The Cart",  CheckSpecificProductCode(arrProductCodes(i))
+		Assert  ProjectName & " - Check Product " & arrProductCodes(i) & " is In The Cart",  CheckSpecificProductCode(arrProductCodes(i))
 	Next
 	SetProductQuantityBasedOnMOV
 	
