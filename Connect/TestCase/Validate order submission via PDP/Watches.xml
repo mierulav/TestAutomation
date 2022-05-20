@@ -1,7 +1,0 @@
-﻿<Properties>
-  <WatchEntry0 value="ProjectName" />
-  <WatchEntry1 value="LoginPage.Object.readyState" />
-  <WatchEntry2 value="ProductQuantityUpdatedAlert" />
-  <WatchEntry3 value="GetNumber(CartProductPriceTotal.GetROProperty(&quot;Innertext&quot;))" />
-  <WatchEntry4 value="CSng(Trim(GetNumber(CartProductPriceTotal.GetROProperty(&quot;Innertext&quot;))))" />
-</Properties>
