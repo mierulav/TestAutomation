@@ -133,6 +133,7 @@ OPTION EXPLICIT
   	If TOSearchBy.Exist Then
   		TOSearchBy.Select "#0"
   	End If
+  	TOSearchBar.RefreshObject
   	TOSearchBar.Set strVal
  	TOSearchButton.Click
  	TrackPage.Sync
