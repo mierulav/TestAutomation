@@ -1,7 +1,7 @@
 ﻿OPTION EXPLICIT @@ script infofile_;_ZIP::ssf3.xml_;_
 
 ' 1. Test Data Path
-Dim TestList : TestList = TestDataDir + "\Validations\E2E Order Submission Order Fulfilment.xls"
+Dim TestList : TestList = TestDataDir + "\Validations\" & Environment("TestName") & ".xls"
 
 ' 2. Test Data Information
 Dim TestDataCX : TestDataCX = "TestDataCX"
@@ -10,8 +10,6 @@ Datatable.AddSheet TestDataCX
 Datatable.AddSheet	TestDataSAP
 Datatable.ImportSheet TestList, "CX", TestDataCX
 Datatable.ImportSheet TestList, "SAP", TestDataSAP
-Dim strMarket : strMarket = "VNHEC" 'Datatable.Value("Market", "Local")
-ProjectName = strMarket
 
 '3. Initialization
 Dim x, y, i
@@ -27,9 +25,10 @@ PGI, TransferOrder, ItemPicking, DeliverOrder, Release, FwdAgent
 'CX Test Data
 For i = 1 To CXDataSheet.GetRowCount
 	CXDataSheet.SetCurrentRow(i)
-	If UCase(Datatable.Value("ToTest", TestDataCX)) = "Y" and UCase( Datatable.Value("Market", TestDataCX)) = strMarket Then
+	If UCase(Datatable.Value("ToTest", TestDataCX)) = "Y" Then'and UCase(Datatable.Value("Market", TestDataCX)) = strMarket Then
 		
-		ConnectURL = SystemURL
+		'ConnectURL = SystemURL
+		ProjectName = Datatable.Value("Market", TestDataCX)
 		strRole = "" 'if this is a test for secondary normal account, please input "normal" 
 		strUsername = Datatable.Value("Username", TestDataCX)
 		strPassword = Datatable.Value("Password", TestDataCX)
@@ -49,7 +48,7 @@ Next
 'SAP Test Data
 For i = 1 To SAPDataSheet.GetRowCount
 	SAPDataSheet.SetCurrentRow(i)
-	If UCase(Datatable.Value("ToTest", TestDataSAP)) = "Y" and UCase( Datatable.Value("Market", TestDataSAP)) = strMarket Then
+	If UCase(Datatable.Value("ToTest", TestDataSAP)) = "Y" and UCase(Datatable.Value("Market", TestDataSAP)) = ProjectName Then
 	
 		Release = Datatable.Value("ReleaseCredit", TestDataSAP)
 		DeliverOrder = Datatable.Value("DeliverOrder", TestDataSAP)
@@ -69,6 +68,7 @@ For i = 1 To SAPDataSheet.GetRowCount
 Next
 
 'Step 1: Order creation
+LoginIntoConnect
 strOrderNumber = OrderSubmission
 Select Case strOrderNumber
 	Case "0"
@@ -91,62 +91,70 @@ LogoutAndCloseBrowser
 '5 Export test into testresult
 Datatable.ExportSheet TestResultDir & "\" & GetStringDate & "Order submissions.xls", TestDataCX, "E2E" & ProjectName
 
-'Functions Operations
-Function OrderSubmission()
+'Login subs
+Sub LoginIntoConnect()
 
-	'Step 1: Navigate to the system
-	If UCase(strMarket) <> "AUTEC" Then
-		ConnectURL = ConnectURL + LCase(strMarket) + "/en"
+	Dim ConnectURL
+	'1. Launch the Connect Market URL 
+	If UCase(ProjectName) <> "AUTEC" Then
+		ConnectURL = SystemURL + LCase(ProjectName) + "/en"
 	Else
-		ConnectURL = ConnectURL + "connect/en"
+		ConnectURL = SystemURL + "connect/en"
 	End If
 	
 	If Not Browser("Creationtime:=0").Exist Then
 		SystemUtil.Run DefaultBrowser, ConnectURL
 	End If
-
-	'Validate Login screen
-	AssertObjects "Login Objects", LoginObjects
 	
-	'Step 2: Login
+	'Validate Login screen
+	AssertObjects ProjectName & " - Login Objects", LoginObjects
+	
+	'2. Login as an existing account member
 	Login strUsername, strPassword
+	
+	'Incase
 	Browser("DKSH Connect").Navigate ConnectURL
+	
+End Sub
+
+'Functions Operations
+Function OrderSubmission()
 	
 	'Step 3: Select ShipToId
 	SelectShipToAddress(strShipToCode)
 	
 	'Validate landing page - Header objects
-	AssertObjects "Landing page - Header", CheckHeaderObjects
+	AssertObjects ProjectName & "- Landing page - Header", CheckHeaderObjects
 	
 	'Validate landing page - Footer objects
-	AssertObjects "Landing page - Footer", CheckFooterObjects
+	AssertObjects ProjectName & "-Landing page - Footer", CheckFooterObjects
 	
 	'Validate landing page - Navigation Menu objects
-	AssertObjects "Landing page - Navigation Menu", CheckNavigationMenuObjects
+	AssertObjects ProjectName & "- Landing page - Navigation Menu", CheckNavigationMenuObjects
 	
 	'Validate landing page - User Menu objects
-	AssertObjects "Landing page - User Menu", CheckUserMenuList(strRole)
+	AssertObjects ProjectName & "- Landing page - User Menu", CheckUserMenuList(strRole)
 	
 	'Step 4: Navigate to All Products
 	OpenAllProductPage
 	
 	'Validate PLP screen
-	AssertObjects "PLP page", CheckPLPObjects
+	AssertObjects ProjectName & "- PLP page", CheckPLPObjects
 	
 	'Validate PLP item objects
-	AssertObjects "PLP page - Item objects", CheckPLPProductObjects
+	AssertObjects ProjectName & "- PLP page - Item objects", CheckPLPProductObjects
 	
 	'Step 5: Search products
 	SearchProduct strProductCode
 	
-'	'Step 6: Open product's PDP
-'	OpenProductPDP
-'	
-'	'Validate PDP screen
-'	AssertObjects "PDP page", CheckPDPObjects
-'	
-'	'Validate Produt details
-'	Assert "Product Code & Product Name", CheckPDPSelectedProduct(strProductCode, strProductName)
+	'Step 6: Open product's PDP
+	OpenProductPDP
+	
+	'Validate PDP screen
+	AssertObjects ProjectName & "- PDP page", CheckPDPObjects
+	
+	'Validate Produt details
+	Assert ProjectName & "- Product Code & Product Name", CheckPDPSelectedProduct(strProductCode, strProductName)
 	
 	'Step 7: Add product to Cart
 	AddProductAndGoToCart
@@ -154,32 +162,32 @@ Function OrderSubmission()
 	'Error Handling for product that is not able to put into cart
 	If CheckSpecificProductCode(strProductCode) = False Then
 		OrderSubmission = "1"
-		AssertExitRun "Step 7: Add Product to Cart", "Product did not succesfully added to cart" 
+		AssertExitRun ProjectName & "-  Step 7: Add Product to Cart", "Product did not succesfully added to cart" 
 		ExitAction
 	End If
 	
 	'Validate Cart oage
-	AssertObjects "Shopping Cats - Objects", CheckCartsObjects
+	AssertObjects ProjectName & "- Shopping Cats - Objects", CheckCartsObjects
 	
 	'Validate Carts calculation summary objects
-	AssertObjects "Shopping Carts - Calculation Summary Objects", CheckCartsCalculationObjects
+	AssertObjects ProjectName & "- Shopping Carts - Calculation Summary Objects", CheckCartsCalculationObjects
 	
 	'Validate Carts product details
-	Assert "Shopping Carts - Added Product's details", CheckProductDetails(strProductCode, strProductName)
+	Assert ProjectName & "- Shopping Carts - Added Product's details", CheckProductDetails(strProductCode, strProductName)
 	
 	'Validate Carts summary calculation (based on 1 item added calculation)
-	Assert "Shopping Carts - Calculation Summary", CheckCartSummaryCalculation
+	Assert ProjectName & "- Shopping Carts - Calculation Summary", CheckCartSummaryCalculation
 	
 	'Validate Minimum Purchase alert
-	Assert "Shopping Carts - Minimum Purchase Alert", MinimumPurchaseAlert
+	Assert ProjectName & "- Shopping Carts - Minimum Purchase Alert", MinimumPurchaseAlert
 	
 	'Validate Carts product updated alert
 	SetProductQuantity "10"
-	Assert "Shopping Carts - Product Quantity Alert", ProductQuantityUpdatedAlert
+	Assert ProjectName & "- Shopping Carts - Product Quantity Alert", ProductQuantityUpdatedAlert
 	
 	'Validate Total Product Total Price (Quantity * Price per unit)
 	SetProductQuantity strProductQuantity
-	Assert "Shopping Carts - Product Total Price", CheckProductTotalPrice
+	Assert ProjectName & "- Shopping Carts - Product Total Price", CheckProductTotalPrice
 	
 	'Step 8: Proceed Checkout
 	ProceedForCheckout
@@ -190,16 +198,16 @@ Function OrderSubmission()
 	End If
 	
 	'Validate Checkout objects
-	AssertObjects "Checkout - Layout", CheckCheckoutObjects
+	AssertObjects ProjectName & "- Checkout - Layout", CheckCheckoutObjects
 	
 	'Validate Checkout Calculation Summary objects
-	AssertObjects "Checkout - Calculation Summary Objects", CheckCheckoutCalculationSummaryObjects
+	AssertObjects ProjectName & "- Checkout - Calculation Summary Objects", CheckCheckoutCalculationSummaryObjects
 	
 	'Validate Product details 
-	Assert "Checkout - Product Details", CheckOrderDetails(strProductCode, strProductName, Trim(Replace(strShipToAddress, ",", "")))
+	Assert ProjectName & "- Checkout - Product Details", CheckOrderDetails(strProductCode, strProductName, Trim(Replace(strShipToAddress, ",", "")))
 	
 	'Validate Calculation Summary
-	Assert "Checkout - Calculation Summary", Checkout_CheckCalculationSummary
+	Assert ProjectName & "- Checkout - Calculation Summary", Checkout_CheckCalculationSummary
 	
 	'Step 9: Submit order
 	SetDeliveryInstruction strDeliveryInstruction
@@ -238,10 +246,10 @@ Function OrderFulfilment()
 	End If
 	
 	'Validations PO Number
-	Assert "Validate PO Number", IsEqual(GetPONumber(strOrderNumber), strPONumber)
+	Assert ProjectName & "- Validate PO Number", IsEqual(GetPONumber(strOrderNumber), strPONumber)
 	
 	'Validation Delivery Instruction
-	Assert "Validate Delivery Instructions", IsEqual(GetDeliveryInstruction(strOrderNumber, ProjectName), strDeliveryInstruction)
+	Assert ProjectName & "- Validate Delivery Instructions", IsEqual(GetDeliveryInstruction(strOrderNumber, ProjectName), strDeliveryInstruction)
 		
 	'Step 4: Create Delivery order
 	If UCase(DeliverOrder)= "Y" Then
@@ -296,31 +304,31 @@ Sub OrderTracking(strOrderStatus, strOrderTrackingNumber)
 	OpenTrackOrderPage
 	
 	'Validate Track & Order Page
-	AssertObjects "Track & Order Layouts", CheckOrderObjects
+	AssertObjects ProjectName & "- Track & Order Layouts", CheckOrderObjects
 	
 	'Validate Track & Order Page - Order Card
-	AssertObjects "Track & Order - Order Card Objects", CheckOrderCardObjects
+	AssertObjects ProjectName & "- Track & Order - Order Card Objects", CheckOrderCardObjects
 	
 	'Step 2: Search & Validate Order Number
-	Assert "Track & Order - Search Sales Order Number", SearchOrder(strOrderNumber) 
+	Assert ProjectName & "- Track & Order - Search Sales Order Number", SearchOrder(strOrderNumber) 
 	
 	'Open Order details
 	ShowOrderDetails
 	
 	'Validate Track & Order details layout
-	AssertObjects "Track & Order Details - Layout", CheckOrderDetailsObjects
+	AssertObjects ProjectName & "- Track & Order Details - Layout", CheckOrderDetailsObjects
 	
 	'Validate Track & Order details layout
-	AssertObjects "Track & Order Details - Calculation Summary Objects", CheckOrderCalculationSummaryObjects
+	AssertObjects ProjectName & "- Track & Order Details - Calculation Summary Objects", CheckOrderCalculationSummaryObjects
 	
 	'Validate Order Status
-	Assert "Track & Order Details - Sales Order Status", CheckOrderStatus(strOrderStatus)
+	Assert ProjectName & "- Track & Order Details - Sales Order Status", CheckOrderStatus(strOrderStatus)
 	
 	'Validate Order Tracking
-	Assert "Track & Order Details - Track Sales Order Status " & strOrderStatus, CheckOrderTracking(strOrderStatus, strOrderTrackingNumber)
+	Assert ProjectName & "- Track & Order Details - Track Sales Order Status " & strOrderStatus, CheckOrderTracking(strOrderStatus, strOrderTrackingNumber)
 	
 	'Validate Order Tracking Calculation Summary
-	Assert "Track & Order Details - Calculation Summary", Track_CheckCalculationSummary
+	Assert ProjectName & "- Track & Order Details - Calculation Summary", Track_CheckCalculationSummary
 	
 End Sub @@ hightlight id_;_1_;_script infofile_;_ZIP::ssf27.xml_;_
 
