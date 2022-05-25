@@ -12,7 +12,7 @@ Datatable.ImportSheet TestList, "CX", TestDataCX
 Datatable.ImportSheet TestList, "SAP", TestDataSAP
 
 '3. Initialization
-Dim x, y, i
+Dim x, y, i, j
 Dim CXDataSheet : Set CXDataSheet = Datatable.GetSheet(TestDataCX)
 Dim SAPDataSheet : Set SAPDataSheet = Datatable.GetSheet(TestDataSAP)
 Dim strOrderNumber, ConnectURL
@@ -22,14 +22,13 @@ Dim strSAPPONumber, strSAPDI, strDeliveryOrderNumber, strInvoiceNumber, strShipm
 DateAddDiff, ShipmentType, TransportPlanningPt, WarehouseNo, ConfirmedReceipt, Shipment, Invoicing, _
 PGI, TransferOrder, ItemPicking, DeliverOrder, Release, FwdAgent
 
-'CX Test Data
+'CX Test list
 For i = 1 To CXDataSheet.GetRowCount
 	CXDataSheet.SetCurrentRow(i)
 	If UCase(Datatable.Value("ToTest", TestDataCX)) = "Y" Then'and UCase(Datatable.Value("Market", TestDataCX)) = strMarket Then
 		
 		'ConnectURL = SystemURL
 		ProjectName = Datatable.Value("Market", TestDataCX)
-		strRole = "" 'if this is a test for secondary normal account, please input "normal" 
 		strUsername = Datatable.Value("Username", TestDataCX)
 		strPassword = Datatable.Value("Password", TestDataCX)
 		strSoldToCode = Datatable.Value("SoldToCode", TestDataCX)
@@ -41,55 +40,61 @@ For i = 1 To CXDataSheet.GetRowCount
 		strDeliveryInstruction = Datatable.Value("DeliveryInstruction", TestDataCX)
 		strPONumber = Datatable.Value("PONumber", TestDataCX)
 		intMinimimumPurchase = Datatable.Value("MinimumPurchase", TestDataCX)
+		
+		'get SAP test data
+		fFindSAPTestData
+		
+		'Step 1: Order creation
+		LoginIntoConnect
+		strOrderNumber = OrderSubmission
+		Select Case strOrderNumber
+			Case "0"
+				AssertExitRun "Unable to proceed", "Order Submission is unsuccessfull"
+				ExitAction
+			 
+			 Case "1"
+			 	AssertExitRun "Unable to proceed", "Cart Error"
+			 	ExitAction
+			 Case Else
+				OrderTracking "Order Received", strOrderNumber
+		End Select
+		
+		'Step 2: Order Fulfilment
+		'OrderFulfilment
+		
+		'Step 3: Logout
+		LogoutAndCloseBrowser
+		
+		'5 Export test into testresult
+		Datatable.ExportSheet TestResultDir & "\" & GetStringDate & "Order submissions.xls", TestDataCX, "E2E" & ProjectName
 	
 	End If
 Next
 
-'SAP Test Data
-For i = 1 To SAPDataSheet.GetRowCount
-	SAPDataSheet.SetCurrentRow(i)
-	If UCase(Datatable.Value("ToTest", TestDataSAP)) = "Y" and UCase(Datatable.Value("Market", TestDataSAP)) = ProjectName Then
-	
-		Release = Datatable.Value("ReleaseCredit", TestDataSAP)
-		DeliverOrder = Datatable.Value("DeliverOrder", TestDataSAP)
-		ItemPicking = Datatable.Value("ItemPicking", TestDataSAP)
-		TransferOrder = Datatable.Value("TransferOrder", TestDataSAP)
-		PGI = Datatable.Value("PostGoodsIssue", TestDataSAP)
-		Invoicing = Datatable.Value("Invoicing", TestDataSAP)
-		Shipment = Datatable.Value("Shipment", TestDataSAP)
-		ConfirmedReceipt = Datatable.Value("ConfirmedReceipt", TestDataSAP)
-		WarehouseNo = Datatable.Value("WarehouseNo", TestDataSAP)
-		TransportPlanningPt = Datatable.Value("TransportPlanningPt", TestDataSAP)
-		ShipmentType = Datatable.Value("ShipmentType", TestDataSAP)
-		FwdAgent = Datatable.Value("ForwardingAgent", TestDataSAP)
-		DateAddDiff = Datatable.Value("DateAdd", TestDataSAP)
-	
-	End If
-Next
-
-'Step 1: Order creation
-LoginIntoConnect
-strOrderNumber = OrderSubmission
-Select Case strOrderNumber
-	Case "0"
-		AssertExitRun "Unable to proceed", "Order Submission is unsuccessfull"
-		ExitAction
-	 
-	 Case "1"
-	 	AssertExitRun "Unable to proceed", "Cart Error"
-	 	ExitAction
-	 Case Else
-		OrderTracking "Order Received", strOrderNumber
-End Select
-
-'Step 2: Order Fulfilment
-OrderFulfilment
-
-'Step 3: Logout
-LogoutAndCloseBrowser
-
-'5 Export test into testresult
-Datatable.ExportSheet TestResultDir & "\" & GetStringDate & "Order submissions.xls", TestDataCX, "E2E" & ProjectName
+'find SAP test data
+Sub fFindSAPTestData()
+	'SAP Test Data
+	For j = 1 To SAPDataSheet.GetRowCount
+		SAPDataSheet.SetCurrentRow(j)
+		If UCase(Datatable.Value("Market", TestDataSAP)) = ProjectName Then
+		
+			Release = Datatable.Value("ReleaseCredit", TestDataSAP)
+			DeliverOrder = Datatable.Value("DeliverOrder", TestDataSAP)
+			ItemPicking = Datatable.Value("ItemPicking", TestDataSAP)
+			TransferOrder = Datatable.Value("TransferOrder", TestDataSAP)
+			PGI = Datatable.Value("PostGoodsIssue", TestDataSAP)
+			Invoicing = Datatable.Value("Invoicing", TestDataSAP)
+			Shipment = Datatable.Value("Shipment", TestDataSAP)
+			ConfirmedReceipt = Datatable.Value("ConfirmedReceipt", TestDataSAP)
+			WarehouseNo = Datatable.Value("WarehouseNo", TestDataSAP)
+			TransportPlanningPt = Datatable.Value("TransportPlanningPt", TestDataSAP)
+			ShipmentType = Datatable.Value("ShipmentType", TestDataSAP)
+			FwdAgent = Datatable.Value("ForwardingAgent", TestDataSAP)
+			DateAddDiff = Datatable.Value("DateAdd", TestDataSAP)
+		
+		End If
+	Next
+End Sub
 
 'Login subs
 Sub LoginIntoConnect()
