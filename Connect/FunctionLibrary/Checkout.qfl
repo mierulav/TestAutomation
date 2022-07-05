@@ -203,7 +203,7 @@ Public Function Checkout_CalculatedVATCollected()
 			fCalc = Round((Checkout_GetSubtotal - Checkout_GetTotalDiscount) * (10/100), 2)
 			
 		Case "VNHEC"
-			fCalc = Round((Checkout_GetSubtotal - Checkout_GetTotalDiscount) * (5/100), 2)
+			fCalc = fVATCollected 'Due to vnhec tax is not the same for everyproduct
 			
 		Case "MYHEC", "MMHEC"
 			fCalc = Round((Checkout_GetSubtotal - Checkout_GetTotalDiscount + fVATCollected) * (0/100), 2)
@@ -443,25 +443,26 @@ Public Function CheckCheckoutObjects()
 	DicObj.Add "COProductName", COProductName.Exist
 	DicObj.Add "COProductCode", COProductCode.Exist(1)
 	DicObj.Add "COShipToAddress", COShipToAddress.Exist(1)
-	DicObj.Add "CODeliveryInstruction", CODeliveryInstruction.Exist(1)
 	DicObj.Add "COCheckboxDisclaimer", COCheckboxDisclaimer.Exist(1)
 	DicObj.Add "COPlaceOrder", COPlaceOrder.Exist(1)
 	
-	If ProjectName = "VNHEC" Then
-		DicObj.Remove "CODeliveryInstruction"
-		DicObj.Add "CODeliveryInstruction", Not CODeliveryInstruction.Exist(1)
-	End If
-	
-	If ProjectName = "MMHEC" Then
-		DicObj.Add "OOSProceedAgreement", Not OOSProceedAgreement.Exist(1)
-	End If
+	Select Case ProjectName
+		Case "VNHEC"
+			DicObj.Add "CODeliveryInstruction", Not CODeliveryInstruction.Exist(1)
+			
+		Case "MMHEC"
+			DicObj.Add "OOSProceedAgreement", Not OOSProceedAgreement.Exist(1)
+		
+		Case Else
+			DicObj.Add "CODeliveryInstruction", CODeliveryInstruction.Exist(1)
+	End Select
 	
 	i = DicObj.Items
 	k = DicObj.Keys
 	
 	For x = 0 To DicObj.Count-1
 		'print k(x) & ", " & i(x)
-		If i(x) <> "True" Then
+		If i(x) <> True Then
 			CheckCheckoutObjects = False
 			Exit For
 		End If
@@ -514,7 +515,7 @@ Public Function CheckCheckoutCalculationSummaryObjects()
 			DicObj.Add "ProductDiscount", COProductDiscountTH.Exist(1)
 			DicObj.Add "Total", COTotal.Exist(1)
 		
-		Case "THHEC"
+		Case "TWHEC"
 			DicObj.Add "Subtotal", COSubtotal.Exist
 			DicObj.Add "CashDiscount", COCashDiscountTW.Exist(1)
 			DicObj.Add "Total", COTotal.Exist(1)

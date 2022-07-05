@@ -730,15 +730,10 @@ Public Function CheckCartsObjects()
 	DicObj.Add "CartProductCode", CartProductCode.Exist(1)
 	DicObj.Add "CartProductQuantity", CartProductQuantity.Exist(1)
 	DicObj.Add "CartDeleteItem", CartDeleteItem.Exist(1)
-	DicObj.Add "CartQuantityPlus", CartQuantityPlus.Exist(1)
-	DicObj.Add "CartQuantityMinus", CartQuantityMinus.Exist(1)
 	DicObj.Add "CartProductImage", CartProductImage.Exist(1)
 	DicObj.Add "ProceedCheckout", ProceedCheckout.Exist(1)
 	DicObj.Add "ContinueShopping", CartContinueShopping.Exist(1)
 	DicObj.Add "SaveOrder", SaveOrder.Exist(1)
-	DicObj.Add "CartHeader", CartHeader.Exist(1)
-	DicObj.Add "CartID", CartID.Exist(1)
-	DicObj.Add "CartBreadcrumbs", CartBreadcrumbs.Exist(1)
 	
 	Select Case ProjectName
 		
@@ -747,7 +742,7 @@ Public Function CheckCartsObjects()
 			DicObj.Add "CartCreditAmount", CartCreditAmount.Exist(1)
 			
 		Case "TWHEC", "VNHEC"
-			DicObj.Add "CartCreditAmount", Not CartCreditAmount.Exist(1)
+			DicObj.Add "CartCreditAmount", Not CartCreditAmount.GetROProperty("visible")
 		
 		Case Else
 			DicObj.Add "CartCreditAmount", CartCreditAmount.Exist(1)
@@ -759,7 +754,7 @@ Public Function CheckCartsObjects()
 		
 	For x = 0 To DicObj.Count-1
 		'print k(x) & ", " & i(x)
-		If i(x) <> "True" Then
+		If i(x) <> True Then
 			CheckCartsObjects = False
 			Exit For
 		End If
@@ -838,7 +833,7 @@ Public Function CheckCartsCalculationObjects()
 	
 	For x = 0 To DicObj.Count-1
 		'print k(x) & ", " & i(x)
-		If i(x) <> "True" Then
+		If i(x) <> True Then
 			CheckCartsCalculationObjects = False
 			Exit For
 		End If

@@ -53,7 +53,7 @@ Public Function CreateDeliveryOrder(strOrderNumber)
 		Case "VNHEC", "THHEC"
 			OKCode.Set "/nva02"
 			Enter.Click
-			SAPGuiSession("Session").SAPGuiWindow("Display Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
+			SAPGuiSession("Session").SAPGuiWindow("Change Sales Order: Initial").SAPGuiEdit("Order").Set strOrderNumber
 			Enter.Click
 			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiEdit("Req. deliv.date").SetFocus
 			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiEdit("Req. deliv.date").Set DateFormatGeneral(Date())
@@ -61,7 +61,7 @@ Public Function CreateDeliveryOrder(strOrderNumber)
 			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiTable("All items").SetCellData 1,"First date", DateFormatGeneral(Date())
 			MenuBar.Select "Sales document;Deliver"
 			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SAPGuiStatusBar("StatusBar").Sync
-			SAPGuiSession("Session").SAPGuiWindow("Change Standard Order").SendKey ENTER
+			Enter.Click
 			SAPGuiSession("Session").SAPGuiWindow("Information_3").SAPGuiButton("Continue   (Enter)").Click
 			SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery  Create:").SAPGuiStatusBar("StatusBar").Sync
 			SAPGuiSession("Session").SAPGuiWindow("Outbound Delivery  Create:").SAPGuiButton("Save   (Ctrl+S)").Click
@@ -146,11 +146,15 @@ Public Function CreateShipment(strDO, strPlantPT, strShipType, strFwdAgent)
 	
 	Select Case ProjectName
 		Case "VNHEC"
+			OKCode.Set "/nvt01n"
+			Enter.Click	
 			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiEdit("TransportPlanningPt").Set strPlantPT
-			SAPGuiSession("Session").SAPGuiWindow("Information_2").SAPGuiButton("Continue   (Enter)").Click
+			'SAPGuiSession("Session").SAPGuiWindow("Information_2").SAPGuiButton("Continue   (Enter)").Click
+			Enter.Click
 			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiComboBox("Shipment type").Select strShipType
 			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiComboBox("Shipment type").SetFocus
-			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiButton("Shipment Overview   (Enter)").Click
+			'SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiButton("Shipment Overview   (Enter)").Click
+			Enter.Click
 			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiEdit("FwdAgent").Set "221122"
 			Enter.Click
 			SAPGuiSession("Session").SAPGuiWindow("AU-Outbound Tech/PM $0003").SAPGuiStatusBar("StatusBar").Sync
@@ -164,23 +168,23 @@ Public Function CreateShipment(strDO, strPlantPT, strShipType, strFwdAgent)
 			SAPGuiSession("Session").SAPGuiWindow("Create Shipment: Initial").SAPGuiOKCode("OKCode").Set "/nvt02n"
 			Enter.Click
 			Enter.Click
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("VTTK-DTDIS").SetFocus
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("VTTK-DTDIS").Set "02.03.2022"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("SAPGuiEdit").Set "15:00"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("SAPGuiEdit").SetFocus
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Partner"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiStatusBar("StatusBar").Sync
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partn.Funct.","Transporter ID (PDA)"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partner","0"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SelectCell 2,"Partner"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Deadl."
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion").SetFocus
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion").Set "02.03.2022"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion_2").Set "15:30"
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiEdit("Shpmt completion_2").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("VTTK-DTDIS").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("VTTK-DTDIS").Set  DateFormatGeneral(Date())
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("SAPGuiEdit").Set "12:00"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("SAPGuiEdit").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Partner"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partn.Funct.","Transporter ID (PDA)"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partner","0"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SelectCell 2,"Partner"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Deadl."
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion").SetFocus
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion").Set DateFormatGeneral(Date())
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion_2").Set "15:30"
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion_2").SetFocus
 			Enter.Click
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiStatusBar("StatusBar").Sync
-			SAPGuiSession("Session").SAPGuiWindow("VN HEC Direct Shpt 1503598379").SAPGuiButton("Save   (Ctrl+S)").Click
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiStatusBar("StatusBar").Sync
+			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiButton("Save   (Ctrl+S)").Click
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment: Initial").SAPGuiStatusBar("StatusBar").Sync
 	End Select
 	
@@ -233,16 +237,16 @@ Public Function CreateShipment(strDO, strPlantPT, strShipType, strFwdAgent)
 	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("VTTK-DTDIS").Set  DateFormatGeneral(Date())
 	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("SAPGuiEdit").Set "12:00"
 	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("SAPGuiEdit").SetFocus
-	Select Case ProjectName
-		Case "VNHEC", "MMHEC", "TWHEC"
+'	Select Case ProjectName
+'		Case "VNHEC", "MMHEC", "TWHEC", "MYHEC"
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Partner"
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiStatusBar("StatusBar").Sync
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partn.Funct.","Transporter ID (PDA)"
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SetCellData 2,"Partner","0"
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTable("SAPLV09CGV_TC_PARTNER_OVERVIEW").SelectCell 2,"Partner"
 			SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiTabStrip("HEADER_TABSTRIP2").Select "Deadl."
-		Case Else
-	End Select
+'		Case Else
+'	End Select
 	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion").SetFocus
 	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion").Set DateFormatGeneral(Date())
 	SAPGuiSession("Session").SAPGuiWindow("Change Shipment Order").SAPGuiEdit("Shpmt completion_2").Set "15:30"

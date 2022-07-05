@@ -1,8 +1,8 @@
 ﻿OPTION EXPLICIT @@ script infofile_;_ZIP::ssf3.xml_;_
 
 ' 1. Procedural data
-Dim TestProducts : TestProducts = TestDataProduct +  "\ProductInformation.xls"
-Dim TestList : TestList = TestDataDir + "\Validations\Customer with multiple payer codes.xls"
+Dim TestProducts : TestProducts = TestDataProduct &  "\ProductInformation.xls"
+Dim TestList : TestList = TestDataDir & "\Validations\" & Environment("TestName") & ".xls"
 
 ' 2. Test Data Information
 Dim x, y, i, strCustomerID, strShipToID, strPayerCode, strProductQuantity, strProductCode, intProductPrice, bV1, bV2, bV3, bFlag 

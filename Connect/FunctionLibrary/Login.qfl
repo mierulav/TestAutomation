@@ -78,21 +78,32 @@ Public Function LoginObjects()
 	
 	LoginPage.Sync
 	LoginPage.RefreshObject
-		
-	DicObj.Add "Username", Username.Exist(1)
-	DicObj.Add "Password",  Password.Exist(1)
-	DicObj.Add "LogInBtn", LogInBtn.Exist(1)
-	DicObj.Add "ApplyNow",  ApplyNow.Exist(1)
-	DicObj.Add "ForgotPassword",  ForgotPassword.Exist(1)
-	DicObj.Add "RememberMe", RememberMe.Exist(1)
-	DicObj.Add "LoginBanner", LoginBanner.Exist(1)
-	DicObj.Add "LoginFooter", LoginFooter.Exist(1)
-	DicObj.Add "LoginWelcomeHeader", LoginWelcomeHeader.Exist(1)
-	DicObj.Add "DKSHLogo", LoginDKSHLogo.Exist(1)
-	
-	If ProjectName <> "VNHEC" Then
-		DicObj.Add "TrackAndTrace", TrackAndTrace.Exist(1)
-	End If
+
+	Select Case ProjectName
+		Case "VNHEC"
+			DicObj.Add "Username", Username.Exist
+			DicObj.Add "Password",  Password.Exist(1)
+			DicObj.Add "LogInBtn", LogInBtn.Exist(1)
+			DicObj.Add "ApplyNow",  ApplyNow.Exist(1)
+			DicObj.Add "ForgotPassword",  ForgotPassword.Exist(1)
+			DicObj.Add "RememberMe", RememberMe.Exist(1)
+			DicObj.Add "LoginBanner", LoginBanner.Exist(1)
+			DicObj.Add "LoginWelcomeHeader", LoginWelcomeHeader.Exist(1)
+			DicObj.Add "DKSHLogo", LoginDKSHLogo.Exist(1)
+			
+		Case Else
+			DicObj.Add "Username", Username.Exist
+			DicObj.Add "Password",  Password.Exist(1)
+			DicObj.Add "LogInBtn", LogInBtn.Exist(1)
+			DicObj.Add "ApplyNow",  ApplyNow.Exist(1)
+			DicObj.Add "ForgotPassword",  ForgotPassword.Exist(1)
+			DicObj.Add "RememberMe", RememberMe.Exist(1)
+			DicObj.Add "LoginBanner", LoginBanner.Exist(1)
+			DicObj.Add "LoginFooter", LoginFooter.Exist(1)
+			DicObj.Add "LoginWelcomeHeader", LoginWelcomeHeader.Exist(1)
+			DicObj.Add "DKSHLogo", LoginDKSHLogo.Exist(1)
+			DicObj.Add "TrackAndTrace", TrackAndTrace.Exist(1)
+	End Select
 		
 	i = DicObj.Items
 	k = DicObj.Keys
@@ -109,5 +120,12 @@ Public Function LoginObjects()
 	Set DicObj = nothing
 	
 End Function
+
+'For variable
+'assign a parameter/data
+Dim strURL : strURL = "www.google.com"
+
+'assign object
+Dim objX :  objX  = LoginPage.Link("Login-ApplyNow")
 
 

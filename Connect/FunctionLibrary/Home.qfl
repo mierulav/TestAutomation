@@ -333,17 +333,25 @@ End Function
 	Homepage.RefreshObject
 	
 	DicObj.Add "FooterContactDetails", FooterContactDetails.Exist(1)
-	DicObj.Add "FooterPrivacyPolicy", FooterPrivacyPolicy.Exist(1)
-	DicObj.Add "FooterTermsUse", FooterTermsUse.Exist(1)
 	
 	Select Case ProjectName
-		Case "AUTEC", "MYHEC"
+		Case "AUTEC"
 			DicObj.Add "FooterTermsCondition", FooterTermsCondition.Exist(1)
+			DicObj.Add "FooterPrivacyPolicy", FooterPrivacyPolicy.Exist(1)
+			DicObj.Add "FooterTermsUse", FooterTermsUse.Exist(1)
 			
-		Case "TWHEC"
+		Case "MYHEC"
+			DicObj.Add "FooterPrivacyPolicy", FooterPrivacyPolicy.Exist(1)
 			DicObj.Add "FooterTermsCondition", FooterTermsCondition.Exist(1)
-			DicObj.Remove  "FooterTermsUse"
+		
+		Case "VNHEC"
+			DicObj.RemoveAll
+			CheckFooterObjects = True
+			Exit Function
+			
 		Case Else
+			DicObj.Add "FooterPrivacyPolicy", FooterPrivacyPolicy.Exist(1)
+			DicObj.Add "FooterTermsUse", FooterTermsUse.Exist(1)
 		
 	End Select
 	

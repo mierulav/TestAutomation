@@ -42,7 +42,7 @@ Sub ReorderSubmission()
 	OpenTrackOrderPage
 	
 	'4. Check user should be able to view previously placed orders.
-	AssertObjects "Track & Order - Order Card Objects", CheckOrderCardObjects
+	AssertObjects ProjectName & ": Track & Order - Order Card Objects", CheckOrderCardObjects
 	
 	'5. User clicks on show more button on order listing page.
 	SearchOrder(Datatable.Value("SalesOrderNumber", "Global")) 
@@ -53,9 +53,17 @@ Sub ReorderSubmission()
 	ReorderAllProducts
 	Dim i
 	For i = 0 To Ubound(arrProductCodes)
-		Assert "Validate that all products successfully imported into cart", CheckSpecificProductCode(arrProductCodes(i))
-		print arrProductCodes(i)
+		Dim blnRes : blnRes = CheckSpecificProductCode(arrProductCodes(i))
+		Assert ProjectName & ": Validate that all products successfully imported into cart", blnRes
+		If blnRes = False Then
+			AssertExitRun ProjectName & ": Import product into cart", "Unsuccessful import product into cart !"
+		End If
 	Next
+	
+	If GetProductUnitPrice = 0 Then
+		Assert ProjectName & " - Product price is 0 (Either OOS or Pricing issue)", False
+		Exit Sub
+	End If
 	
 	'8.User clicks on Proceed to check out.
 	ProceedForCheckout
@@ -67,7 +75,7 @@ Sub ReorderSubmission()
 	
 	'10. User makes changes to delivery instruction and P.O number in check out page.
 	'11. User clicks on Place order button.
-	SetDeliveryInstruction "This is Reorder for " & ProjectName
+	SetDeliveryInstruction ProjectName & ": This is Reorder for " & ProjectName
 	
 	Select Case ProjectName
 		Case "VNHEC"
@@ -86,14 +94,14 @@ Sub ReorderSubmission()
 	If CheckSalesOrderConfirmed Then
 		Dim strOrderNumber : strOrderNumber = GetOrderNumber
 	Else
-		AssertExitRun "Order Submission", "Unsuccessful order submission"
+		AssertExitRun ProjectName & ": Order Submission", "Unsuccessful order submission"
 	End If 
 	
 	'Validate Order sent to ERP
 	SAPEasyAccessScreen
-	If  GetDeliveryInstruction(strOrderNumber, ProjectName) =  "This is Reorder for " & ProjectName Then
+	If  Instr(GetDeliveryInstruction(strOrderNumber, ProjectName), "This is Reorder for " & ProjectName) > 0 Then
 		Dim tempRes : tempRes = true
 	End If
-	Assert "Check Order Created in SAP", tempRes
+	Assert ProjectName & ": Check Order Created in SAP", tempRes
 	
 End Sub

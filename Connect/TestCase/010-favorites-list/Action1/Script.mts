@@ -52,6 +52,9 @@ End Sub
 
 Sub OrderSubmission()
 	
+	If GetProductUnitPrice = 0 Then
+		Exit Sub
+	End If
 	
 	'8.User clicks on Proceed to check out.
 	ProceedForCheckout
@@ -158,8 +161,16 @@ Sub AddToCartAllProductsInFavoritesList()
 	AddAllItemsToCart
 	Dim i
 	For i = 0 To Ubound(arrProductCodes)-1
-		Assert  ProjectName & " - Check Product " & arrProductCodes(i) & " is In The Cart",  CheckSpecificProductCode(arrProductCodes(i))
+		Dim blnRes : blnRes = CheckSpecificProductCode(arrProductCodes(i))
+		Assert  ProjectName & " - Check Product " & arrProductCodes(i) & " is In The Cart",  blnRes
+		If blnRes = False Then
+			AssertExitRun ProjectName & ": Import product into cart", "Unsuccessful import product into cart !"
+		End If
 	Next
+	If GetProductUnitPrice = 0 Then
+		Assert ProjectName & " - Product price is 0 (Either OOS or Pricing issue)", False
+		Exit Sub
+	End If
 	SetProductQuantityBasedOnMOV
 	
 End Sub

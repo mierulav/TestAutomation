@@ -407,8 +407,8 @@ Public Sub ReorderAllProducts()
 	Select Case ProjectName
 		Case "THHEC", "TWHEC"
 			'Click Reorder without selecting any checkboxes
-			TDReorder.Click
-			Browser("DKSH Connect").HandleDialog micOK
+'			TDReorder.Click
+'			Browser("DKSH Connect").HandleDialog micOK
 			TDSelectAllCheckboxes.Set "ON"
 			TDReorder.Click	
 		Case Else
@@ -630,8 +630,11 @@ Public Function Track_CalculatedVATCollected()
 		Case "SGHEC", "SGCG"
 			fCalc = Round((Track_GetSubtotal - Track_GetTotalDiscount) * (7/100), 2)
 			
-		Case "AUTEC", "VNHEC"
+		Case "AUTEC"
 			fCalc = Round((Track_GetSubtotal - Track_GetTotalDiscount) * (10/100), 2)
+			
+		Case "VNHEC"
+			fCalc = fVATCollected
 			
 		Case "MYHEC", "MMHEC"
 			fCalc = Round((Track_GetSubtotal - Track_GetTotalDiscount - Track_GetVATCollected) * (0/100), 2)
@@ -827,7 +830,7 @@ Public Function CheckOrderDetailsObjects()
 	TrackDetailsPage.Sync
 	TrackDetailsPage.RefreshObject
 	
-	DicObj.Add "CustomerConfirmationPanel", TDCustomerConfirmationPanel.Exist(1)
+	DicObj.Add "CustomerConfirmationPanel", TDCustomerConfirmationPanel.Exist
 	DicObj.Add "DeliveryPanel", TDDeliveryPanel.Exist(1)
 	DicObj.Add "OrderedPanel", TDOrderedPanel.Exist(1)
 	DicObj.Add "ProcessingPanel", TDProcessingPanel.Exist(1)
@@ -843,6 +846,14 @@ Public Function CheckOrderDetailsObjects()
 	
 		Case "AUTEC"
 			DicObj.Add "ProductPartNo", TDProductPartNo.Exist
+			
+		Case "SGHEC"
+			DicObj.Remove "DeliveryPanel"
+			DicObj.Add "DeliveryPanel", Not TDDeliveryPanel.Exist(1)
+			
+		Case "KHHEC"
+			DicObj.Remove "CustomerConfirmationPanel"
+			DicObj.Add "CustomerConfirmationPanel", Not TDCustomerConfirmationPanel.Exist(1)
 			
 		Case Else
 			
@@ -959,7 +970,7 @@ End Function
 
 Public Function CheckOrderStatus(strOrderStatus)
 
-	If Instr(strOrderStatus, GetOrderStatus) > 0 Then
+	If Instr(LCase(strOrderStatus), LCase(GetOrderStatus)) > 0 Then
 		CheckOrderStatus = True
 	Else
 		CheckOrderStatus = False
