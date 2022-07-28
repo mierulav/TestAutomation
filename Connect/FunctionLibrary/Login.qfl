@@ -121,11 +121,5 @@ Public Function LoginObjects()
 	
 End Function
 
-'For variable
-'assign a parameter/data
-Dim strURL : strURL = "www.google.com"
-
-'assign object
-Dim objX :  objX  = LoginPage.Link("Login-ApplyNow")
 
 
