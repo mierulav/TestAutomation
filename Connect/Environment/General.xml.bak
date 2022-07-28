@@ -1,27 +1,19 @@
 <Environment>
 	<Variable>
-		<Name>Global_Password</Name>
-		<Value><![CDATA[101000087]]></Value>
-	</Variable>
-	<Variable>
-		<Name>Global_Username</Name>
-		<Value><![CDATA[12341234]]></Value>
-	</Variable>
-	<Variable>
 		<Name>Project</Name>
-		<Value><![CDATA[MYHEC]]></Value>
+		<Value><![CDATA[General]]></Value>
 	</Variable>
 	<Variable>
 		<Name>ProjectDir</Name>
-		<Value><![CDATA[D:\Microsoft\OneDrive\OneDrive - DKSH\Documents\automation\Connect]]></Value>
+		<Value><![CDATA[C:\uftautomation\TestAutomation\Connect]]></Value>
 	</Variable>
 	<Variable>
 		<Name>URL_STG</Name>
-		<Value><![CDATA[https://stg-connect-udp.dksh.com/myhec/en]]></Value>
+		<Value><![CDATA[https://stg-connect-udp.dksh.com/]]></Value>
 	</Variable>
 	<Variable>
 		<Name>URL_STG1</Name>
-		<Value><![CDATA[https://stg1-connect-udp.dksh.com/myhec/en]]></Value>
+		<Value><![CDATA[https://stg1-connect-udp.dksh.com/]]></Value>
 	</Variable>
 	<Variable>
 		<Name>Browser</Name>
